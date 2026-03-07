@@ -1,4 +1,10 @@
+/**
+ * Backend de Pixel & Code para Gemini AI - Versión Final
+ * Modelo optimizado: gemini-2.5-flash
+ */
+
 exports.handler = async (event) => {
+    // Seguridad: Solo aceptamos peticiones POST
     if (event.httpMethod !== "POST") {
         return { statusCode: 405, body: "Método no permitido" };
     }
@@ -7,6 +13,7 @@ exports.handler = async (event) => {
         const { message } = JSON.parse(event.body);
         const apiKey = process.env.GEMINI_API_KEY;
 
+        // Verificamos que Netlify esté leyendo la llave
         if (!apiKey) {
             return { 
                 statusCode: 200, 
@@ -14,17 +21,18 @@ exports.handler = async (event) => {
             };
         }
 
+        // --- CEREBRO DE LA IA ---
         const systemPrompt = `
-        Eres el Asistente Virtual de "Pixel & Code", liderada por el Ing. Daniel Urquijo (Mecatrónico).
+        Eres el Asistente Virtual de "Pixel & Code", agencia liderada por el Ing. Daniel Urquijo (Mecatrónico).
         UBICACIÓN: Querétaro, MX.
         
         CATÁLOGO DE PAQUETES (Precios + IVA):
-        1. Emprendedor ($6,900 MXN): Presencia básica.
-        2. Negocio Local + IA ($8,900 MXN): Automatización total y Chatbot.
-        3. Empresarial ($11,500 MXN): Portal completo.
+        1. Emprendedor ($6,900 MXN): Presencia básica. Landing Page Express, Dominio/Hosting 1 año.
+        2. Negocio Local + IA ($8,900 MXN): Automatización total. Sitio web y Chatbot de IA.
+        3. Empresarial ($11,500 MXN): Escalabilidad. Portal completo, correos e IA con base de datos.
         
         TÉRMINOS: Entrega en 3 semanas. 2 rondas de ajustes. Correo extra: $950 MXN.
-        OBJETIVO: Que el cliente deje sus datos o escriba al WhatsApp 4423479766.
+        OBJETIVO: Ser muy amable, profesional y buscar que el cliente deje sus datos o escriba al WhatsApp 4423479766.
         `;
 
         const requestBody = {
@@ -33,8 +41,8 @@ exports.handler = async (event) => {
             }]
         };
 
-        // Intentamos con la versión estándar
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+        // LLAMADA OFICIAL A GEMINI 2.5 FLASH
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(requestBody)
@@ -42,30 +50,7 @@ exports.handler = async (event) => {
         
         const data = await response.json();
 
-        // 🚨 MODO DIAGNÓSTICO MAESTRO: Pedimos la lista exacta de modelos permitidos
-        if (data.error && data.error.message.includes("not found")) {
-            try {
-                const listResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
-                const listData = await listResponse.json();
-                
-                let modelosPermitidos = "Ninguno encontrado";
-                if (listData.models) {
-                    modelosPermitidos = listData.models
-                        .filter(m => m.supportedGenerationMethods && m.supportedGenerationMethods.includes('generateContent'))
-                        .map(m => m.name.replace('models/', ''))
-                        .join(', ');
-                }
-                
-                return {
-                    statusCode: 200,
-                    body: JSON.stringify({ reply: `⚠️ **Diagnóstico Maestro:** Tu llave funciona, pero exige uno de estos nombres exactos:<br><br><b>${modelosPermitidos}</b><br><br>Cópialos y dáselos a la IA para poner el correcto.` })
-                };
-            } catch (err) {
-                return { statusCode: 200, body: JSON.stringify({ reply: "⚠️ Error listando modelos: " + err.message }) };
-            }
-        }
-
-        // MODO DIAGNÓSTICO FINAL: Si falla por otro motivo, mostramos el error
+        // Si hay algún problema con la cuenta de Google, lo reportamos suavemente
         if (data.error) {
             return {
                 statusCode: 200,
@@ -73,16 +58,17 @@ exports.handler = async (event) => {
             };
         }
 
+        // Extraemos la respuesta inteligente de Gemini
         const aiReply = data.candidates?.[0]?.content?.parts?.[0]?.text;
         
-        // Si Google no manda texto ni error
         if (!aiReply) {
              return {
                 statusCode: 200,
-                body: JSON.stringify({ reply: "⚠️ Google no respondió correctamente. Data: " + JSON.stringify(data) })
+                body: JSON.stringify({ reply: "⚠️ El servidor de IA está ocupado. Intenta en unos segundos." })
             };
         }
 
+        // Enviamos la respuesta de vuelta a tu página web
         return {
             statusCode: 200,
             headers: { "Content-Type": "application/json" },
@@ -90,9 +76,10 @@ exports.handler = async (event) => {
         };
 
     } catch (error) {
+        // Si hay un error de conexión general
         return {
             statusCode: 200,
-            body: JSON.stringify({ reply: "⚠️ Error en el servidor Node: " + error.message })
+            body: JSON.stringify({ reply: "⚠️ Error de conexión: " + error.message })
         };
     }
 };
