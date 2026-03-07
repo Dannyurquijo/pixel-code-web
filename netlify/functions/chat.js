@@ -27,20 +27,33 @@ exports.handler = async (event) => {
         OBJETIVO: Que el cliente deje sus datos o escriba al WhatsApp 4423479766.
         `;
 
-        // Usamos el modelo público ultra-estable (gemini-1.5-flash)
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                contents: [{
-                    parts: [{ text: systemPrompt + "\n\nCliente pregunta: " + message }]
-                }]
-            })
-        });
+        const requestBody = {
+            contents: [{
+                parts: [{ text: systemPrompt + "\n\nCliente pregunta: " + message }]
+            }]
+        };
 
-        const data = await response.json();
+        // Función auxiliar para llamar a la API
+        const fetchModel = async (modelName) => {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
+            const res = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(requestBody)
+            });
+            return await res.json();
+        };
 
-        // MODO DIAGNÓSTICO: Si Google nos bloquea, el bot nos dirá el porqué
+        // 1. Intentamos con el modelo oficial universal "latest"
+        let data = await fetchModel('gemini-1.5-flash-latest');
+
+        // 2. Si Google bloquea ese nombre de modelo, activamos el plan B (gemini-pro)
+        if (data.error && data.error.message.includes("not found")) {
+            console.log("Activando modelo de respaldo: gemini-pro");
+            data = await fetchModel('gemini-pro');
+        }
+
+        // MODO DIAGNÓSTICO FINAL: Si ambos fallan, mostramos el error
         if (data.error) {
             return {
                 statusCode: 200,
