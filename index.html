@@ -29,7 +29,6 @@
         #chat-messages::-webkit-scrollbar { width: 5px; }
         #chat-messages::-webkit-scrollbar-thumb { background: #C5A059; border-radius: 10px; }
 
-        /* Estilo para el video de fondo */
         .video-bg {
             position: absolute;
             top: 50%;
@@ -40,32 +39,32 @@
             height: auto;
             transform: translate(-50%, -50%);
             z-index: 0;
+            object-fit: cover;
         }
     </style>
 </head>
 <body class="font-sans text-gray-800 bg-white antialiased">
 
-    <!-- Navbar Oscuro Premium -->
+    <!-- Navbar Premium -->
     <nav class="bg-black/95 backdrop-blur-md border-b border-gray-900 fixed w-full z-50 top-0 h-20">
         <div class="max-w-7xl mx-auto px-6 h-full flex justify-between items-center">
             <div class="flex items-center gap-4">
-                <!-- Tu logo DU oficial -->
                 <img src="pixel&pode-logo-landing.png" alt="Logo Daniel Urquijo" class="h-14 w-14 object-cover rounded-lg border border-gray-800 shadow-xl" onerror="this.src='https://placehold.co/100x100/000/C5A059?text=DU'">
                 <div class="flex flex-col">
-                    <span class="text-white font-black tracking-[0.2em] text-xs uppercase">Pixel & Code</span>
-                    <span class="text-gold font-bold text-[8px] uppercase tracking-[0.3em]">Ingeniería Digital</span>
+                    <span class="text-white font-black tracking-[0.2em] text-xs uppercase leading-none">Pixel & Code</span>
+                    <span class="text-gold font-bold text-[8px] uppercase tracking-[0.3em] mt-1">Ingeniería Digital</span>
                 </div>
             </div>
-            <!-- Menú Actualizado con Botón de Idioma -->
+            
             <div class="hidden md:flex gap-8 text-[10px] font-bold uppercase tracking-widest text-gray-400 items-center">
-                <a href="#inicio" class="hover:text-gold transition-colors">Inicio</a>
-                <a href="servicios.html" class="hover:text-gold transition-colors">Servicios</a>
-                <a href="#demo-ia" class="hover:text-gold transition-colors">Demo IA</a>
-                <a href="#paquetes" class="hover:text-gold transition-colors">Paquetes</a>
+                <a href="#inicio" class="hover:text-gold transition-colors" data-i18n="nav-home">Inicio</a>
+                <a href="servicios.html" class="hover:text-gold transition-colors" data-i18n="nav-services">Servicios</a>
+                <a href="#demo-ia" class="hover:text-gold transition-colors" data-i18n="nav-demo">Demo IA</a>
+                <a href="#paquetes" class="hover:text-gold transition-colors" data-i18n="nav-packages">Paquetes</a>
                 
                 <!-- Toggle de Idioma -->
-                <button class="flex items-center gap-2 border-l border-gray-800 pl-6 ml-2 hover:text-gold transition-colors" title="Change Language">
-                    <i data-lucide="globe" class="w-4 h-4"></i> EN
+                <button onclick="toggleLanguage()" class="flex items-center gap-2 border-l border-gray-800 pl-6 ml-2 hover:text-gold transition-colors text-white font-bold" id="lang-btn">
+                    <i data-lucide="globe" class="w-4 h-4 text-gold"></i> <span id="lang-text">EN</span>
                 </button>
                 
                 <a href="https://wa.me/524423479766" target="_blank" class="text-gold border border-gold/30 px-6 py-2 rounded-full hover:bg-gold hover:text-black transition-all ml-2">WhatsApp</a>
@@ -73,7 +72,7 @@
         </div>
     </nav>
 
-    <!-- Hero Section con Video -->
+    <!-- Hero Section -->
     <section id="inicio" class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
         <video autoplay loop muted playsinline class="video-bg">
             <source src="pixel&code_video_principal.mp4" type="video/mp4">
@@ -82,17 +81,17 @@
         
         <div class="max-w-7xl mx-auto w-full relative z-20 px-6 text-center md:text-left grid md:grid-cols-2 gap-12 items-center">
             <div>
-                <h1 class="text-5xl md:text-8xl font-black text-white leading-tight mb-6 italic uppercase">
+                <h1 class="text-5xl md:text-8xl font-black text-white leading-tight mb-6 italic uppercase" data-i18n="hero-title">
                     Arquitectura <br><span class="gold-text-gradient">Digital Pro</span>
                 </h1>
-                <p class="text-xl text-gray-300 font-light mb-10 max-w-lg leading-relaxed">
-                    Ingeniería mecatrónica aplicada al software. Construimos tu ecosistema de ventas con <b>Inteligencia Artificial Gemini</b>.
+                <p class="text-xl text-gray-300 font-light mb-10 max-w-lg leading-relaxed" data-i18n="hero-desc">
+                    Ingeniería mecatrónica aplicada al software. Construimos tu ecosistema de ventas con <b>Inteligencia Artificial Gemini</b>. 🦾✨
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-                    <button onclick="openChat()" class="gold-gradient text-black font-bold px-12 py-5 rounded-full uppercase text-[10px] tracking-widest shadow-2xl pulse-btn">
+                    <button onclick="openChat()" class="gold-gradient text-black font-bold px-12 py-5 rounded-full uppercase text-[10px] tracking-widest shadow-2xl pulse-btn" data-i18n="hero-btn-ia">
                         Activar Asistente IA
                     </button>
-                    <a href="#paquetes" class="border border-white/20 text-white px-12 py-5 rounded-full font-bold uppercase text-[10px] tracking-widest text-center hover:bg-white hover:text-black transition-all">
+                    <a href="#paquetes" class="border border-white/20 text-white px-12 py-5 rounded-full font-bold uppercase text-[10px] tracking-widest text-center hover:bg-white hover:text-black transition-all" data-i18n="hero-btn-pkg">
                         Ver Paquetes
                     </a>
                 </div>
@@ -100,18 +99,18 @@
         </div>
     </section>
 
-    <!-- Sección Test de Inteligencia Artificial (Demo IA) -->
+    <!-- Sección Demo IA -->
     <section id="demo-ia" class="py-24 px-6 bg-[#0f172a] text-center relative overflow-hidden border-y border-gray-900">
         <div class="max-w-4xl mx-auto relative z-10">
-            <h2 class="text-4xl md:text-6xl font-black text-white italic mb-8 inline-block relative">
+            <h2 class="text-4xl md:text-6xl font-black text-white italic mb-8 inline-block relative" data-i18n="demo-title">
                 Test de Inteligencia Artificial
                 <div class="absolute -bottom-2 left-0 w-full h-1.5 bg-gold rounded-full"></div>
             </h2>
-            <p class="text-gray-300 text-lg md:text-xl font-light mb-12 leading-relaxed max-w-2xl mx-auto">
+            <p class="text-gray-300 text-lg md:text-xl font-light mb-12 leading-relaxed max-w-2xl mx-auto" data-i18n="demo-desc">
                 ¿Te imaginas a un experto atendiendo a tus clientes en segundos? <br>
-                Hemos habilitado este demo interactivo conectado a Gemini para que compruebes su poder. 💡
+                Hemos habilitado este demo interactivo conectado a Gemini para que compruebes su poder. 💡🤖
             </p>
-            <button onclick="openChat()" class="gold-gradient text-black font-extrabold px-14 py-5 rounded-full uppercase text-xs tracking-[0.2em] shadow-2xl pulse-btn hover:scale-105 transition-all flex items-center gap-3 mx-auto">
+            <button onclick="openChat()" class="gold-gradient text-black font-extrabold px-14 py-5 rounded-full uppercase text-xs tracking-[0.2em] shadow-2xl pulse-btn hover:scale-105 transition-all flex items-center gap-3 mx-auto" data-i18n="demo-btn">
                 👉 Hablar con Pixie 👈
             </button>
         </div>
@@ -120,78 +119,72 @@
     <!-- Sección de Paquetes -->
     <section id="paquetes" class="py-32 px-6 bg-surface">
         <div class="max-w-7xl mx-auto text-center mb-20">
-            <h2 class="text-4xl font-black text-dark italic uppercase tracking-tighter">Catálogo de Soluciones</h2>
+            <h2 class="text-4xl font-black text-dark italic uppercase tracking-tighter" data-i18n="pkg-title">Catálogo de Soluciones</h2>
             <div class="w-24 h-1 bg-gold mx-auto mt-6"></div>
         </div>
 
         <div class="grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
             <!-- Emprendedor -->
             <div class="bg-white p-12 rounded-[2.5rem] border border-gray-100 shadow-sm hover:shadow-2xl transition-all flex flex-col items-center group">
-                <h3 class="font-bold text-2xl italic mb-1 uppercase tracking-tight">Emprendedor</h3>
-                <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-8">Presencia Básica</p>
+                <h3 class="font-bold text-2xl italic mb-1 uppercase tracking-tight" data-i18n="pkg-1-name">Emprendedor</h3>
+                <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-8" data-i18n="pkg-1-sub">Presencia Básica</p>
                 <div class="text-5xl font-black text-dark mb-10">$6,900 <span class="text-xs font-light tracking-normal">MXN + IVA</span></div>
-                <ul class="text-[11px] space-y-5 mb-12 text-gray-500 font-semibold w-full text-left">
+                <ul class="text-[11px] space-y-5 mb-12 text-gray-500 font-semibold w-full text-left" data-i18n="pkg-1-list">
                     <li class="flex gap-3 items-center"><i data-lucide="check" class="text-gold w-5 h-5"></i> Landing Page Express</li>
                     <li class="flex gap-3 items-center"><i data-lucide="check" class="text-gold w-5 h-5"></i> Dominio y Hosting (12 meses)</li>
                     <li class="flex gap-3 items-center"><i data-lucide="check" class="text-gold w-5 h-5"></i> Formulario de Prospectos</li>
                     <li class="flex gap-3 items-center"><i data-lucide="check" class="text-gold w-5 h-5"></i> Optimización Móvil Pro</li>
                 </ul>
-                <a href="landing.html?plan=emprendedor" class="w-full text-center py-4 border-2 border-dark rounded-full font-black text-[10px] uppercase tracking-widest group-hover:bg-dark group-hover:text-white transition-all">Seleccionar</a>
+                <a href="landing.html?plan=emprendedor" class="w-full text-center py-4 border-2 border-dark rounded-full font-black text-[10px] uppercase tracking-widest group-hover:bg-dark group-hover:text-white transition-all" data-i18n="pkg-select">Seleccionar</a>
             </div>
             
-            <!-- Negocio Local + IA (Destacado) -->
+            <!-- Negocio Local + IA -->
             <div class="bg-black text-white p-12 rounded-[2.5rem] border-2 border-gold shadow-2xl flex flex-col items-center transform lg:scale-110 z-10 relative overflow-hidden">
                 <div class="absolute top-0 right-0 p-4 opacity-10"><i data-lucide="sparkles" class="w-32 h-32 text-gold"></i></div>
-                <div class="bg-gold text-black font-black px-8 py-2 rounded-full text-[10px] uppercase mb-6 relative z-10 shadow-lg">Más Vendido</div>
-                <h3 class="font-bold text-2xl italic mb-1 text-gold uppercase tracking-tight">Negocio Local + IA</h3>
-                <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-8">Automatización Total</p>
+                <div class="bg-gold text-black font-black px-8 py-2 rounded-full text-[10px] uppercase mb-6 relative z-10 shadow-lg" data-i18n="pkg-best">Más Vendido</div>
+                <h3 class="font-bold text-2xl italic mb-1 text-gold uppercase tracking-tight" data-i18n="pkg-2-name">Negocio Local + IA</h3>
+                <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-8" data-i18n="pkg-2-sub">Automatización Total</p>
                 <div class="text-5xl font-black text-white mb-10">$8,900 <span class="text-xs font-light tracking-normal">MXN + IVA</span></div>
-                <ul class="text-[11px] space-y-5 mb-12 text-gray-300 font-semibold w-full text-left">
+                <ul class="text-[11px] space-y-5 mb-12 text-gray-300 font-semibold w-full text-left" data-i18n="pkg-2-list">
                     <li class="flex gap-3 items-center"><i data-lucide="check" class="text-gold w-5 h-5"></i> Sitio Web (4 Secciones)</li>
-                    <li class="flex gap-3 items-center text-gold"><i data-lucide="bot" class="w-5 h-5"></i> <b>Chatbot IA Gemini Integrado</b></li>
+                    <li class="flex gap-3 items-center text-gold"><i data-lucide="bot" class="w-5 h-5"></i> <b>Chatbot IA Pixie Integrado</b></li>
                     <li class="flex gap-3 items-center"><i data-lucide="check" class="text-gold w-5 h-5"></i> Notificaciones vía WhatsApp</li>
                     <li class="flex gap-3 items-center"><i data-lucide="check" class="text-gold w-5 h-5"></i> Capacitación de Ingeniería</li>
                 </ul>
-                <a href="landing.html?plan=ia" class="w-full text-center py-4 gold-gradient text-black rounded-full font-black text-[10px] uppercase tracking-widest shadow-xl pulse-btn">Iniciar Proyecto</a>
+                <a href="landing.html?plan=ia" class="w-full text-center py-4 gold-gradient text-black rounded-full font-black text-[10px] uppercase tracking-widest shadow-xl pulse-btn" data-i18n="pkg-start">Iniciar Proyecto</a>
             </div>
             
             <!-- Empresarial -->
             <div class="bg-white p-12 rounded-[2.5rem] border border-gray-100 shadow-sm flex flex-col items-center group">
-                <h3 class="font-bold text-2xl italic mb-1 uppercase tracking-tight">Empresarial</h3>
-                <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-8">Escalabilidad</p>
-                <div class="text-5xl font-black text-dark mb-10">$11,500 <span class="text-xs font-light tracking-normal">MXN + IVA</span></div>
-                <ul class="text-[11px] space-y-5 mb-12 text-gray-500 font-semibold w-full text-left">
+                <h3 class="font-bold text-2xl italic mb-1 uppercase tracking-tight" data-i18n="pkg-3-name">Empresarial</h3>
+                <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-8" data-i18n="pkg-3-sub">Escalabilidad</p>
+                <div class="text-5 font-black text-dark mb-10">$11,500 <span class="text-xs font-light tracking-normal">MXN + IVA</span></div>
+                <ul class="text-[11px] space-y-5 mb-12 text-gray-500 font-semibold w-full text-left" data-i18n="pkg-3-list">
                     <li class="flex gap-3 items-center"><i data-lucide="check" class="text-gold w-5 h-5"></i> Portal Web Corporativo</li>
                     <li class="flex gap-3 items-center"><i data-lucide="check" class="text-gold w-5 h-5"></i> IA con Base de Datos propia</li>
                     <li class="flex gap-3 items-center"><i data-lucide="check" class="text-gold w-5 h-5"></i> 5 Cuentas de Correo Corp.</li>
                     <li class="flex gap-3 items-center"><i data-lucide="check" class="text-gold w-5 h-5"></i> Soporte Prioritario 24/7</li>
                 </ul>
-                <a href="landing.html?plan=empresarial" class="w-full text-center py-4 border-2 border-dark rounded-full font-black text-[10px] uppercase tracking-widest group-hover:bg-dark group-hover:text-white transition-all">Consultar</a>
+                <a href="landing.html?plan=empresarial" class="w-full text-center py-4 border-2 border-dark rounded-full font-black text-[10px] uppercase tracking-widest group-hover:bg-dark group-hover:text-white transition-all" data-i18n="pkg-query">Consultar</a>
             </div>
         </div>
-        
-        <p class="text-center mt-16 text-[10px] text-gray-400 font-bold uppercase tracking-[0.3em]">
-            Tiempo de entrega: 3 semanas | Incluye 2 rondas de cambios estéticos
-        </p>
     </section>
 
-    <!-- Footer Corporativo Nuevo -->
+    <!-- Footer Corporativo -->
     <footer class="bg-black text-gray-400 py-16 px-6 border-t border-gray-900">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
-            <!-- Columna 1: Branding y Ubicación -->
             <div>
                 <img src="pixel&pode-logo-landing.png" alt="Pixel & Code Logo" class="h-16 w-auto object-contain mb-6 opacity-90" onerror="this.src='https://placehold.co/100x100/000/C5A059?text=DU'">
                 <p class="text-sm font-light leading-relaxed mb-6">
-                    Cam. a Vanegas,<br>76910 Corregidora, Qro.
+                    Cam. a Vanegas,<br>76910 Corregidora, Qro. 📍
                 </p>
                 <a href="https://www.linkedin.com/in/josé-urquijo-beltrán-p" target="_blank" class="inline-flex items-center gap-2 bg-gray-900 border border-gray-800 hover:border-gold hover:text-gold text-white px-5 py-2.5 rounded-xl transition-all text-xs font-bold uppercase tracking-widest shadow-lg">
                     <i data-lucide="linkedin" class="w-4 h-4"></i> LinkedIn
                 </a>
             </div>
             
-            <!-- Columna 2: Contacto -->
             <div>
-                <h4 class="text-white font-bold uppercase tracking-widest text-xs mb-6">Contacto Directo</h4>
+                <h4 class="text-white font-bold uppercase tracking-widest text-xs mb-6" data-i18n="foot-contact">Contacto Directo</h4>
                 <a href="tel:+524423479766" class="text-sm mb-4 flex items-center gap-3 hover:text-gold transition w-fit">
                     <i data-lucide="phone" class="w-4 h-4 text-gold"></i> 442 347 9766
                 </a>
@@ -200,25 +193,22 @@
                 </a>
             </div>
             
-            <!-- Columna 3: Enlaces Rápidos -->
             <div>
-                <h4 class="text-white font-bold uppercase tracking-widest text-xs mb-6">Enlaces Rápidos</h4>
-                <button onclick="openPrivacyModal()" class="text-sm flex items-center gap-3 hover:text-gold transition text-left">
+                <h4 class="text-white font-bold uppercase tracking-widest text-xs mb-6" data-i18n="foot-links">Enlaces Rápidos</h4>
+                <button onclick="openPrivacyModal()" class="text-sm flex items-center gap-3 hover:text-gold transition text-left" data-i18n="foot-privacy">
                     <i data-lucide="shield" class="w-4 h-4 text-gold"></i> Aviso de Privacidad
                 </button>
             </div>
         </div>
         
         <div class="max-w-7xl mx-auto pt-8 border-t border-gray-900 text-center text-[10px] uppercase tracking-widest font-bold">
-            © 2026 Pixel & Code. Todos los derechos reservados.
+            © 2026 Pixel & Code. <span data-i18n="foot-rights">Todos los derechos reservados.</span>
         </div>
     </footer>
 
-    <!-- Chatbot IA Widget -->
+    <!-- Chatbot Pixie -->
     <div id="ai-widget" class="fixed bottom-8 right-8 z-[100] flex flex-col items-end">
-        <!-- Ventana de Chat -->
         <div id="chat-window" class="hidden bg-white w-[360px] md:w-[420px] h-[550px] rounded-[2rem] shadow-2xl flex flex-col overflow-hidden mb-5 border border-gray-100 animate-in fade-in slide-in-from-bottom-10 duration-500">
-            <!-- Header Chat -->
             <div class="bg-black p-6 text-white flex justify-between items-center border-b border-gold/50">
                 <div class="flex items-center gap-4">
                     <div class="bg-gold/20 p-2.5 rounded-xl text-gold shadow-inner"><i data-lucide="cpu" class="w-6 h-6"></i></div>
@@ -230,70 +220,166 @@
                 <button onclick="closeChat()" class="text-gray-500 hover:text-white transition-colors"><i data-lucide="x" class="w-6 h-6"></i></button>
             </div>
             
-            <!-- Mensajes -->
             <div id="chat-messages" class="flex-1 bg-surface p-6 overflow-y-auto flex flex-col gap-5 text-[11px] font-medium leading-relaxed">
-                <div class="bg-white p-5 rounded-2xl rounded-tl-none shadow-sm border border-gray-100 self-start max-w-[90%]">
-                    ¡Hola! 👋 Soy <b>Pixie</b>, tu asistente de ingeniería en Pixel & Code. ¿Tienes algún proyecto en mente o te ayudo con nuestros paquetes?
+                <div class="bg-white p-5 rounded-2xl rounded-tl-none shadow-sm border border-gray-100 self-start max-w-[90%]" id="pixie-greeting">
+                    ¡Hola! 👋 Soy <b>Pixie</b>. Estoy aquí para ayudarte a escalar tu negocio con ingeniería digital. ¿Tienes alguna duda sobre nuestros paquetes?
                 </div>
             </div>
             
-            <!-- Indicador de Escritura -->
             <div id="typing" class="hidden px-6 py-2 text-[9px] text-gray-400 font-bold italic uppercase tracking-wider">
-                <span class="flex items-center gap-2"><i data-lucide="loader-2" class="w-3 h-3 animate-spin"></i> Pixie está escribiendo...</span>
+                <span class="flex items-center gap-2"><i data-lucide="loader-2" class="w-3 h-3 animate-spin"></i> <span data-i18n="pixie-thinking">Pixie está analizando...</span></span>
             </div>
             
-            <!-- Input Chat -->
             <div class="p-5 bg-white border-t border-gray-100 flex gap-3">
-                <input type="text" id="chat-input" placeholder="Pregunta por el paquete Emprendedor..." class="flex-1 bg-surface border border-gray-200 rounded-2xl py-4 px-5 text-xs outline-none focus:border-gold transition-all shadow-inner">
+                <input type="text" id="chat-input" placeholder="Pregunta algo a Pixie..." class="flex-1 bg-surface border border-gray-200 rounded-2xl py-4 px-5 text-xs outline-none focus:border-gold transition-all" data-i18n-placeholder="pixie-placeholder">
                 <button onclick="sendMessage()" class="bg-black text-gold p-4 rounded-2xl hover:bg-gray-800 transition-all shadow-lg active:scale-95">
                     <i data-lucide="send" class="w-6 h-6"></i>
                 </button>
             </div>
         </div>
 
-        <!-- Botón Flotante -->
-        <button id="chat-toggle" onclick="openChat()" class="bg-black text-gold p-6 rounded-full shadow-2xl hover:scale-110 transition-all pulse border border-gold/20 group">
+        <button id="chat-toggle" onclick="openChat()" class="bg-black text-gold p-6 rounded-full shadow-2xl hover:scale-110 transition-all border border-gold/20 group">
             <i data-lucide="sparkles" class="w-10 h-10 group-hover:rotate-12 transition-transform"></i>
         </button>
     </div>
 
-    <!-- MODAL DE AVISO DE PRIVACIDAD -->
+    <!-- Modal Privacidad -->
     <div id="privacy-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[150] hidden items-center justify-center p-4 opacity-0 transition-opacity duration-300">
         <div class="bg-white rounded-[2rem] p-8 md:p-12 max-w-2xl w-full max-h-[85vh] overflow-y-auto relative shadow-2xl transform scale-95 transition-transform duration-300" id="privacy-content">
             <button onclick="closePrivacyModal()" class="absolute top-6 right-6 text-gray-400 hover:text-black bg-gray-100 hover:bg-gold p-2 rounded-full transition-all">
                 <i data-lucide="x" class="w-5 h-5"></i>
             </button>
             
-            <h2 class="text-3xl font-bold text-dark mb-6 italic">Aviso de Privacidad</h2>
+            <h2 class="text-3xl font-bold text-dark mb-6 italic" data-i18n="priv-title">Aviso de Privacidad</h2>
             <div class="w-16 h-1 bg-gold mb-8"></div>
             
-            <div class="text-sm text-gray-600 space-y-5 leading-relaxed">
-                <p>En <strong>Pixel & Code</strong>, protegemos y salvaguardamos sus datos personales para evitar el daño, pérdida, destrucción, robo, extravío, alteración, así como el tratamiento no autorizado de los mismos.</p>
-                
-                <h3 class="font-bold text-dark text-base mt-4">1. Identidad y domicilio del responsable</h3>
-                <p>El Ing. Daniel Urquijo (Pixel & Code), con domicilio en Cam. a Vanegas, 76910 Corregidora, Qro., es el responsable del uso y protección de sus datos personales, y al respecto le informamos lo siguiente.</p>
-                
-                <h3 class="font-bold text-dark text-base mt-4">2. Fines de la información</h3>
-                <p>Los datos personales que recabamos de usted (como nombre, correo electrónico y número telefónico) los utilizaremos para las siguientes finalidades que son necesarias para el servicio que solicita:</p>
-                <ul class="list-disc pl-5 space-y-2">
-                    <li>Proveer los servicios y productos tecnológicos requeridos.</li>
-                    <li>Dar seguimiento a cotizaciones y desarrollo de proyectos.</li>
-                    <li>Notificar sobre nuevos servicios o cambios en los mismos que tengan relación con lo ya contratado.</li>
-                </ul>
-                
-                <h3 class="font-bold text-dark text-base mt-4">3. Medios de Contacto</h3>
-                <p>Cualquier duda, modificación o solicitud para eliminar sus datos de nuestros registros, puede comunicarse directamente con nuestro equipo al correo electrónico: <a href="mailto:durquijob@gmail.com" class="text-gold font-bold hover:underline">durquijob@gmail.com</a>.</p>
+            <div class="text-sm text-gray-600 space-y-5 leading-relaxed" id="privacy-body">
+                <p>En <strong>Pixel & Code</strong>, protegemos sus datos personales para evitar el daño, pérdida, destrucción o tratamiento no autorizado de los mismos. 🛡️</p>
+                <h3 class="font-bold text-dark text-base mt-4">1. Identidad y domicilio</h3>
+                <p>Ing. Daniel Urquijo, con domicilio en Cam. a Vanegas, 76910 Corregidora, Qro., es el responsable del uso y protección de sus datos.</p>
+                <h3 class="font-bold text-dark text-base mt-4">2. Finalidades</h3>
+                <p>Utilizaremos su información para proveer servicios tecnológicos, dar seguimiento a cotizaciones y mejorar su experiencia con nuestra IA.</p>
+                <h3 class="font-bold text-dark text-base mt-4">3. Contacto</h3>
+                <p>Dudas o solicitudes vía: <a href="mailto:durquijob@gmail.com" class="text-gold font-bold hover:underline">durquijob@gmail.com</a>.</p>
             </div>
             
             <div class="mt-10 text-center">
-                <button onclick="closePrivacyModal()" class="bg-dark text-white px-8 py-3 rounded-xl font-bold uppercase text-[10px] tracking-widest hover:bg-gold hover:text-dark transition shadow-lg">Entendido</button>
+                <button onclick="closePrivacyModal()" class="bg-dark text-white px-8 py-3 rounded-xl font-bold uppercase text-[10px] tracking-widest hover:bg-gold hover:text-dark transition shadow-lg" data-i18n="priv-btn">Entendido</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Inicializar Iconos
         lucide.createIcons();
+
+        // MOTOR DE TRADUCCIÓN
+        let currentLang = 'es';
+        const translations = {
+            'es': {
+                'nav-home': 'Inicio',
+                'nav-services': 'Servicios',
+                'nav-demo': 'Demo IA',
+                'nav-packages': 'Paquetes',
+                'hero-title': 'Arquitectura <br><span class="gold-text-gradient">Digital Pro</span>',
+                'hero-desc': 'Ingeniería mecatrónica aplicada al software. Construimos tu ecosistema de ventas con <b>Inteligencia Artificial Gemini</b>. 🦾✨',
+                'hero-btn-ia': 'Activar Asistente IA',
+                'hero-btn-pkg': 'Ver Paquetes',
+                'demo-title': 'Test de Inteligencia Artificial',
+                'demo-desc': '¿Te imaginas a un experto atendiendo a tus clientes en segundos? <br> Hemos habilitado este demo interactivo conectado a Gemini para que compruebes su poder. 💡🤖',
+                'demo-btn': '👉 Hablar con Pixie 👈',
+                'pkg-title': 'Catálogo de Soluciones',
+                'pkg-1-name': 'Emprendedor',
+                'pkg-1-sub': 'Presencia Básica',
+                'pkg-1-list': '<li class="flex gap-3 items-center"><i data-lucide="check" class="text-gold w-5 h-5"></i> Landing Page Express</li><li class="flex gap-3 items-center"><i data-lucide="check" class="text-gold w-5 h-5"></i> Dominio y Hosting (12 meses)</li><li class="flex gap-3 items-center"><i data-lucide="check" class="text-gold w-5 h-5"></i> Formulario de Prospectos</li><li class="flex gap-3 items-center"><i data-lucide="check" class="text-gold w-5 h-5"></i> Optimización Móvil Pro</li>',
+                'pkg-2-name': 'Negocio Local + IA',
+                'pkg-2-sub': 'Automatización Total',
+                'pkg-2-list': '<li class="flex gap-3 items-center"><i data-lucide="check" class="text-gold w-5 h-5"></i> Sitio Web (4 Secciones)</li><li class="flex gap-3 items-center text-gold"><i data-lucide="bot" class="w-5 h-5"></i> <b>Chatbot IA Pixie Integrado</b></li><li class="flex gap-3 items-center"><i data-lucide="check" class="text-gold w-5 h-5"></i> Notificaciones vía WhatsApp</li><li class="flex gap-3 items-center"><i data-lucide="check" class="text-gold w-5 h-5"></i> Capacitación de Ingeniería</li>',
+                'pkg-3-name': 'Empresarial',
+                'pkg-3-sub': 'Escalabilidad',
+                'pkg-3-list': '<li class="flex gap-3 items-center"><i data-lucide="check" class="text-gold w-5 h-5"></i> Portal Web Corporativo</li><li class="flex gap-3 items-center"><i data-lucide="check" class="text-gold w-5 h-5"></i> IA con Base de Datos propia</li><li class="flex gap-3 items-center"><i data-lucide="check" class="text-gold w-5 h-5"></i> 5 Cuentas de Correo Corp.</li><li class="flex gap-3 items-center"><i data-lucide="check" class="text-gold w-5 h-5"></i> Soporte Prioritario 24/7</li>',
+                'pkg-select': 'Seleccionar',
+                'pkg-start': 'Iniciar Proyecto',
+                'pkg-query': 'Consultar',
+                'pkg-best': 'Más Vendido',
+                'foot-contact': 'Contacto Directo',
+                'foot-links': 'Enlaces Rápidos',
+                'foot-privacy': '<i data-lucide="shield" class="w-4 h-4 text-gold"></i> Aviso de Privacidad',
+                'foot-rights': 'Todos los derechos reservados.',
+                'pixie-thinking': 'Pixie está analizando...',
+                'pixie-placeholder': 'Pregunta algo a Pixie...',
+                'pixie-greeting': '¡Hola! 👋 Soy <b>Pixie</b>. Estoy aquí para ayudarte a escalar tu negocio con ingeniería digital. ¿Tienes alguna duda sobre nuestros paquetes?',
+                'priv-title': 'Aviso de Privacidad',
+                'priv-btn': 'Entendido',
+                'priv-body': '<p>En <strong>Pixel & Code</strong>, protegemos sus datos personales para evitar el daño, pérdida, destrucción o tratamiento no autorizado de los mismos. 🛡️</p><h3 class="font-bold text-dark text-base mt-4">1. Identidad y domicilio</h3><p>Ing. Daniel Urquijo, con domicilio en Cam. a Vanegas, 76910 Corregidora, Qro., es el responsable del uso y protección de sus datos.</p><h3 class="font-bold text-dark text-base mt-4">2. Finalidades</h3><p>Utilizaremos su información para proveer servicios tecnológicos, dar seguimiento a cotizaciones y mejorar su experiencia con nuestra IA.</p><h3 class="font-bold text-dark text-base mt-4">3. Contacto</h3><p>Dudas o solicitudes vía: <a href="mailto:durquijob@gmail.com" class="text-gold font-bold hover:underline">durquijob@gmail.com</a>.</p>'
+            },
+            'en': {
+                'nav-home': 'Home',
+                'nav-services': 'Services',
+                'nav-demo': 'AI Demo',
+                'nav-packages': 'Packages',
+                'hero-title': 'Digital <br><span class="gold-text-gradient">Architecture Pro</span>',
+                'hero-desc': 'Mechatronics engineering applied to software. We build your sales ecosystem with <b>Gemini Artificial Intelligence</b>. 🦾✨',
+                'hero-btn-ia': 'Activate AI Assistant',
+                'hero-btn-pkg': 'View Packages',
+                'demo-title': 'AI Intelligence Test',
+                'demo-desc': 'Can you imagine an expert assisting your customers in seconds? <br> We have enabled this interactive demo connected to Gemini for you to see its power. 💡🤖',
+                'demo-btn': '👉 Talk to Pixie 👈',
+                'pkg-title': 'Solution Catalog',
+                'pkg-1-name': 'Entrepreneur',
+                'pkg-1-sub': 'Basic Presence',
+                'pkg-1-list': '<li class="flex gap-3 items-center"><i data-lucide="check" class="text-gold w-5 h-5"></i> Express Landing Page</li><li class="flex gap-3 items-center"><i data-lucide="check" class="text-gold w-5 h-5"></i> Domain & Hosting (12 mo)</li><li class="flex gap-3 items-center"><i data-lucide="check" class="text-gold w-5 h-5"></i> Lead Generation Form</li><li class="flex gap-3 items-center"><i data-lucide="check" class="text-gold w-5 h-5"></i> Mobile Optimization Pro</li>',
+                'pkg-2-name': 'Local Business + AI',
+                'pkg-2-sub': 'Full Automation',
+                'pkg-2-list': '<li class="flex gap-3 items-center"><i data-lucide="check" class="text-gold w-5 h-5"></i> Website (4 Sections)</li><li class="flex gap-3 items-center text-gold"><i data-lucide="bot" class="w-5 h-5"></i> <b>Integrated Pixie AI Chatbot</b></li><li class="flex gap-3 items-center"><i data-lucide="check" class="text-gold w-5 h-5"></i> WhatsApp Notifications</li><li class="flex gap-3 items-center"><i data-lucide="check" class="text-gold w-5 h-5"></i> Engineering Coaching</li>',
+                'pkg-3-name': 'Enterprise',
+                'pkg-3-sub': 'Scalability',
+                'pkg-3-list': '<li class="flex gap-3 items-center"><i data-lucide="check" class="text-gold w-5 h-5"></i> Corporate Web Portal</li><li class="flex gap-3 items-center"><i data-lucide="check" class="text-gold w-5 h-5"></i> AI with Custom Database</li><li class="flex gap-3 items-center"><i data-lucide="check" class="text-gold w-5 h-5"></i> 5 Corporate Email Accounts</li><li class="flex gap-3 items-center"><i data-lucide="check" class="text-gold w-5 h-5"></i> 24/7 Priority Support</li>',
+                'pkg-select': 'Select',
+                'pkg-start': 'Start Project',
+                'pkg-query': 'Query',
+                'pkg-best': 'Best Seller',
+                'foot-contact': 'Direct Contact',
+                'foot-links': 'Quick Links',
+                'foot-privacy': '<i data-lucide="shield" class="w-4 h-4 text-gold"></i> Privacy Policy',
+                'foot-rights': 'All rights reserved.',
+                'pixie-thinking': 'Pixie is analyzing...',
+                'pixie-placeholder': 'Ask Pixie something...',
+                'pixie-greeting': 'Hello! 👋 I am <b>Pixie</b>. I am here to help you scale your business with digital engineering. Do you have any questions about our packages?',
+                'priv-title': 'Privacy Policy',
+                'priv-btn': 'Got it',
+                'priv-body': '<p>At <strong>Pixel & Code</strong>, we protect your personal data to prevent damage, loss, destruction, or unauthorized treatment. 🛡️</p><h3 class="font-bold text-dark text-base mt-4">1. Identity and address</h3><p>Eng. Daniel Urquijo, located at Cam. a Vanegas, 76910 Corregidora, Qro., is responsible for the use and protection of your data.</p><h3 class="font-bold text-dark text-base mt-4">2. Purposes</h3><p>We will use your information to provide technological services, follow up on quotes, and improve your experience with our AI.</p><h3 class="font-bold text-dark text-base mt-4">3. Contact</h3><p>Questions or requests via: <a href="mailto:durquijob@gmail.com" class="text-gold font-bold hover:underline">durquijob@gmail.com</a>.</p>'
+            }
+        };
+
+        function toggleLanguage() {
+            currentLang = (currentLang === 'es') ? 'en' : 'es';
+            document.getElementById('lang-text').innerText = (currentLang === 'es') ? 'EN' : 'ES';
+            
+            // Traducir elementos con data-i18n
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[currentLang][key]) {
+                    el.innerHTML = translations[currentLang][key];
+                }
+            });
+
+            // Traducir placeholders
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                if (translations[currentLang][key]) {
+                    el.placeholder = translations[currentLang][key];
+                }
+            });
+
+            // Caso especial: Saludo de Pixie si no ha habido charla
+            const messages = document.getElementById('chat-messages');
+            if (messages.children.length === 1) {
+                document.getElementById('pixie-greeting').innerHTML = translations[currentLang]['pixie-greeting'];
+            }
+
+            // Reiniciar iconos después del cambio de HTML
+            lucide.createIcons();
+        }
 
         // Control del Modal de Privacidad
         function openPrivacyModal() {
@@ -301,7 +387,6 @@
             const content = document.getElementById('privacy-content');
             modal.classList.remove('hidden');
             modal.classList.add('flex');
-            // Timeout para la animación
             setTimeout(() => {
                 modal.classList.remove('opacity-0');
                 content.classList.remove('scale-95');
@@ -315,14 +400,12 @@
             modal.classList.add('opacity-0');
             content.classList.remove('scale-100');
             content.classList.add('scale-95');
-            // Timeout para ocultar después de la animación
             setTimeout(() => {
                 modal.classList.add('hidden');
                 modal.classList.remove('flex');
             }, 300);
         }
 
-        // Control del Chat
         function openChat() {
             document.getElementById('chat-window').classList.remove('hidden');
             document.getElementById('chat-toggle').classList.add('hidden');
@@ -350,28 +433,25 @@
                     body: JSON.stringify({ message: msg })
                 });
                 
-                if (!res.ok) throw new Error("Error en el backend");
-
                 const data = await res.json();
                 typing.classList.add('hidden');
                 appendMsg('ai', data.reply);
             } catch (e) {
                 typing.classList.add('hidden');
-                appendMsg('ai', "<b>Aviso del Sistema:</b> La conexión con Pixie requiere que el sitio esté desplegado en Netlify.");
-                console.error(e);
+                const errMsg = (currentLang === 'es') 
+                    ? "⚠️ Pixie está fuera de línea. Asegúrate de estar en Netlify."
+                    : "⚠️ Pixie is offline. Make sure you are on Netlify.";
+                appendMsg('ai', errMsg);
             }
         }
 
         function appendMsg(role, text) {
             const container = document.getElementById('chat-messages');
             const div = document.createElement('div');
+            div.className = role === 'user' 
+                ? "bg-gold text-black p-5 rounded-2xl rounded-tr-none self-end max-w-[90%] font-bold shadow-md"
+                : "bg-white p-5 rounded-2xl rounded-tl-none self-start max-w-[90%] border border-gray-100 shadow-sm text-gray-700";
             
-            if (role === 'user') {
-                div.className = "bg-gold text-black p-5 rounded-2xl rounded-tr-none self-end max-w-[90%] font-bold shadow-md";
-            } else {
-                div.className = "bg-white p-5 rounded-2xl rounded-tl-none self-start max-w-[90%] border border-gray-100 shadow-sm text-gray-700";
-            }
-
             div.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
             container.appendChild(div);
             container.scrollTop = container.scrollHeight;
