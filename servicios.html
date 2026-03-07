@@ -32,21 +32,27 @@
 </head>
 <body class="font-sans text-gray-800 bg-surface min-h-screen flex flex-col">
 
-    <!-- Navbar Oscuro (Igual al Index) -->
-    <nav class="bg-black/95 backdrop-blur-sm border-b border-gray-800 fixed w-full z-50 top-0">
-        <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
-            <a href="index.html" class="flex items-center hover:opacity-80 transition">
-                <img src="pixel&pode-logo-landing.png" alt="Pixel & Code Logo" class="h-12 w-auto object-contain" onerror="this.src='logo.png'">
+    <!-- Navbar Oscuro -->
+    <nav class="bg-black/95 backdrop-blur-sm border-b border-gray-800 fixed w-full z-50 top-0 h-20">
+        <div class="max-w-7xl mx-auto px-6 h-full flex justify-between items-center">
+            <a href="index.html" class="flex items-center hover:opacity-80 transition gap-4">
+                <img src="pixel&pode-logo-landing.png" alt="Pixel & Code Logo" class="h-12 w-auto object-contain rounded-lg" onerror="this.src='logo.png'">
+                <span class="text-white font-black tracking-[0.2em] text-xs uppercase hidden sm:block">Pixel & Code</span>
             </a>
-            <div class="hidden md:flex gap-8 text-xs font-bold uppercase tracking-widest text-gray-300">
+            
+            <div class="hidden md:flex gap-8 text-[10px] font-bold uppercase tracking-widest text-gray-400 items-center">
                 <a href="index.html" class="hover:text-gold transition">Inicio</a>
                 <a href="servicios.html" class="text-gold font-bold">Servicios</a>
-                <a href="index.html#precios" class="hover:text-gold transition">Paquetes</a>
+                <a href="index.html#paquetes" class="hover:text-gold transition">Paquetes</a>
+                
+                <!-- Toggle de Idioma -->
+                <button class="flex items-center gap-2 border-l border-gray-800 pl-6 ml-2 hover:text-gold transition-colors" title="Change Language">
+                    <i data-lucide="globe" class="w-4 h-4"></i> EN
+                </button>
             </div>
-            <a href="https://wa.me/524423479766?text=Hola%20Daniel,%20estoy%20viendo%20tu%20catálogo%20de%20servicios%20y%20me%20gustaría%20asesoría." 
-               target="_blank" 
-               class="hidden md:block border border-white text-white px-6 py-2 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-white hover:text-black transition">
-                Contacto Directo
+            
+            <a href="https://wa.me/524423479766" target="_blank" class="hidden md:block border border-white text-white px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-gold hover:text-black hover:border-gold transition-all ml-4">
+                WhatsApp
             </a>
         </div>
     </nav>
@@ -77,7 +83,7 @@
                 <!-- Servicio 1 -->
                 <div class="service-card group bg-dark rounded-[2rem] overflow-hidden border border-gray-800 hover:border-gold transition duration-500 relative flex flex-col">
                     <div class="h-64 relative overflow-hidden service-img-wrapper">
-                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80" alt="" class="w-full h-full object-cover opacity-50 group-hover:opacity-80 group-hover:scale-110 transition duration-700">
+                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80" alt="Dashboard Desarrollo" class="w-full h-full object-cover opacity-50 group-hover:opacity-80 group-hover:scale-110 transition duration-700">
                     </div>
                     <div class="p-10 relative z-10 flex-1 flex flex-col -mt-16">
                         <div class="w-14 h-14 bg-gold rounded-2xl flex items-center justify-center text-dark mb-6 shadow-lg">
@@ -97,7 +103,7 @@
                 <div class="service-card group bg-dark rounded-[2rem] overflow-hidden border-2 border-gold shadow-2xl transition duration-500 relative flex flex-col transform md:-translate-y-4">
                     <div class="absolute top-6 right-6 bg-gold text-dark text-[9px] font-bold uppercase tracking-widest px-3 py-1 rounded-full z-20 shadow-lg">Producto Estrella</div>
                     <div class="h-64 relative overflow-hidden service-img-wrapper">
-                        <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=800&q=80" alt="[Image of Inteligencia Artificial]" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition duration-700">
+                        <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=800&q=80" alt="IA Concepto" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition duration-700">
                     </div>
                     <div class="p-10 relative z-10 flex-1 flex flex-col -mt-16">
                         <div class="w-14 h-14 bg-gold rounded-2xl flex items-center justify-center text-dark mb-6 shadow-lg animate-pulse">
@@ -107,7 +113,7 @@
                         <p class="text-gray-400 font-light leading-relaxed mb-8 flex-1">
                             Entrenamos modelos de IA con la información de tu negocio para que respondan dudas y agenden citas 24/7 sin descanso. 🤖
                         </p>
-                        <a href="landing.html?plan=ia" class="inline-flex items-center gap-2 gold-gradient text-dark px-6 py-3 rounded-xl font-bold uppercase text-[10px] tracking-[0.2em] w-max hover:scale-105 transition">
+                        <a href="landing.html?plan=ia" class="inline-flex items-center gap-2 gold-gradient text-dark px-6 py-3 rounded-xl font-bold uppercase text-[10px] tracking-[0.2em] w-max hover:scale-105 transition shadow-lg">
                             Integrar IA a mi negocio
                         </a>
                     </div>
@@ -116,7 +122,7 @@
                 <!-- Servicio 3 -->
                 <div class="service-card group bg-dark rounded-[2rem] overflow-hidden border border-gray-800 hover:border-gold transition duration-500 relative flex flex-col">
                     <div class="h-64 relative overflow-hidden service-img-wrapper">
-                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80" alt="" class="w-full h-full object-cover opacity-50 group-hover:opacity-80 group-hover:scale-110 transition duration-700">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80" alt="Automatización" class="w-full h-full object-cover opacity-50 group-hover:opacity-80 group-hover:scale-110 transition duration-700">
                     </div>
                     <div class="p-10 relative z-10 flex-1 flex flex-col -mt-16">
                         <div class="w-14 h-14 bg-gold rounded-2xl flex items-center justify-center text-dark mb-6 shadow-lg">
@@ -135,7 +141,7 @@
                 <!-- Servicio 4 -->
                 <div class="service-card group bg-dark rounded-[2rem] overflow-hidden border border-gray-800 hover:border-gold transition duration-500 relative flex flex-col">
                     <div class="h-64 relative overflow-hidden service-img-wrapper">
-                        <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&w=800&q=80" alt="" class="w-full h-full object-cover opacity-50 group-hover:opacity-80 group-hover:scale-110 transition duration-700">
+                        <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&w=800&q=80" alt="Consultoría" class="w-full h-full object-cover opacity-50 group-hover:opacity-80 group-hover:scale-110 transition duration-700">
                     </div>
                     <div class="p-10 relative z-10 flex-1 flex flex-col -mt-16">
                         <div class="w-14 h-14 bg-gold rounded-2xl flex items-center justify-center text-dark mb-6 shadow-lg">
@@ -155,32 +161,125 @@
         </div>
     </section>
 
-    <!-- Banner CTA Final -->
+    <!-- Banner CTA Final Redirigido a Landing -->
     <section class="py-16 px-6">
         <div class="max-w-5xl mx-auto bg-dark border border-gray-800 rounded-[2rem] p-10 md:p-16 text-center shadow-2xl">
             <h2 class="text-3xl font-bold text-white italic mb-4">¿Dudas sobre qué solución necesitas?</h2>
             <p class="text-gray-400 font-light mb-8 max-w-2xl mx-auto">
                 No te preocupes. Platiquemos de tus objetivos y te haré un diagnóstico tecnológico sin costo. 📋
             </p>
-            <a href="https://wa.me/524423479766?text=Hola%20Daniel,%20necesito%20un%20diagnóstico%20tecnológico." 
-               target="_blank" class="inline-flex items-center gap-3 bg-white text-dark px-8 py-4 rounded-xl font-bold uppercase text-[10px] tracking-[0.2em] shadow-2xl hover:bg-gold hover:text-dark transition">
-                <i data-lucide="message-circle" class="w-5 h-5 text-gold font-bold"></i> Hablar con Daniel
+            <a href="landing.html?plan=consultoria" class="inline-flex items-center gap-3 bg-white text-dark px-8 py-4 rounded-xl font-bold uppercase text-[10px] tracking-[0.2em] shadow-2xl hover:bg-gold hover:text-dark transition">
+                <i data-lucide="file-signature" class="w-5 h-5 text-gold font-bold"></i> Llenar Formulario de Diagnóstico
             </a>
         </div>
     </section>
 
-    <!-- Footer (Igual al Index) -->
-    <footer class="bg-black text-gray-500 py-10 text-center border-t border-gray-900 flex flex-col items-center gap-4 mt-auto">
-        <img src="pixel&pode-logo-landing.png" alt="Logo" class="h-10 opacity-70" onerror="this.src='logo.png'">
-        <p class="text-[10px] font-bold tracking-widest uppercase">© 2026 Pixel & Code, MX | Daniel Urquijo</p>
+    <!-- Footer Corporativo Nuevo -->
+    <footer class="bg-black text-gray-400 py-16 px-6 border-t border-gray-900 mt-auto">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+            <!-- Columna 1: Branding y Ubicación -->
+            <div>
+                <img src="pixel&pode-logo-landing.png" alt="Pixel & Code Logo" class="h-16 w-auto object-contain mb-6 opacity-90" onerror="this.src='https://placehold.co/100x100/000/C5A059?text=DU'">
+                <p class="text-sm font-light leading-relaxed mb-6">
+                    Cam. a Vanegas,<br>76910 Corregidora, Qro.
+                </p>
+                <!-- ENLACE A LINKEDIN -->
+                <a href="https://www.linkedin.com/in/josé-urquijo-beltrán-p" target="_blank" class="inline-flex items-center gap-2 bg-gray-900 border border-gray-800 hover:border-gold hover:text-gold text-white px-5 py-2.5 rounded-xl transition-all text-xs font-bold uppercase tracking-widest shadow-lg">
+                    <i data-lucide="linkedin" class="w-4 h-4"></i> LinkedIn
+                </a>
+            </div>
+            
+            <!-- Columna 2: Contacto -->
+            <div>
+                <h4 class="text-white font-bold uppercase tracking-widest text-xs mb-6">Contacto Directo</h4>
+                <a href="tel:+524423479766" class="text-sm mb-4 flex items-center gap-3 hover:text-gold transition w-fit">
+                    <i data-lucide="phone" class="w-4 h-4 text-gold"></i> 442 347 9766
+                </a>
+                <a href="mailto:durquijob@gmail.com" class="text-sm flex items-center gap-3 hover:text-gold transition w-fit">
+                    <i data-lucide="mail" class="w-4 h-4 text-gold"></i> durquijob@gmail.com
+                </a>
+            </div>
+            
+            <!-- Columna 3: Enlaces Rápidos -->
+            <div>
+                <h4 class="text-white font-bold uppercase tracking-widest text-xs mb-6">Enlaces Rápidos</h4>
+                <button onclick="openPrivacyModal()" class="text-sm flex items-center gap-3 hover:text-gold transition text-left">
+                    <i data-lucide="shield" class="w-4 h-4 text-gold"></i> Aviso de Privacidad
+                </button>
+            </div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto pt-8 border-t border-gray-900 text-center text-[10px] uppercase tracking-widest font-bold">
+            © 2026 Pixel & Code. Todos los derechos reservados.
+        </div>
     </footer>
 
+    <!-- MODAL DE AVISO DE PRIVACIDAD -->
+    <div id="privacy-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[150] hidden items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+        <div class="bg-white rounded-[2rem] p-8 md:p-12 max-w-2xl w-full max-h-[85vh] overflow-y-auto relative shadow-2xl transform scale-95 transition-transform duration-300" id="privacy-content">
+            <button onclick="closePrivacyModal()" class="absolute top-6 right-6 text-gray-400 hover:text-black bg-gray-100 hover:bg-gold p-2 rounded-full transition-all">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            
+            <h2 class="text-3xl font-bold text-dark mb-6 italic">Aviso de Privacidad</h2>
+            <div class="w-16 h-1 bg-gold mb-8"></div>
+            
+            <div class="text-sm text-gray-600 space-y-5 leading-relaxed">
+                <p>En <strong>Pixel & Code</strong>, protegemos y salvaguardamos sus datos personales para evitar el daño, pérdida, destrucción, robo, extravío, alteración, así como el tratamiento no autorizado de los mismos.</p>
+                
+                <h3 class="font-bold text-dark text-base mt-4">1. Identidad y domicilio del responsable</h3>
+                <p>El Ing. Daniel Urquijo (Pixel & Code), con domicilio en 76180, Cam. a Vanegas, 76910 Qro., es el responsable del uso y protección de sus datos personales, y al respecto le informamos lo siguiente.</p>
+                
+                <h3 class="font-bold text-dark text-base mt-4">2. Fines de la información</h3>
+                <p>Los datos personales que recabamos de usted (como nombre, correo electrónico y número telefónico) los utilizaremos para las siguientes finalidades que son necesarias para el servicio que solicita:</p>
+                <ul class="list-disc pl-5 space-y-2">
+                    <li>Proveer los servicios y productos tecnológicos requeridos.</li>
+                    <li>Dar seguimiento a cotizaciones y desarrollo de proyectos.</li>
+                    <li>Notificar sobre nuevos servicios o cambios en los mismos que tengan relación con lo ya contratado.</li>
+                </ul>
+                
+                <h3 class="font-bold text-dark text-base mt-4">3. Medios de Contacto</h3>
+                <p>Cualquier duda, modificación o solicitud para eliminar sus datos de nuestros registros, puede comunicarse directamente con nuestro equipo al correo electrónico: <a href="mailto:durquijob@gmail.com" class="text-gold font-bold hover:underline">durquijob@gmail.com</a>.</p>
+            </div>
+            
+            <div class="mt-10 text-center">
+                <button onclick="closePrivacyModal()" class="bg-dark text-white px-8 py-3 rounded-xl font-bold uppercase text-[10px] tracking-widest hover:bg-gold hover:text-dark transition shadow-lg">Entendido</button>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // Inicializar Iconos
         window.addEventListener('load', function() {
             if (typeof lucide !== 'undefined') {
                 lucide.createIcons();
             }
         });
+
+        // Control del Modal de Privacidad
+        function openPrivacyModal() {
+            const modal = document.getElementById('privacy-modal');
+            const content = document.getElementById('privacy-content');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                content.classList.remove('scale-95');
+                content.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closePrivacyModal() {
+            const modal = document.getElementById('privacy-modal');
+            const content = document.getElementById('privacy-content');
+            modal.classList.add('opacity-0');
+            content.classList.remove('scale-100');
+            content.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }, 300);
+        }
     </script>
 </body>
 </html>
