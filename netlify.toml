@@ -1,0 +1,10 @@
+[build]
+
+Especificamos dónde están las funciones para que Netlify las encuentre sí o sí
+
+functions = "netlify/functions"
+
+[[redirects]]
+from = "/api/*"
+to = "/.netlify/functions/:splat"
+status = 200

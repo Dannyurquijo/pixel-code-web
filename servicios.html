@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servicios y Soluciones IA | Pixel & Code</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Montserrat Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Montserrat', 'sans-serif'] },
+                    colors: { gold: '#C5A059', dark: '#0f172a', surface: '#f8fafc' }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gold-gradient { background: linear-gradient(135deg, #D4AF37 0%, #AA771C 100%); }
+        .gold-text-gradient { background: linear-gradient(135deg, #D4AF37 0%, #AA771C 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .service-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(197, 160, 89, 0.15); }
+        .service-img-wrapper::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(to top, #0f172a 10%, transparent 100%);
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-800 bg-surface min-h-screen flex flex-col">
+
+    <!-- Navbar Oscuro (Igual al Index) -->
+    <nav class="bg-black/95 backdrop-blur-sm border-b border-gray-800 fixed w-full z-50 top-0">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
+            <a href="index.html" class="flex items-center hover:opacity-80 transition">
+                <img src="pixel&pode-logo-landing.png" alt="Pixel & Code Logo" class="h-12 w-auto object-contain" onerror="this.src='logo.png'">
+            </a>
+            <div class="hidden md:flex gap-8 text-xs font-bold uppercase tracking-widest text-gray-300">
+                <a href="index.html" class="hover:text-gold transition">Inicio</a>
+                <a href="servicios.html" class="text-gold font-bold">Servicios</a>
+                <a href="index.html#precios" class="hover:text-gold transition">Paquetes</a>
+            </div>
+            <a href="https://wa.me/524423479766?text=Hola%20Daniel,%20estoy%20viendo%20tu%20catálogo%20de%20servicios%20y%20me%20gustaría%20asesoría." 
+               target="_blank" 
+               class="hidden md:block border border-white text-white px-6 py-2 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-white hover:text-black transition">
+                Contacto Directo
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Section con Video de Fondo -->
+    <section class="relative h-[60vh] md:h-[70vh] flex items-center justify-center mt-20 overflow-hidden">
+        <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover z-0">
+            <source src="pixel&code_video_Web_IA.mp4" type="video/mp4">
+        </video>
+        <div class="absolute inset-0 bg-dark/80 z-10"></div>
+        
+        <div class="relative z-20 text-center px-6 max-w-4xl mx-auto">
+            <span class="text-gold font-bold tracking-[0.4em] text-[10px] md:text-xs uppercase mb-4 block">Ecosistema Digital</span>
+            <h1 class="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-6">
+                Ingeniería que <br><span class="gold-text-gradient italic">Multiplica tus Ventas</span>
+            </h1>
+            <p class="text-gray-300 font-light text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
+                Descubre nuestro menú de soluciones tecnológicas. Diseñamos, automatizamos y conectamos IA a tu negocio para que tú te enfoques en crecer. 🚀
+            </p>
+        </div>
+    </section>
+
+    <!-- Menú Dinámico de Servicios -->
+    <section class="py-24 px-6 bg-surface relative z-30 -mt-10">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-10">
+                
+                <!-- Servicio 1 -->
+                <div class="service-card group bg-dark rounded-[2rem] overflow-hidden border border-gray-800 hover:border-gold transition duration-500 relative flex flex-col">
+                    <div class="h-64 relative overflow-hidden service-img-wrapper">
+                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80" alt="" class="w-full h-full object-cover opacity-50 group-hover:opacity-80 group-hover:scale-110 transition duration-700">
+                    </div>
+                    <div class="p-10 relative z-10 flex-1 flex flex-col -mt-16">
+                        <div class="w-14 h-14 bg-gold rounded-2xl flex items-center justify-center text-dark mb-6 shadow-lg">
+                            <i data-lucide="layout-template" class="w-7 h-7"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-4 group-hover:text-gold transition italic">Desarrollo Web Estratégico</h3>
+                        <p class="text-gray-400 font-light leading-relaxed mb-8 flex-1">
+                            No hacemos "páginas bonitas", construimos Landing Pages optimizadas para conversión. Tu negocio necesita un sistema rápido y limpio.
+                        </p>
+                        <a href="landing.html?plan=emprendedor" class="inline-flex items-center gap-2 text-gold font-bold uppercase text-[10px] tracking-[0.2em] hover:text-white transition">
+                            Solicitar Servicio <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Servicio 2 -->
+                <div class="service-card group bg-dark rounded-[2rem] overflow-hidden border-2 border-gold shadow-2xl transition duration-500 relative flex flex-col transform md:-translate-y-4">
+                    <div class="absolute top-6 right-6 bg-gold text-dark text-[9px] font-bold uppercase tracking-widest px-3 py-1 rounded-full z-20 shadow-lg">Producto Estrella</div>
+                    <div class="h-64 relative overflow-hidden service-img-wrapper">
+                        <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=800&q=80" alt="[Image of Inteligencia Artificial]" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition duration-700">
+                    </div>
+                    <div class="p-10 relative z-10 flex-1 flex flex-col -mt-16">
+                        <div class="w-14 h-14 bg-gold rounded-2xl flex items-center justify-center text-dark mb-6 shadow-lg animate-pulse">
+                            <i data-lucide="bot" class="w-7 h-7"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-4 group-hover:text-gold transition italic">Asistentes IA (Empleados Digitales)</h3>
+                        <p class="text-gray-400 font-light leading-relaxed mb-8 flex-1">
+                            Entrenamos modelos de IA con la información de tu negocio para que respondan dudas y agenden citas 24/7 sin descanso. 🤖
+                        </p>
+                        <a href="landing.html?plan=ia" class="inline-flex items-center gap-2 gold-gradient text-dark px-6 py-3 rounded-xl font-bold uppercase text-[10px] tracking-[0.2em] w-max hover:scale-105 transition">
+                            Integrar IA a mi negocio
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Servicio 3 -->
+                <div class="service-card group bg-dark rounded-[2rem] overflow-hidden border border-gray-800 hover:border-gold transition duration-500 relative flex flex-col">
+                    <div class="h-64 relative overflow-hidden service-img-wrapper">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80" alt="" class="w-full h-full object-cover opacity-50 group-hover:opacity-80 group-hover:scale-110 transition duration-700">
+                    </div>
+                    <div class="p-10 relative z-10 flex-1 flex flex-col -mt-16">
+                        <div class="w-14 h-14 bg-gold rounded-2xl flex items-center justify-center text-dark mb-6 shadow-lg">
+                            <i data-lucide="workflow" class="w-7 h-7"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-4 group-hover:text-gold transition italic">Automatización de Operaciones</h3>
+                        <p class="text-gray-400 font-light leading-relaxed mb-8 flex-1">
+                            Elimina el trabajo manual. Conectamos tus formularios con Google Sheets y Calendar automáticamente. ⚙️
+                        </p>
+                        <a href="landing.html?plan=empresarial" class="inline-flex items-center gap-2 text-gold font-bold uppercase text-[10px] tracking-[0.2em] hover:text-white transition">
+                            Solicitar Servicio <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Servicio 4 -->
+                <div class="service-card group bg-dark rounded-[2rem] overflow-hidden border border-gray-800 hover:border-gold transition duration-500 relative flex flex-col">
+                    <div class="h-64 relative overflow-hidden service-img-wrapper">
+                        <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&w=800&q=80" alt="" class="w-full h-full object-cover opacity-50 group-hover:opacity-80 group-hover:scale-110 transition duration-700">
+                    </div>
+                    <div class="p-10 relative z-10 flex-1 flex flex-col -mt-16">
+                        <div class="w-14 h-14 bg-gold rounded-2xl flex items-center justify-center text-dark mb-6 shadow-lg">
+                            <i data-lucide="lightbulb" class="w-7 h-7"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-4 group-hover:text-gold transition italic">Consultoría Tech y Arquitectura</h3>
+                        <p class="text-gray-400 font-light leading-relaxed mb-8 flex-1">
+                            Diseñamos tu mapa de ruta tecnológico. Analizamos tus procesos y estructuramos soluciones a medida. 🧠
+                        </p>
+                        <a href="landing.html?plan=consultoria" class="inline-flex items-center gap-2 text-gold font-bold uppercase text-[10px] tracking-[0.2em] hover:text-white transition">
+                            Agendar Asesoría <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Banner CTA Final -->
+    <section class="py-16 px-6">
+        <div class="max-w-5xl mx-auto bg-dark border border-gray-800 rounded-[2rem] p-10 md:p-16 text-center shadow-2xl">
+            <h2 class="text-3xl font-bold text-white italic mb-4">¿Dudas sobre qué solución necesitas?</h2>
+            <p class="text-gray-400 font-light mb-8 max-w-2xl mx-auto">
+                No te preocupes. Platiquemos de tus objetivos y te haré un diagnóstico tecnológico sin costo. 📋
+            </p>
+            <a href="https://wa.me/524423479766?text=Hola%20Daniel,%20necesito%20un%20diagnóstico%20tecnológico." 
+               target="_blank" class="inline-flex items-center gap-3 bg-white text-dark px-8 py-4 rounded-xl font-bold uppercase text-[10px] tracking-[0.2em] shadow-2xl hover:bg-gold hover:text-dark transition">
+                <i data-lucide="message-circle" class="w-5 h-5 text-gold font-bold"></i> Hablar con Daniel
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer (Igual al Index) -->
+    <footer class="bg-black text-gray-500 py-10 text-center border-t border-gray-900 flex flex-col items-center gap-4 mt-auto">
+        <img src="pixel&pode-logo-landing.png" alt="Logo" class="h-10 opacity-70" onerror="this.src='logo.png'">
+        <p class="text-[10px] font-bold tracking-widest uppercase">© 2026 Pixel & Code, MX | Daniel Urquijo</p>
+    </footer>
+
+    <script>
+        window.addEventListener('load', function() {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        });
+    </script>
+</body>
+</html>

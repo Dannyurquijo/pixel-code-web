@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daniel Urquijo | Pixel & Code - Ingeniería e IA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Montserrat', 'sans-serif'] },
+                    colors: { gold: '#C5A059', dark: '#0a0a0a', surface: '#f8fafc' }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gold-gradient { background: linear-gradient(135deg, #D4AF37 0%, #AA771C 100%); }
+        .gold-text-gradient { background: linear-gradient(135deg, #D4AF37 0%, #AA771C 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .pulse-btn { animation: pulse-gold 2s infinite; }
+        @keyframes pulse-gold { 0% { box-shadow: 0 0 0 0 rgba(197, 160, 89, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(197, 160, 89, 0); } 100% { box-shadow: 0 0 0 0 rgba(197, 160, 89, 0); } }
+        
+        #chat-messages::-webkit-scrollbar { width: 5px; }
+        #chat-messages::-webkit-scrollbar-thumb { background: #C5A059; border-radius: 10px; }
+
+        .video-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-800 bg-white antialiased">
+
+    <!-- Navbar -->
+    <nav class="bg-black/95 backdrop-blur-md border-b border-gray-900 fixed w-full z-50 top-0 h-20">
+        <div class="max-w-7xl mx-auto px-6 h-full flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <img src="pixel&pode-logo-landing.png" alt="Logo Daniel Urquijo" class="h-14 w-14 object-cover rounded-lg border border-gray-800 shadow-xl" onerror="this.src='https://placehold.co/100x100/000/C5A059?text=DU'">
+                <div class="flex flex-col">
+                    <span class="text-white font-black tracking-[0.2em] text-xs uppercase">Pixel & Code</span>
+                    <span class="text-gold font-bold text-[8px] uppercase tracking-[0.3em]">Ingeniería Digital</span>
+                </div>
+            </div>
+            <div class="hidden md:flex gap-10 text-[10px] font-bold uppercase tracking-widest text-gray-400">
+                <a href="#inicio" class="hover:text-gold transition-colors">Inicio</a>
+                <a href="servicios.html" class="hover:text-gold transition-colors">Servicios</a>
+                <a href="#demo-ia" class="hover:text-gold transition-colors">Demo IA</a>
+                <a href="#paquetes" class="hover:text-gold transition-colors">Paquetes</a>
+                <a href="https://wa.me/524423479766" target="_blank" class="text-gold border border-gold/30 px-6 py-2 rounded-full hover:bg-gold hover:text-black transition-all">WhatsApp</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section id="inicio" class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+        <video autoplay loop muted playsinline class="video-bg">
+            <source src="pixel&code_video_principal.mp4" type="video/mp4">
+        </video>
+        <div class="absolute inset-0 bg-black/75 z-10"></div>
+        
+        <div class="max-w-7xl mx-auto w-full relative z-20 px-6 text-center md:text-left grid md:grid-cols-2 gap-12 items-center">
+            <div>
+                <h1 class="text-5xl md:text-8xl font-black text-white leading-tight mb-6 italic uppercase">
+                    Arquitectura <br><span class="gold-text-gradient">Digital Pro</span>
+                </h1>
+                <p class="text-xl text-gray-300 font-light mb-10 max-w-lg leading-relaxed">
+                    Ingeniería mecatrónica aplicada al software. Automatizamos tu negocio con <b>IA Gemini</b>.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                    <button onclick="openChat()" class="gold-gradient text-black font-bold px-12 py-5 rounded-full uppercase text-[10px] tracking-widest shadow-2xl pulse-btn">Activar Asistente IA</button>
+                    <a href="#paquetes" class="border border-white/20 text-white px-12 py-5 rounded-full font-bold uppercase text-[10px] tracking-widest text-center hover:bg-white hover:text-black transition-all">Ver Paquetes</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Demo IA -->
+    <section id="demo-ia" class="py-24 px-6 bg-[#0f172a] text-center relative overflow-hidden border-y border-gray-900">
+        <div class="max-w-4xl mx-auto relative z-10">
+            <h2 class="text-4xl md:text-6xl font-black text-white italic mb-8 inline-block relative">
+                Test de Inteligencia Artificial
+                <div class="absolute -bottom-2 left-0 w-full h-1.5 bg-gold rounded-full"></div>
+            </h2>
+            <p class="text-gray-300 text-lg md:text-xl font-light mb-12 leading-relaxed max-w-2xl mx-auto">
+                ¿Te imaginas a un experto atendiendo a tus clientes en segundos? <br>
+                Hemos habilitado este demo interactivo conectado a Gemini. 💡
+            </p>
+            <button onclick="openChat()" class="gold-gradient text-black font-extrabold px-14 py-5 rounded-full uppercase text-xs tracking-[0.2em] shadow-2xl pulse-btn mx-auto">
+                👉 Hablar con el Asistente 👈
+            </button>
+        </div>
+    </section>
+
+    <!-- Paquetes -->
+    <section id="paquetes" class="py-32 px-6 bg-surface">
+        <div class="max-w-7xl mx-auto text-center mb-20">
+            <h2 class="text-4xl font-black text-dark italic uppercase">Catálogo de Soluciones</h2>
+            <div class="w-24 h-1 bg-gold mx-auto mt-6"></div>
+        </div>
+
+        <div class="grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <!-- Emprendedor -->
+            <div class="bg-white p-12 rounded-[2.5rem] border border-gray-100 shadow-sm hover:shadow-2xl transition-all flex flex-col items-center group">
+                <h3 class="font-bold text-2xl italic mb-1 uppercase tracking-tight">Emprendedor</h3>
+                <div class="text-5xl font-black text-dark mb-10">$6,900 <span class="text-xs font-light">MXN + IVA</span></div>
+                <ul class="text-[11px] space-y-5 mb-12 text-gray-500 font-semibold w-full text-left">
+                    <li class="flex gap-3 items-center"><i data-lucide="check" class="text-gold w-5 h-5"></i> Landing Page Express</li>
+                    <li class="flex gap-3 items-center"><i data-lucide="check" class="text-gold w-5 h-5"></i> Dominio y Hosting (12 meses)</li>
+                    <li class="flex gap-3 items-center"><i data-lucide="check" class="text-gold w-5 h-5"></i> Formulario de Prospectos</li>
+                    <li class="flex gap-3 items-center"><i data-lucide="check" class="text-gold w-5 h-5"></i> Optimización Móvil Pro</li>
+                </ul>
+                <a href="landing.html?plan=emprendedor" class="w-full text-center py-4 border-2 border-dark rounded-full font-black text-[10px] uppercase tracking-widest group-hover:bg-dark group-hover:text-white transition-all">Seleccionar</a>
+            </div>
+            
+            <!-- Negocio Local + IA -->
+            <div class="bg-black text-white p-12 rounded-[2.5rem] border-2 border-gold shadow-2xl flex flex-col items-center transform lg:scale-110 z-10 relative overflow-hidden">
+                <div class="bg-gold text-black font-black px-8 py-2 rounded-full text-[10px] uppercase mb-6 shadow-lg">Más Vendido</div>
+                <h3 class="font-bold text-2xl italic mb-1 text-gold uppercase tracking-tight">Negocio Local + IA</h3>
+                <div class="text-5xl font-black text-white mb-10">$8,900 <span class="text-xs font-light">MXN + IVA</span></div>
+                <ul class="text-[11px] space-y-5 mb-12 text-gray-300 font-semibold w-full text-left">
+                    <li class="flex gap-3 items-center"><i data-lucide="check" class="text-gold w-5 h-5"></i> Sitio Web (4 Secciones)</li>
+                    <li class="flex gap-3 items-center text-gold"><i data-lucide="bot" class="w-5 h-5"></i> <b>Chatbot IA Gemini Integrado</b></li>
+                    <li class="flex gap-3 items-center"><i data-lucide="check" class="text-gold w-5 h-5"></i> Notificaciones WhatsApp</li>
+                </ul>
+                <a href="landing.html?plan=ia" class="w-full text-center py-4 gold-gradient text-black rounded-full font-black text-[10px] uppercase shadow-xl pulse-btn">Iniciar Proyecto</a>
+            </div>
+            
+            <!-- Empresarial -->
+            <div class="bg-white p-12 rounded-[2.5rem] border border-gray-100 shadow-sm flex flex-col items-center group">
+                <h3 class="font-bold text-2xl italic mb-1 uppercase tracking-tight">Empresarial</h3>
+                <div class="text-5xl font-black text-dark mb-10">$11,500 <span class="text-xs font-light">MXN + IVA</span></div>
+                <ul class="text-[11px] space-y-5 mb-12 text-gray-500 font-semibold w-full text-left">
+                    <li class="flex gap-3 items-center"><i data-lucide="check" class="text-gold w-5 h-5"></i> Portal Web Corporativo</li>
+                    <li class="flex gap-3 items-center"><i data-lucide="check" class="text-gold w-5 h-5"></i> IA con Base de Datos propia</li>
+                    <li class="flex gap-3 items-center"><i data-lucide="check" class="text-gold w-5 h-5"></i> 5 Cuentas de Correo</li>
+                </ul>
+                <a href="landing.html?plan=empresarial" class="w-full text-center py-4 border-2 border-dark rounded-full font-black text-[10px] uppercase tracking-widest group-hover:bg-dark group-hover:text-white transition-all">Consultar</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chatbot Widget -->
+    <div id="ai-widget" class="fixed bottom-8 right-8 z-[100] flex flex-col items-end">
+        <div id="chat-window" class="hidden bg-white w-[360px] md:w-[420px] h-[550px] rounded-[2rem] shadow-2xl flex flex-col overflow-hidden mb-5 border border-gray-100">
+            <div class="bg-black p-6 text-white flex justify-between items-center border-b border-gold/50">
+                <div class="flex items-center gap-4">
+                    <div class="bg-gold/20 p-2.5 rounded-xl text-gold shadow-inner"><i data-lucide="cpu" class="w-6 h-6"></i></div>
+                    <div class="flex flex-col">
+                        <h4 class="font-bold text-[11px] uppercase tracking-widest italic leading-none text-white">Pixel & Code AI</h4>
+                        <span class="text-[8px] text-gold uppercase mt-1 tracking-widest">Powered by Gemini 2.5</span>
+                    </div>
+                </div>
+                <button onclick="closeChat()" class="text-gray-500 hover:text-white transition-colors"><i data-lucide="x" class="w-6 h-6"></i></button>
+            </div>
+            <div id="chat-messages" class="flex-1 bg-surface p-6 overflow-y-auto flex flex-col gap-5 text-[11px] font-medium leading-relaxed">
+                <div class="bg-white p-5 rounded-2xl rounded-tl-none shadow-sm border border-gray-100 self-start max-w-[90%]">
+                    ¡Buen día! 👋 Soy el asistente de ingeniería de <b>Daniel Urquijo</b>. ¿En qué paquete o solución digital puedo apoyarte hoy?
+                </div>
+            </div>
+            <div id="typing" class="hidden px-6 py-2 text-[9px] text-gray-400 font-bold italic uppercase tracking-wider">
+                <span class="flex items-center gap-2"><i data-lucide="loader-2" class="w-3 h-3 animate-spin"></i> Procesando...</span>
+            </div>
+            <div class="p-5 bg-white border-t border-gray-100 flex gap-3">
+                <input type="text" id="chat-input" placeholder="Pregunta por precios..." class="flex-1 bg-surface border border-gray-200 rounded-2xl py-4 px-5 text-xs outline-none focus:border-gold transition-all shadow-inner">
+                <button onclick="sendMessage()" class="bg-black text-gold p-4 rounded-2xl hover:bg-gray-800 transition-all shadow-lg">
+                    <i data-lucide="send" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+        <button id="chat-toggle" onclick="openChat()" class="bg-black text-gold p-6 rounded-full shadow-2xl hover:scale-110 transition-all pulse border border-gold/20">
+            <i data-lucide="sparkles" class="w-10 h-10"></i>
+        </button>
+    </div>
+
+    <script>
+        lucide.createIcons();
+        function openChat() { document.getElementById('chat-window').classList.remove('hidden'); document.getElementById('chat-toggle').classList.add('hidden'); }
+        function closeChat() { document.getElementById('chat-window').classList.add('hidden'); document.getElementById('chat-toggle').classList.remove('hidden'); }
+
+        async function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const typing = document.getElementById('typing');
+            const msg = input.value.trim();
+            if (!msg) return;
+
+            appendMsg('user', msg);
+            input.value = '';
+            typing.classList.remove('hidden');
+
+            try {
+                // INTENTO 1: Ruta estándar de redirección
+                let res = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: msg })
+                });
+
+                // INTENTO 2: Ruta directa si falla la anterior
+                if (!res.ok) {
+                    res = await fetch('/.netlify/functions/chat', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ message: msg })
+                    });
+                }
+                
+                if (!res.ok) throw new Error("Error en la conexión con la función");
+
+                const data = await res.json();
+                typing.classList.add('hidden');
+                appendMsg('ai', data.reply);
+            } catch (e) {
+                typing.classList.add('hidden');
+                appendMsg('ai', "<b>Error Técnico:</b> El chatbot no pudo contactar con el servidor. <br><br><b>Acción:</b> Verifica que la carpeta <i>netlify/functions</i> se haya subido correctamente al panel de Deploys.");
+            }
+        }
+
+        function appendMsg(role, text) {
+            const container = document.getElementById('chat-messages');
+            const div = document.createElement('div');
+            div.className = role === 'user' ? "bg-gold text-black p-5 rounded-2xl rounded-tr-none self-end max-w-[90%] font-bold shadow-md" : "bg-white p-5 rounded-2xl rounded-tl-none self-start max-w-[90%] border border-gray-100 shadow-sm text-gray-700";
+            div.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        document.getElementById('chat-input').addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
+    </script>
+</body>
+</html>
