@@ -33,8 +33,8 @@ exports.handler = async (event) => {
             }]
         };
 
-        // Usamos el modelo exacto y más reciente habilitado para tu API Key
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+        // Intentamos con la versión estándar
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(requestBody)
@@ -42,7 +42,30 @@ exports.handler = async (event) => {
         
         const data = await response.json();
 
-        // MODO DIAGNÓSTICO FINAL: Si falla, mostramos el error
+        // 🚨 MODO DIAGNÓSTICO MAESTRO: Pedimos la lista exacta de modelos permitidos
+        if (data.error && data.error.message.includes("not found")) {
+            try {
+                const listResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
+                const listData = await listResponse.json();
+                
+                let modelosPermitidos = "Ninguno encontrado";
+                if (listData.models) {
+                    modelosPermitidos = listData.models
+                        .filter(m => m.supportedGenerationMethods && m.supportedGenerationMethods.includes('generateContent'))
+                        .map(m => m.name.replace('models/', ''))
+                        .join(', ');
+                }
+                
+                return {
+                    statusCode: 200,
+                    body: JSON.stringify({ reply: `⚠️ **Diagnóstico Maestro:** Tu llave funciona, pero exige uno de estos nombres exactos:<br><br><b>${modelosPermitidos}</b><br><br>Cópialos y dáselos a la IA para poner el correcto.` })
+                };
+            } catch (err) {
+                return { statusCode: 200, body: JSON.stringify({ reply: "⚠️ Error listando modelos: " + err.message }) };
+            }
+        }
+
+        // MODO DIAGNÓSTICO FINAL: Si falla por otro motivo, mostramos el error
         if (data.error) {
             return {
                 statusCode: 200,
