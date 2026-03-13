@@ -4,17 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Proyecto | Pixel & Code</title>
-    
-    <!-- OPTIMIZACIÓN: Pre-carga del nuevo archivo WebP -->
-    <link rel="preload" as="image" href="Pixel&Code-landingpage.webp">
-
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Montserrat Font -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    
     <script>
         tailwind.config = {
             theme: {
@@ -25,192 +20,111 @@
             }
         }
     </script>
-    
     <style>
         .gold-gradient { background: linear-gradient(135deg, #D4AF37 0%, #AA771C 100%); }
-        .input-focus:focus { border-color: #C5A059; ring-color: #C5A059; }
-        .lang-float { position: fixed; top: 20px; right: 20px; z-index: 100; }
-
-        /* OPTIMIZACIÓN: Fondo usando el archivo .webp para carga ultra rápida */
-        body {
-            background-color: #0f172a; /* Color de respaldo inmediato */
-            background-image: url('Pixel&Code-landingpage.webp');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            background-repeat: no-repeat;
-        }
-
-        .fade-in-card {
-            animation: fadeIn 0.8s ease-out forwards;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
     </style>
 </head>
-<body class="font-sans text-gray-800 antialiased min-h-screen flex flex-col items-center justify-center p-4 relative">
-
-    <!-- Botón de Idioma Flotante -->
-    <div class="lang-float">
-        <button onclick="toggleLanguage()" class="bg-black/80 backdrop-blur-md border border-gold/30 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-widest hover:bg-gold hover:text-black transition-all shadow-2xl flex items-center gap-2">
-            <i data-lucide="globe" class="w-4 h-4 text-gold"></i> <span id="lang-text">EN</span>
-        </button>
-    </div>
-
-    <!-- Overlay oscuro con blur -->
-    <div class="fixed inset-0 bg-dark/70 backdrop-blur-sm z-0"></div>
-
-    <!-- Tarjeta de Registro -->
-    <div id="form-container" class="fade-in-card w-full max-w-xl bg-white rounded-[2.5rem] shadow-2xl overflow-hidden border border-gray-100 relative z-10">
-        
-        <div class="bg-black p-10 text-center relative">
-            <div class="absolute top-0 right-0 w-32 h-32 bg-gold/10 rounded-full -mr-16 -mt-16 blur-3xl"></div>
-            <img src="pixel&pode-logo-landing.png" alt="Pixel & Code Logo" class="h-28 w-auto mx-auto mb-6 object-contain" onerror="this.src='https://placehold.co/200x200/000/C5A059?text=DU'">
-            <h1 class="text-white text-2xl font-bold uppercase tracking-[0.2em] mb-2" data-i18n="form-title">Registro de Proyecto</h1>
-            <p class="text-gray-400 text-[10px] font-light uppercase tracking-[0.3em]">Pixel & Code • Engineering</p>
+<body class="font-sans bg-surface text-gray-800 antialiased min-h-screen flex flex-col">
+    
+    <!-- Navbar Minimalista -->
+    <nav class="bg-black/95 backdrop-blur-md border-b border-gray-900 w-full z-50 py-4 px-6">
+        <div class="max-w-4xl mx-auto flex justify-between items-center">
+            <a href="index.html" class="flex items-center gap-3 hover:opacity-80 transition">
+                <img src="du-logo.png" alt="DU Logo" class="h-10 w-10 object-cover rounded-md" onerror="this.src='https://placehold.co/100x100/0a0a0a/C5A059?text=DU'">
+                <span class="text-white font-black tracking-[0.2em] text-xs uppercase">Pixel & Code</span>
+            </a>
+            <a href="index.html" class="text-gray-400 hover:text-white transition text-sm flex items-center gap-2">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i> Volver al inicio
+            </a>
         </div>
+    </nav>
 
-        <form action="https://formsubmit.co/durquijob@gmail.com" method="POST" id="registration-form" class="p-8 md:p-12 space-y-6 bg-white">
-            <input type="hidden" name="_subject" value="🎯 Nuevo Lead - Proyecto Pixel & Code">
-            <input type="hidden" name="_captcha" value="false">
+    <!-- Contenedor Principal -->
+    <main class="flex-1 flex items-center justify-center p-4 sm:p-6 py-10 md:py-16">
+        <div class="max-w-2xl w-full bg-white rounded-[2rem] shadow-2xl overflow-hidden border border-gray-100">
+            
+            <!-- Cabecera Formulario -->
+            <div class="bg-dark p-8 md:p-12 text-center relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-gold/20 rounded-full -mr-16 -mt-16 blur-2xl"></div>
+                <h1 class="text-3xl md:text-4xl font-black text-white italic mb-2 relative z-10">Inicia tu Proyecto</h1>
+                <p class="text-gold font-bold text-[10px] uppercase tracking-[0.3em] relative z-10">Arquitectura Digital & IA</p>
+            </div>
 
-            <!-- Servicio -->
-            <div>
-                <label class="block text-[9px] font-black text-gray-400 uppercase tracking-[0.2em] mb-3" data-i18n="label-service">Servicio Solicitado</label>
-                <div class="relative">
-                    <select name="Servicio" id="service-select" required 
-                        class="w-full bg-gray-50 border border-gray-200 rounded-2xl py-4 px-5 text-sm appearance-none outline-none focus:border-gold focus:ring-1 focus:ring-gold transition shadow-sm">
-                        <option value="" disabled data-i18n="opt-placeholder">Selecciona un paquete</option>
-                        <option value="Emprendedor" data-i18n="opt-1">Paquete Emprendedor ($6,900 MXN)</option>
-                        <option value="Negocio Local + IA" selected data-i18n="opt-2">Negocio Local + IA ($8,900 MXN)</option>
-                        <option value="Empresarial" data-i18n="opt-3">Paquete Empresarial ($11,500 MXN)</option>
-                        <option value="Consultoria" data-i18n="opt-4">Consultoría IA Personalizada</option>
+            <!-- FORMULARIO DIRECTO A INFO@DUPIXELCODE.COM -->
+            <form action="https://formsubmit.co/info@dupixelcode.com" method="POST" class="p-8 md:p-12 space-y-6">
+                
+                <!-- Configuración Interna FormSubmit -->
+                <input type="hidden" name="_subject" value="🎯 Nuevo Lead - Proyecto Pixel & Code">
+                <input type="hidden" name="_captcha" value="false">
+                <input type="hidden" name="_template" value="table">
+                
+                <!-- Campos del Formulario -->
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Nombre Completo</label>
+                        <input type="text" name="Nombre" required class="w-full bg-surface border border-gray-200 rounded-xl px-4 py-3 text-sm focus:border-gold focus:ring-1 focus:ring-gold outline-none transition" placeholder="Ej. Ing. Rubén Rivera">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Empresa / Proyecto</label>
+                        <input type="text" name="Empresa" required class="w-full bg-surface border border-gray-200 rounded-xl px-4 py-3 text-sm focus:border-gold focus:ring-1 focus:ring-gold outline-none transition" placeholder="Nombre de tu marca">
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Correo Electrónico</label>
+                        <input type="email" name="Email" required class="w-full bg-surface border border-gray-200 rounded-xl px-4 py-3 text-sm focus:border-gold focus:ring-1 focus:ring-gold outline-none transition" placeholder="tu@correo.com">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">WhatsApp</label>
+                        <input type="tel" name="WhatsApp" required class="w-full bg-surface border border-gray-200 rounded-xl px-4 py-3 text-sm focus:border-gold focus:ring-1 focus:ring-gold outline-none transition" placeholder="A 10 dígitos">
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Paquete de Interés</label>
+                    <select name="Paquete" id="plan-select" class="w-full bg-surface border border-gray-200 rounded-xl px-4 py-3 text-sm focus:border-gold focus:ring-1 focus:ring-gold outline-none transition cursor-pointer">
+                        <option value="No estoy seguro, necesito asesoría">No estoy seguro, necesito asesoría</option>
+                        <option value="Emprendedor ($6,900 MXN)">Emprendedor ($6,900 MXN)</option>
+                        <option value="Negocio Local + IA ($8,900 MXN)">Negocio Local + IA ($8,900 MXN) ⭐</option>
+                        <option value="Empresarial ($11,500 MXN)">Empresarial ($11,500 MXN)</option>
                     </select>
-                    <div class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-gold">
-                        <i data-lucide="chevron-down" class="w-4 h-4"></i>
-                    </div>
                 </div>
-            </div>
 
-            <!-- Nombre -->
-            <div>
-                <label class="block text-[9px] font-black text-gray-400 uppercase tracking-[0.2em] mb-3" data-i18n="label-name">Nombre Completo</label>
-                <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none text-gray-400">
-                        <i data-lucide="user" class="w-4 h-4"></i>
-                    </div>
-                    <input type="text" name="Nombre" required placeholder="Ej. Daniel Urquijo" data-i18n-placeholder="placeholder-name"
-                        class="w-full bg-gray-50 border border-gray-200 rounded-2xl py-4 pl-12 pr-5 text-sm outline-none focus:border-gold focus:ring-1 focus:ring-gold transition shadow-sm">
+                <div class="space-y-2">
+                    <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Cuéntanos sobre tu proyecto</label>
+                    <textarea name="Mensaje" rows="4" required class="w-full bg-surface border border-gray-200 rounded-xl px-4 py-3 text-sm focus:border-gold focus:ring-1 focus:ring-gold outline-none transition resize-none" placeholder="¿Qué objetivos quieres lograr con tu sitio web o asistente IA?"></textarea>
                 </div>
-            </div>
 
-            <!-- Email -->
-            <div>
-                <label class="block text-[9px] font-black text-gray-400 uppercase tracking-[0.2em] mb-3" data-i18n="label-email">Correo Electrónico</label>
-                <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none text-gray-400">
-                        <i data-lucide="mail" class="w-4 h-4"></i>
-                    </div>
-                    <input type="email" name="Email" required placeholder="ejemplo@correo.com" data-i18n-placeholder="placeholder-email"
-                        class="w-full bg-gray-50 border border-gray-200 rounded-2xl py-4 pl-12 pr-5 text-sm outline-none focus:border-gold focus:ring-1 focus:ring-gold transition shadow-sm">
-                </div>
-            </div>
-
-            <!-- Teléfono -->
-            <div>
-                <label class="block text-[9px] font-black text-gray-400 uppercase tracking-[0.2em] mb-3" data-i18n="label-phone">Número Telefónico (WhatsApp)</label>
-                <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none text-gray-400">
-                        <i data-lucide="phone" class="w-4 h-4"></i>
-                    </div>
-                    <input type="tel" name="Telefono" required placeholder="442 347 9766" data-i18n-placeholder="placeholder-phone"
-                        class="w-full bg-gray-50 border border-gray-200 rounded-2xl py-4 pl-12 pr-5 text-sm outline-none focus:border-gold focus:ring-1 focus:ring-gold transition shadow-sm">
-                </div>
-            </div>
-
-            <div class="pt-4">
-                <button type="submit" class="w-full gold-gradient text-white py-5 rounded-2xl font-bold uppercase text-[10px] tracking-[0.3em] shadow-xl hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3">
-                    <span data-i18n="btn-submit">Enviar Información</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                <button type="submit" class="w-full gold-gradient text-dark font-extrabold px-8 py-4 rounded-xl uppercase text-xs tracking-widest shadow-xl hover:scale-[1.02] transition-transform flex justify-center items-center gap-3 mt-4">
+                    Enviar Solicitud <i data-lucide="send" class="w-4 h-4"></i>
                 </button>
-            </div>
+                
+                <p class="text-center text-[9px] text-gray-400 mt-4">Tus datos están protegidos. Al enviar este formulario aceptas nuestra política de privacidad.</p>
+            </form>
+        </div>
+    </main>
 
-            <p class="text-[9px] text-gray-400 text-center font-bold uppercase tracking-widest mt-6" data-i18n="privacy-note">
-                🔒 Tu información está protegida bajo nuestro Aviso de Privacidad.
-            </p>
-        </form>
-    </div>
-
-    <a href="index.html" class="mt-8 text-white/70 hover:text-white text-[10px] font-bold uppercase tracking-[0.2em] flex items-center gap-2 transition relative z-10 group">
-        <i data-lucide="chevron-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i> <span data-i18n="link-back">Volver a Pixel & Code</span>
-    </a>
+    <footer class="bg-black py-6 text-center border-t border-gray-900 mt-auto">
+        <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">© 2026 DU Pixel & Code | Querétaro, MX</p>
+    </footer>
 
     <script>
         lucide.createIcons();
-
-        let currentLang = 'es';
-        const translations = {
-            'es': {
-                'form-title': 'Registro de Proyecto',
-                'label-service': 'Servicio Solicitado',
-                'opt-placeholder': 'Selecciona un paquete',
-                'opt-1': 'Paquete Emprendedor ($6,900 MXN)',
-                'opt-2': 'Negocio Local + IA ($8,900 MXN)',
-                'opt-3': 'Paquete Empresarial ($11,500 MXN)',
-                'opt-4': 'Consultoría IA Personalizada',
-                'label-name': 'Nombre Completo',
-                'placeholder-name': 'Ej. Daniel Urquijo',
-                'label-email': 'Correo Electrónico',
-                'placeholder-email': 'ejemplo@correo.com',
-                'label-phone': 'Número Telefónico (WhatsApp)',
-                'placeholder-phone': '442 347 9766',
-                'btn-submit': 'Enviar Información',
-                'privacy-note': '🔒 Tu información está protegida bajo nuestro Aviso de Privacidad.',
-                'link-back': 'Volver a Pixel & Code'
-            },
-            'en': {
-                'form-title': 'Project Registration',
-                'label-service': 'Requested Service',
-                'opt-placeholder': 'Select a package',
-                'opt-1': 'Entrepreneur Package ($6,900 MXN)',
-                'opt-2': 'Local Business + AI ($8,900 MXN)',
-                'opt-3': 'Enterprise Package ($11,500 MXN)',
-                'opt-4': 'Custom AI Consulting',
-                'label-name': 'Full Name',
-                'placeholder-name': 'e.g., Daniel Urquijo',
-                'label-email': 'Email Address',
-                'placeholder-email': 'example@email.com',
-                'label-phone': 'Phone Number (WhatsApp)',
-                'placeholder-phone': '+52 442 347 9766',
-                'btn-submit': 'Submit Information',
-                'privacy-note': '🔒 Your information is protected under our Privacy Policy.',
-                'link-back': 'Back to Pixel & Code'
-            }
-        };
-
-        function toggleLanguage() {
-            currentLang = (currentLang === 'es') ? 'en' : 'es';
-            document.getElementById('lang-text').innerText = (currentLang === 'es') ? 'EN' : 'ES';
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (translations[currentLang][key]) el.innerHTML = translations[currentLang][key];
-            });
-            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-                const key = el.getAttribute('data-i18n-placeholder');
-                if (translations[currentLang][key]) el.placeholder = translations[currentLang][key];
-            });
-            lucide.createIcons();
-        }
-
-        window.addEventListener('DOMContentLoaded', () => {
+        
+        // Función para auto-seleccionar el plan basado en la URL (?plan=ia)
+        document.addEventListener("DOMContentLoaded", function() {
             const urlParams = new URLSearchParams(window.location.search);
-            const planParam = urlParams.get('plan');
-            const select = document.getElementById('service-select');
-            if (planParam) {
-                const optionsMap = { 'emprendedor': 'Emprendedor', 'ia': 'Negocio Local + IA', 'empresarial': 'Empresarial', 'consultoria': 'Consultoria' };
-                const targetValue = optionsMap[planParam.toLowerCase()];
-                if (targetValue) select.value = targetValue;
+            const plan = urlParams.get('plan');
+            const select = document.getElementById('plan-select');
+            
+            if(plan) {
+                const planLower = plan.toLowerCase();
+                Array.from(select.options).forEach(option => {
+                    if(option.value.toLowerCase().includes(planLower)) {
+                        option.selected = true;
+                    }
+                });
             }
         });
     </script>
