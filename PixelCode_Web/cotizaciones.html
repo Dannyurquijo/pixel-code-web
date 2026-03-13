@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cotización | Ing. Rubén Rivera García</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Montserrat Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Montserrat', 'sans-serif'] },
+                    colors: { gold: '#C5A059', dark: '#0f172a', surface: '#f8fafc', blacksoft: '#0a0a0a' }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Forzar la impresión de colores de fondo en el PDF */
+        body {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+        
+        /* REGLAS ESTRICTAS PARA QUE QUEPA EN 1 SOLA PÁGINA */
+        @media print {
+            @page { margin: 0; size: letter portrait; }
+            body { 
+                background-color: white !important; 
+                margin: 0; 
+                padding: 0 !important; 
+                zoom: 0.85; /* Reduce la escala general para encajar todo */
+            }
+            .no-print { display: none !important; }
+            .content-box { 
+                border: none !important; 
+                box-shadow: none !important; 
+                border-radius: 0 !important; 
+                max-width: 100% !important;
+                width: 100% !important;
+                margin: 0 !important;
+            }
+            .avoid-break { page-break-inside: avoid; }
+        }
+        
+        .gold-border { border-left: 4px solid #C5A059; }
+        .gradient-line { height: 1px; background: linear-gradient(90deg, #C5A059 0%, rgba(255,255,255,0) 100%); }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans text-gray-800 antialiased p-4 md:p-10">
+
+    <!-- Botón de Descarga PDF (No se imprime) -->
+    <div class="max-w-4xl mx-auto mb-6 flex flex-col sm:flex-row justify-end items-center gap-4 no-print">
+        <button onclick="window.print()" class="bg-gold text-white px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-yellow-600 transition shadow-xl flex items-center gap-3 active:scale-95">
+            <i data-lucide="file-down" class="w-5 h-5"></i> Descargar / Guardar PDF
+        </button>
+    </div>
+
+    <!-- Documento de Cotización Principal -->
+    <div class="max-w-4xl mx-auto bg-white shadow-2xl rounded-[2rem] overflow-hidden content-box border border-gray-200">
+        
+        <!-- Header Premium con el nuevo Logo DU -->
+        <!-- Uso de print:px-10 print:py-8 para quitar relleno extra al imprimir -->
+        <div class="bg-blacksoft p-10 md:p-14 print:px-10 print:py-8 text-white relative avoid-break">
+            <!-- Efecto de luz dorada sutil en el fondo -->
+            <div class="absolute top-0 right-0 w-64 h-64 bg-gold/10 rounded-full -mr-32 -mt-32 blur-3xl"></div>
+            
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 print:gap-4 relative z-10">
+                <div class="flex items-center gap-6 print:gap-4">
+                    <!-- LOGO DU MÁS COMPACTO EN IMPRESIÓN -->
+                    <img src="du-logo.png" alt="DU Logo" class="h-28 w-28 print:h-20 print:w-20 object-cover rounded-xl shadow-2xl border border-gray-800" onerror="this.src='https://placehold.co/150x150/0a0a0a/C5A059?text=DU'">
+                    <div>
+                        <h1 class="text-4xl print:text-3xl font-extrabold tracking-tighter italic uppercase text-white">Cotización</h1>
+                        <p class="text-gold font-bold text-[10px] uppercase tracking-[0.3em] mt-1">Propuesta Tecnológica</p>
+                    </div>
+                </div>
+                <div class="text-left md:text-right space-y-1.5 print:space-y-1 border-l-2 md:border-l-0 border-gold pl-4 md:pl-0">
+                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Folio: <span class="text-white">PC-2026-088</span></p>
+                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Fecha: <span class="text-white" id="current-date">06/03/2026</span></p>
+                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Vigencia: <span class="text-white">15 días naturales</span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cuerpo del Documento -->
+        <!-- Reducimos el espaciado (space-y) y los márgenes en print para ganar espacio vertical -->
+        <div class="p-10 md:p-14 print:p-8 space-y-10 print:space-y-5">
+            
+            <!-- Datos del Cliente y Proveedor -->
+            <div class="grid md:grid-cols-2 gap-10 print:gap-6 avoid-break">
+                <div class="gold-border pl-6 bg-gray-50 p-4 print:py-2 rounded-r-2xl">
+                    <h2 class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2 print:mb-1">Preparado para:</h2>
+                    <p class="text-xl print:text-lg font-extrabold text-dark italic">Ing. Rubén Rivera García</p>
+                    <p class="text-xs text-gray-500 font-medium uppercase tracking-wider mt-2 print:mt-1">Proyecto Corporativo</p>
+                    <p class="text-xs text-gray-400 font-light italic">Querétaro, MX</p>
+                </div>
+                <div class="md:text-right p-4 print:py-2">
+                    <h2 class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2 print:mb-1">Emitido por:</h2>
+                    <p class="text-lg print:text-base font-bold text-dark italic leading-none">Daniel Urquijo</p>
+                    <p class="text-[9px] text-gold font-bold uppercase tracking-widest mt-1">Director | Pixel & Code</p>
+                    <div class="mt-3 print:mt-2 text-xs text-gray-500 font-light space-y-1">
+                        <p class="flex items-center md:justify-end gap-2"><i data-lucide="mail" class="w-3 h-3 text-gold"></i> durquijob@gmail.com</p>
+                        <p class="flex items-center md:justify-end gap-2"><i data-lucide="phone" class="w-3 h-3 text-gold"></i> 442 347 9766</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Listado de Servicios -->
+            <div class="avoid-break">
+                <h3 class="text-xs font-bold text-dark uppercase tracking-widest mb-6 print:mb-3 italic flex items-center gap-3">
+                    <span class="w-8 h-[2px] bg-gold"></span> Especificaciones Técnicas
+                </h3>
+                
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b-2 border-dark">
+                            <th class="py-3 print:py-1 text-[10px] font-bold text-dark uppercase tracking-widest">Descripción del Servicio</th>
+                            <th class="py-3 print:py-1 text-[10px] font-bold text-dark uppercase tracking-widest text-right">Monto (MXN)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <!-- Paquete Principal -->
+                        <tr class="border-b border-gray-100">
+                            <!-- Padding reducido en impresión: print:py-3 -->
+                            <td class="py-6 print:py-3 pr-6 print:pr-2">
+                                <p class="font-extrabold text-dark italic text-lg print:text-base">Paquete Web "Digitaliza y Despega"</p>
+                                <div class="grid md:grid-cols-2 gap-x-8 mt-4 print:mt-2 text-[11px] print:text-[10px] text-gray-600 font-medium leading-relaxed">
+                                    <ul class="space-y-2 print:space-y-1 list-none">
+                                        <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-gold shrink-0"></i> Web Semi-Personalizada (* 5 secciones)</li>
+                                        <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-gold shrink-0"></i> Dominio Web con terminación .com ó .com.mx (* 12 meses)</li>
+                                        <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-gold shrink-0"></i> Hospedaje Web - 12 meses</li>
+                                        <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-gold shrink-0"></i> Correo electrónico - 5 cuentas</li>
+                                        <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-gold shrink-0"></i> Capacidad de correo - 500mb</li>
+                                        <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-gold shrink-0"></i> Sitio Web visible (pc, tablet y móvil)</li>
+                                    </ul>
+                                    <ul class="space-y-2 print:space-y-1 list-none mt-2 md:mt-0">
+                                        <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-gold shrink-0"></i> Link's en su sitio web a redes sociales</li>
+                                        <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-gold shrink-0"></i> Registro en Google Mi Negocio</li>
+                                        <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-gold shrink-0"></i> Coaching en Web y Redes sociales</li>
+                                        <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-gold shrink-0"></i> Actualizaciones al año - 6 (fotos, links y texto)</li>
+                                        <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-gold shrink-0"></i> Garantía de corrección - 15 días</li>
+                                        <li class="flex items-start gap-2 font-bold text-dark"><i data-lucide="clock" class="w-4 h-4 text-gold shrink-0"></i> Tiempo estimado de entrega - 3 semanas</li>
+                                    </ul>
+                                </div>
+                            </td>
+                            <td class="py-6 print:py-3 font-extrabold text-dark text-right align-top text-lg print:text-base">$4,999.00</td>
+                        </tr>
+                        
+                        <!-- Correo Extra -->
+                        <tr class="border-b border-gray-100">
+                            <td class="py-6 print:py-3 pr-6">
+                                <p class="font-bold text-dark italic text-base print:text-sm">Cuenta de Correo Extra</p>
+                                <p class="mt-1 text-xs print:text-[10px] text-gray-500 font-light">Adición de 1 cuenta de correo institucional adicional.</p>
+                            </td>
+                            <td class="py-6 print:py-3 font-bold text-dark text-right text-base print:text-sm">$950.00</td>
+                        </tr>
+                    </tbody>
+                    
+                    <!-- Totales -->
+                    <tfoot class="avoid-break">
+                        <tr>
+                            <td class="pt-8 print:pt-4 pb-2 print:pb-1 text-right font-bold text-gray-400 uppercase text-[10px] tracking-widest">Subtotal</td>
+                            <td class="pt-8 print:pt-4 pb-2 print:pb-1 text-right font-bold text-dark">$5,949.00</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 print:py-1 text-right font-bold text-gray-400 uppercase text-[10px] tracking-widest">I.V.A. (16%)</td>
+                            <td class="py-2 print:py-1 text-right font-bold text-dark">$951.84</td>
+                        </tr>
+                        <tr class="border-t-2 border-dark bg-gray-50">
+                            <td class="py-6 print:py-3 pr-4 text-right font-bold text-dark uppercase text-xs tracking-[0.2em]">Inversión Total Final (MXN)</td>
+                            <td class="py-6 print:py-3 pr-4 text-right font-black text-2xl print:text-xl text-gold">$6,900.84</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <!-- Condiciones de Servicio -->
+            <div class="bg-surface p-8 print:p-5 rounded-2xl border border-gray-200 avoid-break mt-10 print:mt-4">
+                <h3 class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4 print:mb-2 flex items-center gap-2">
+                    <i data-lucide="info" class="w-4 h-4 text-gold"></i> Condiciones Comerciales
+                </h3>
+                <div class="grid md:grid-cols-2 gap-8 print:gap-4 text-[11px] print:text-[10px] font-medium text-gray-500 leading-relaxed">
+                    <div class="space-y-3 print:space-y-1">
+                        <p><strong>Condiciones de Pago:</strong> 50% de anticipo para reserva de dominio y configuración inicial. El 50% restante se liquida al concluir el proyecto contra entrega de accesos.</p>
+                        <p><strong>Tiempos de Ejecución:</strong> El tiempo estimado de 3 semanas inicia al momento de que el cliente entregue la información base completa (textos, logotipos e imágenes).</p>
+                    </div>
+                    <div class="space-y-3 print:space-y-1">
+                        <p><strong>Límite de Cambios:</strong> Una vez presentada la página web inicial, el cliente tendrá derecho a un máximo de 2 rondas de ajustes de diseño o contenido. Cambios estructurales adicionales podrán generar costos extra.</p>
+                        <p><strong>Garantía y Renovación:</strong> Se incluyen 15 días de soporte post-entrega para corrección de detalles técnicos. Transcurridos 12 meses, la renovación de hosting/dominio estará sujeta a los planes vigentes.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Firma Digital -->
+            <div class="pt-10 print:pt-4 flex flex-col items-center text-center avoid-break">
+                <div class="w-48 h-[2px] bg-dark mb-4 print:mb-2"></div>
+                <p class="text-base font-extrabold text-dark italic">Ing. Daniel Urquijo</p>
+                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-[0.3em] mt-1">Ingeniería & Diseño • Pixel & Code</p>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="bg-blacksoft p-6 print:p-4 text-center avoid-break">
+            <p class="text-[9px] text-gold font-bold uppercase tracking-[0.4em]">Soluciones Digitales Inteligentes</p>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+        
+        // Fecha automática
+        const dateObj = new Date();
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('current-date').innerText = dateObj.toLocaleDateString('es-MX', options);
+    </script>
+</body>
+</html>gap-x-8
