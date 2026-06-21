@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <!-- CSP actualizado para permitir conexiones al webhook de Make.com -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://placehold.co https://images.unsplash.com; connect-src 'self' https://hook.us1.make.com https://hook.eu1.make.com;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://placehold.co https://images.unsplash.com; connect-src 'self' https://formsubmit.co;">
     
     <title>Recursos y Manuales | DU Pixel & Code</title>
     <link rel="icon" type="image/png" href="du-logo.png">
@@ -73,7 +72,6 @@
 
         .start-transparent { opacity: 0; }
         
-        /* Contenedor WebGL Optimizado */
         #shader-canvas-container {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -10; pointer-events: none;
         }
@@ -92,7 +90,6 @@
         <canvas id="shader-canvas" style="display:block;width:100%;height:100%"></canvas>
     </div>
 
-    <!-- Navbar -->
     <nav class="fixed top-4 md:top-8 left-1/2 -translate-x-1/2 w-[92%] md:w-[85%] max-w-6xl z-50 glass-panel rounded-full px-4 sm:px-6 py-3 flex justify-between items-center transition-all duration-500 shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
         <div class="flex items-center gap-3 cursor-pointer group" onclick="window.location.href='index.html'">
             <img src="pixel&code-logo-landing.png" alt="DU Logo" class="h-10 w-10 sm:h-12 sm:w-12 object-cover rounded-full border border-white/10 group-hover:border-gold transition-colors duration-500" onerror="this.src='https://placehold.co/100x100/111/C5A059?text=DU'">
@@ -120,7 +117,6 @@
             </p>
         </section>
 
-        <!-- Catálogo de Manuales -->
         <section class="grid grid-cols-1 md:grid-cols-3 gap-8 start-transparent animate-fade-in-up" style="animation-delay: 0.2s;">
             
             <div class="glass-panel border border-white/10 rounded-[2.5rem] p-8 flex flex-col card-glow relative overflow-hidden group min-h-[420px]">
@@ -175,7 +171,6 @@
         </section>
     </main>
 
-    <!-- Modal para Captura de Leads (Conectado a Make.com) -->
     <div id="download-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-[100] hidden items-center justify-center p-4 opacity-0 transition-opacity duration-300">
         <div class="glass-panel border border-white/10 rounded-[2.5rem] p-8 md:p-10 w-full max-w-md relative shadow-2xl transform scale-95 transition-transform duration-300" id="download-content">
             <button onclick="closeDownloadModal()" class="absolute top-6 right-6 text-gray-400 hover:text-white hover:rotate-90 transition-all duration-300">
@@ -211,7 +206,6 @@
         </div>
     </div>
 
-    <!-- Footer -->
     <footer class="py-16 px-6 border-t border-white/10 text-gray-500 text-sm mt-auto relative z-10 bg-black/80 w-full">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
             <div class="flex items-center gap-4">
@@ -230,7 +224,7 @@
     <script>
         lucide.createIcons();
 
-        // --- SISTEMA WEBGL OPTIMIZADO ---
+        // --- SISTEMA WEBGL ---
         (function() {
             const canvas = document.getElementById('shader-canvas');
             function syncSize() {
@@ -315,72 +309,47 @@
             setTimeout(() => { modal.classList.add('hidden'); modal.classList.remove('flex'); }, 300);
         }
 
-        // --- CONEXIÓN CON PIXIE (MAKE.COM) Y DESCARGA DE PDF ---
+        // --- ENVÍO DIRECTO A CORREO (FormSubmit AJAX) ---
         document.getElementById('lead-form').addEventListener('submit', async function(e) {
             e.preventDefault(); 
-
             const btn = this.querySelector('button[type="submit"]');
-            const textoOriginal = btn.innerText;
             btn.innerText = 'Procesando...';
 
-            const nombre = this.Nombre.value;
-            const email = this.Email.value;
-            const manual = document.getElementById('manual-input').value;
-
-            // ⚠️ IMPORTANTE: Reemplaza esto con el Webhook real de Make
-            const makeWebhookUrl = 'https://hook.us1.make.com/TU_WEBHOOK_AQUI';
-
-            const payload = {
-                origen: "landing_manuales",
-                mensaje_predeterminado: `Hola Pixie, soy ${nombre}. Solicito la descarga del manual: ${manual}. Mi correo es ${email}`,
-                nombre: nombre,
-                correo: email,
-                manual: manual
+            const formData = {
+                _subject: "📚 Nuevo Lead - Descarga de Manual: " + document.getElementById('manual-input').value,
+                Nombre: this.Nombre.value,
+                Email: this.Email.value,
+                Manual_Solicitado: document.getElementById('manual-input').value
             };
 
             try {
-                // Enviamos los datos a Make sin recargar la página
-                await fetch(makeWebhookUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
+                await fetch("https://formsubmit.co/ajax/info@dupixelcode.com", {
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify(formData)
                 });
-            } catch (error) {
-                console.error("Error al conectar con Pixie:", error);
-            }
+            } catch (err) { console.error(err); }
 
-            // NOMBRES EXACTOS DE LOS ARCHIVOS PDF (Asegúrate de subirlos con este nombre a la misma carpeta)
-            let pdfUrl = '';
+            // Lógica de descarga local
             let fileName = '';
-            
-            if (manual.includes('Prompt')) {
-                pdfUrl = 'manual_prompts_du.pdf'; 
-                fileName = 'manual_prompts_du.pdf';
-            } else if (manual.includes('Forense')) {
-                pdfUrl = 'manual_forense_du.pdf'; 
-                fileName = 'manual_forense_du.pdf';
-            } else {
-                pdfUrl = 'manual_vendedor_du.pdf'; 
-                fileName = 'manual_vendedor_du.pdf';
-            }
+            const manual = document.getElementById('manual-input').value;
+            if (manual.includes('Prompt')) fileName = 'manual_prompts_du.pdf';
+            else if (manual.includes('Forense')) fileName = 'manual_forense_du.pdf';
+            else fileName = 'manual_vendedor_du.pdf';
 
-            // Forzamos la descarga del PDF
             const a = document.createElement('a');
-            a.href = pdfUrl;
-            a.target = '_blank';
-            a.download = fileName; 
+            a.href = fileName;
+            a.download = fileName;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
 
-            // Restaurar y cerrar
-            btn.innerText = textoOriginal;
+            btn.innerText = 'Descargar PDF';
             this.reset();
             closeDownloadModal();
         });
     </script>
     
-    <!-- INYECCIÓN DE MODALES LEGALES -->
     <script src="privacy.js"></script>
     <script src="terms.js"></script>
 </body>
