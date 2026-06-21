@@ -1,0 +1,22 @@
+[build]
+  functions = "netlify/functions"
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Bloquea el Clickjacking (impide que tu sitio se cargue en iframes externos)
+    X-Frame-Options = "DENY"
+    
+    # Previene el "MIME Sniffing" (evita que el navegador ejecute archivos disfrazados)
+    X-Content-Type-Options = "nosniff"
+    
+    # Controla qué información de referencia se envía a otros dominios
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    
+    # Fuerza el uso exclusivo de HTTPS en todas las conexiones
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"

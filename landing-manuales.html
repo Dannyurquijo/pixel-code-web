@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- CSP actualizado para permitir conexiones al webhook de Make.com -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://placehold.co https://images.unsplash.com; connect-src 'self' https://hook.us1.make.com https://hook.eu1.make.com;">
+    
+    <title>Recursos y Manuales | DU Pixel & Code</title>
+    <link rel="icon" type="image/png" href="du-logo.png">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Montserrat', 'sans-serif'] },
+                    colors: { 
+                        gold: '#C5A059', 
+                        dark: '#050505', 
+                        surface: '#111111',
+                        glass: 'rgba(255, 255, 255, 0.03)'
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(40px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #050505; color: #ffffff; overflow-x: hidden; }
+        
+        .glass-panel {
+            background: rgba(15, 15, 15, 0.6);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        .gold-text-gradient { 
+            background: linear-gradient(135deg, #E6C875 0%, #C5A059 50%, #906A20 100%); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+        }
+
+        .shimmer-text {
+            background: linear-gradient(90deg, #C5A059 0%, #ffffff 50%, #C5A059 100%);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: shimmer 3s linear infinite;
+        }
+        @keyframes shimmer { to { background-position: 200% center; } }
+
+        .card-glow { transition: all 0.5s ease; }
+        .card-glow:hover {
+            box-shadow: 0 0 30px rgba(197, 160, 89, 0.15);
+            border-color: rgba(197, 160, 89, 0.5);
+            transform: translateY(-8px);
+        }
+
+        .start-transparent { opacity: 0; }
+        
+        /* Contenedor WebGL Optimizado */
+        #shader-canvas-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -10; pointer-events: none;
+        }
+
+        input:focus {
+            box-shadow: 0 0 15px rgba(197, 160, 89, 0.15);
+            border-color: #C5A059 !important;
+            background-color: rgba(255, 255, 255, 0.08) !important;
+            outline: none;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased min-h-screen flex flex-col relative selection:bg-gold selection:text-black">
+
+    <div id="shader-canvas-container">
+        <canvas id="shader-canvas" style="display:block;width:100%;height:100%"></canvas>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="fixed top-4 md:top-8 left-1/2 -translate-x-1/2 w-[92%] md:w-[85%] max-w-6xl z-50 glass-panel rounded-full px-4 sm:px-6 py-3 flex justify-between items-center transition-all duration-500 shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
+        <div class="flex items-center gap-3 cursor-pointer group" onclick="window.location.href='index.html'">
+            <img src="pixel&code-logo-landing.png" alt="DU Logo" class="h-10 w-10 sm:h-12 sm:w-12 object-cover rounded-full border border-white/10 group-hover:border-gold transition-colors duration-500" onerror="this.src='https://placehold.co/100x100/111/C5A059?text=DU'">
+            <div class="flex flex-col hidden sm:flex">
+                <span class="text-white font-bold tracking-[0.1em] text-[11px] uppercase leading-none group-hover:text-gold transition-colors duration-300">Pixel & Code</span>
+            </div>
+        </div>
+        
+        <a href="index.html" class="text-[10px] uppercase tracking-widest font-bold text-gray-400 hover:text-white flex items-center gap-2 transition-colors border border-gray-800 hover:border-white/30 px-4 py-2.5 rounded-full bg-black/50">
+            <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Volver al Inicio
+        </a>
+    </nav>
+
+    <main class="flex-grow pt-32 pb-24 relative z-10 w-full max-w-7xl mx-auto px-4 md:px-6">
+        
+        <section class="text-center mb-20 start-transparent animate-fade-in-up mt-10">
+            <div class="inline-block border border-gold/30 rounded-full px-4 py-1.5 mb-6 bg-gold/10 backdrop-blur-md">
+                <span class="text-gold text-[10px] font-bold tracking-widest uppercase">Lead Magnets & Estrategia 🚀</span>
+            </div>
+            <h1 class="text-5xl md:text-7xl font-black mb-6 tracking-tighter uppercase">
+                Recursos <span class="shimmer-text italic">Gratuitos</span>
+            </h1>
+            <p class="text-gray-400 max-w-2xl mx-auto text-lg md:text-xl font-light leading-relaxed">
+                Descarga nuestros manuales exclusivos y comienza a transformar tu flujo de trabajo con Inteligencia Artificial.
+            </p>
+        </section>
+
+        <!-- Catálogo de Manuales -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-8 start-transparent animate-fade-in-up" style="animation-delay: 0.2s;">
+            
+            <div class="glass-panel border border-white/10 rounded-[2.5rem] p-8 flex flex-col card-glow relative overflow-hidden group min-h-[420px]">
+                <div class="mb-6 w-16 h-16 rounded-full border border-gold/30 flex items-center justify-center bg-black relative transform transition-transform duration-500 group-hover:scale-110 shadow-[0_0_20px_rgba(197,160,89,0.2)]">
+                    <i data-lucide="terminal" class="w-8 h-8 text-gold"></i>
+                </div>
+                <div class="mb-4 flex-1">
+                    <span class="inline-block px-3 py-1 bg-white/5 border border-white/10 text-white text-[9px] font-bold uppercase tracking-widest rounded-full mb-4">Productividad ⚡</span>
+                    <h3 class="text-2xl font-bold text-white mb-3 tracking-tight italic">Prompt Engineering Corporativo</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Fórmulas exactas para redactar correos, resumir juntas y analizar hojas de cálculo. Ahorra 10 horas a la semana copiando estas instrucciones.</p>
+                </div>
+                <div class="mt-auto pt-6 border-t border-white/5">
+                    <button onclick="openDownloadModal('Prompt Engineering Corporativo')" class="w-full py-4 border border-white/20 rounded-full text-white font-bold uppercase tracking-widest text-[10px] flex items-center justify-center gap-3 hover:bg-gold hover:text-black hover:border-gold transition-all duration-300">
+                        Descargar PDF <i data-lucide="download" class="w-4 h-4 transform group-hover:translate-y-0.5 transition"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="glass-panel border border-gold/40 rounded-[2.5rem] p-8 flex flex-col card-glow relative overflow-hidden group min-h-[420px] shadow-[0_0_40px_rgba(197,160,89,0.1)]">
+                <div class="absolute top-6 right-6 bg-gold text-black text-[8px] font-bold uppercase tracking-widest px-3 py-1 rounded-full z-20">Más Descargado ⭐</div>
+                <div class="mb-6 w-16 h-16 rounded-full border border-gold/30 flex items-center justify-center bg-black relative transform transition-transform duration-500 group-hover:scale-110 shadow-[0_0_20px_rgba(197,160,89,0.2)]">
+                    <i data-lucide="scale" class="w-8 h-8 text-gold"></i>
+                </div>
+                <div class="mb-4 flex-1">
+                    <span class="inline-block px-3 py-1 bg-white/5 border border-white/10 text-white text-[9px] font-bold uppercase tracking-widest rounded-full mb-4">Especializado ⚖️</span>
+                    <h3 class="text-2xl font-bold text-white mb-3 tracking-tight italic">Análisis Documental Forense</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Descubre la Arquitectura RAG. Aprende cómo la IA puede analizar un dictamen legal de 500 páginas en segundos sin inventar datos.</p>
+                </div>
+                <div class="mt-auto pt-6 border-t border-white/5">
+                    <button onclick="openDownloadModal('Análisis Documental Forense (RAG)')" class="w-full py-4 bg-white text-black rounded-full font-bold uppercase tracking-widest text-[10px] flex items-center justify-center gap-3 hover:bg-gold transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.1)]">
+                        Descargar PDF <i data-lucide="download" class="w-4 h-4 transform group-hover:translate-y-0.5 transition"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="glass-panel border border-white/10 rounded-[2.5rem] p-8 flex flex-col card-glow relative overflow-hidden group min-h-[420px]">
+                <div class="mb-6 w-16 h-16 rounded-full border border-gold/30 flex items-center justify-center bg-black relative transform transition-transform duration-500 group-hover:scale-110 shadow-[0_0_20px_rgba(197,160,89,0.2)]">
+                    <i data-lucide="bot" class="w-8 h-8 text-gold"></i>
+                </div>
+                <div class="mb-4 flex-1">
+                    <span class="inline-block px-3 py-1 bg-white/5 border border-white/10 text-white text-[9px] font-bold uppercase tracking-widest rounded-full mb-4">Automatización 🤖</span>
+                    <h3 class="text-2xl font-bold text-white mb-3 tracking-tight italic">El Vendedor 24/7</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Convierte tu página web estática en un empleado virtual. Estructura un asistente IA que atiende y califica clientes a las 3:00 AM.</p>
+                </div>
+                <div class="mt-auto pt-6 border-t border-white/5">
+                    <button onclick="openDownloadModal('El Vendedor 24/7')" class="w-full py-4 border border-white/20 rounded-full text-white font-bold uppercase tracking-widest text-[10px] flex items-center justify-center gap-3 hover:bg-gold hover:text-black hover:border-gold transition-all duration-300">
+                        Descargar PDF <i data-lucide="download" class="w-4 h-4 transform group-hover:translate-y-0.5 transition"></i>
+                    </button>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- Modal para Captura de Leads (Conectado a Make.com) -->
+    <div id="download-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-[100] hidden items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+        <div class="glass-panel border border-white/10 rounded-[2.5rem] p-8 md:p-10 w-full max-w-md relative shadow-2xl transform scale-95 transition-transform duration-300" id="download-content">
+            <button onclick="closeDownloadModal()" class="absolute top-6 right-6 text-gray-400 hover:text-white hover:rotate-90 transition-all duration-300">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+            <h3 class="text-2xl font-black text-white italic mb-1 uppercase tracking-tighter">Obtener Manual</h3>
+            <p class="text-[10px] text-gold uppercase tracking-widest font-bold mb-8 border-b border-white/5 pb-4" id="manual-title">Nombre del Manual</p>
+            
+            <form id="lead-form" class="space-y-5">
+                <input type="hidden" name="Manual_Solicitado" id="manual-input" value="">
+                
+                <div class="space-y-2">
+                    <label class="text-[9px] font-bold text-gray-400 uppercase tracking-widest ml-2">Nombre Completo</label>
+                    <input type="text" name="Nombre" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white placeholder-gray-600 transition-all" placeholder="Ej. Juan Pérez">
+                </div>
+                
+                <div class="space-y-2">
+                    <label class="text-[9px] font-bold text-gray-400 uppercase tracking-widest ml-2">Correo Corporativo</label>
+                    <input type="email" name="Email" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white placeholder-gray-600 transition-all" placeholder="juan@empresa.com">
+                </div>
+                
+                <div class="flex items-start gap-3 mt-4 mb-2">
+                    <input type="checkbox" id="legal_manuales" required class="mt-1 bg-white/5 border-white/10 rounded cursor-pointer accent-gold w-4 h-4 flex-shrink-0">
+                    <label for="legal_manuales" class="text-[10px] text-gray-400 font-light leading-snug">
+                        Acepto el <button type="button" onclick="openPrivacyModal()" class="text-gold font-bold underline">Aviso de Privacidad</button> y los <button type="button" onclick="openTermsModal()" class="text-gold font-bold underline">Términos</button>.
+                    </label>
+                </div>
+                
+                <button type="submit" class="w-full bg-white text-black font-black px-6 py-4 rounded-xl uppercase text-[10px] tracking-widest hover:bg-gold transition-all mt-4 shadow-[0_0_20px_rgba(255,255,255,0.1)]">
+                    Descargar PDF
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-16 px-6 border-t border-white/10 text-gray-500 text-sm mt-auto relative z-10 bg-black/80 w-full">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="flex items-center gap-4">
+                <img src="pixel&code-logo-landing.png" alt="Logo" class="w-8 h-8 rounded-full grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all" onerror="this.src='https://placehold.co/100x100/111/C5A059?text=DU'">
+                <span class="tracking-[0.2em] text-[10px] uppercase font-bold text-gray-400">© 2026 DU Pixel & Code</span>
+            </div>
+            <div class="flex gap-8 text-[10px] uppercase tracking-widest font-bold">
+                <a href="https://www.linkedin.com/company/du-pixel-code" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">LinkedIn</a>
+                <a href="mailto:info@dupixelcode.com" class="hover:text-white transition-colors">Email</a>
+                <button type="button" onclick="openPrivacyModal()" class="hover:text-white transition-colors">Privacidad</button>
+                <button type="button" onclick="openTermsModal()" class="hover:text-white transition-colors">Términos</button>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        // --- SISTEMA WEBGL OPTIMIZADO ---
+        (function() {
+            const canvas = document.getElementById('shader-canvas');
+            function syncSize() {
+                const pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5);
+                const w = Math.floor(canvas.clientWidth * pixelRatio) || 1280;
+                const h = Math.floor(canvas.clientHeight * pixelRatio) || 720;
+                if (canvas.width !== w || canvas.height !== h) { canvas.width  = w; canvas.height = h; }
+            }
+            if (typeof ResizeObserver !== 'undefined') { new ResizeObserver(syncSize).observe(canvas); }
+            syncSize();
+
+            const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+            if (!gl) return;
+
+            const vs = `attribute vec2 a_position; varying vec2 v_texCoord; void main() { v_texCoord = a_position * 0.5 + 0.5; gl_Position = vec4(a_position, 0.0, 1.0); }`;
+            const fs = `precision highp float;
+            uniform float u_time; uniform vec2 u_resolution; uniform vec2 u_mouse; varying vec2 v_texCoord;
+            vec3 permute(vec3 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
+            float snoise(vec2 v){
+                const vec4 C = vec4(0.211324865405187, 0.366025403784439, -0.577350269189626, 0.024390243902439);
+                vec2 i  = floor(v + dot(v, C.yy) ); vec2 x0 = v - i + dot(i, C.xx);
+                vec2 i1; i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+                vec4 x12 = x0.xyxy + C.xxzz; x12.xy -= i1; i = mod(i, 289.0);
+                vec3 p = permute( permute( i.y + vec3(0.0, i1.y, 1.0 )) + i.x + vec3(0.0, i1.x, 1.0 ));
+                vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy), dot(x12.zw,x12.zw)), 0.0);
+                m = m*m; m = m*m; vec3 x = 2.0 * fract(p * C.www) - 1.0; vec3 h = abs(x) - 0.5;
+                vec3 a0 = x - floor(x + 0.5); float m3 = m.z; float m1 = m.y; float m0 = m.x;
+                m.z = m3 * ( 1.79284291400159 - 0.85373472095314 * ( a0.z*a0.z + h.z*h.z ) );
+                m.y = m1 * ( 1.79284291400159 - 0.85373472095314 * ( a0.y*a0.y + h.y*h.y ) );
+                m.x = m0 * ( 1.79284291400159 - 0.85373472095314 * ( a0.x*a0.x + h.x*h.x ) );
+                vec3 g; g.x = a0.x * x0.x + h.x * x0.y; g.yz = a0.yz * x12.xz + h.yz * x12.yw;
+                return 130.0 * dot(m, g);
+            }
+            void main() {
+                vec2 uv = v_texCoord; vec2 center = uv - 0.5; center.x *= u_resolution.x / u_resolution.y;
+                float t = u_time * 0.4; float particle = 0.0;
+                vec2 mouse = u_mouse / u_resolution - 0.5; mouse.x *= u_resolution.x / u_resolution.y;
+                float mouseDist = length(center - mouse);
+                for(float i = 0.0; i < 3.0; i++) {
+                    float strandOffset = i * 2.094;
+                    for(float j = 0.0; j < 45.0; j++) { 
+                        float progress = j / 45.0; float yPos = (progress - 0.5) * 3.0;
+                        float xOffset = sin(yPos * 3.5 + t + strandOffset) * 0.4;
+                        float zDepth = cos(yPos * 3.5 + t + strandOffset);
+                        vec2 pPos = vec2(xOffset, yPos);
+                        float pull = smoothstep(0.5, 0.0, mouseDist) * 0.05; pPos += normalize(mouse - pPos) * pull;
+                        float dist = length(center - pPos);
+                        float size = 0.005 + zDepth * 0.002; 
+                        float brightness = (0.7 + 0.3 * zDepth) * (0.8 + 0.2 * sin(yPos * 10.0 + t * 2.0));
+                        particle += smoothstep(size, 0.0, dist) * brightness * 1.5;
+                    }
+                }
+                vec3 color = vec3(0.05, 0.05, 0.05); vec3 gold = vec3(0.77, 0.62, 0.35); color = mix(color, gold, particle * 0.9);
+                float n1 = snoise(uv * 1.5 + t * 0.1); color += vec3(0.05, 0.04, 0.02) * n1 * 0.2; 
+                color += gold * (smoothstep(0.4, 0.0, mouseDist) * 0.15); gl_FragColor = vec4(color, 1.0);
+            }`;
+
+            function cs(type, src) { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); return s; }
+            const prog = gl.createProgram(); gl.attachShader(prog, cs(gl.VERTEX_SHADER, vs)); gl.attachShader(prog, cs(gl.FRAGMENT_SHADER, fs)); gl.linkProgram(prog); gl.useProgram(prog);
+            const buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+            const pos = gl.getAttribLocation(prog, 'a_position'); gl.enableVertexAttribArray(pos); gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+            const uTime = gl.getUniformLocation(prog, 'u_time'); const uRes = gl.getUniformLocation(prog, 'u_resolution'); const uMouse = gl.getUniformLocation(prog, 'u_mouse');
+            let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
+            window.addEventListener('mousemove', (e) => { const r = canvas.getBoundingClientRect(); if (r.width && r.height) { mouse.x = ((e.clientX - r.left) / r.width) * canvas.width; mouse.y = (1.0 - (e.clientY - r.top) / r.height) * canvas.height; } });
+            function render(t) { gl.viewport(0, 0, canvas.width, canvas.height); gl.uniform1f(uTime, t * 0.001); gl.uniform2f(uRes, canvas.width, canvas.height); gl.uniform2f(uMouse, mouse.x, mouse.y); gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4); requestAnimationFrame(render); }
+            render(0);
+        })();
+
+        // --- LÓGICA MODAL ---
+        function openDownloadModal(manualName) {
+            document.getElementById('manual-input').value = manualName;
+            document.getElementById('manual-title').innerText = manualName;
+            const modal = document.getElementById('download-modal');
+            const content = document.getElementById('download-content');
+            modal.classList.remove('hidden'); modal.classList.add('flex');
+            setTimeout(() => { modal.classList.remove('opacity-0'); content.classList.remove('scale-95'); content.classList.add('scale-100'); }, 10);
+        }
+        function closeDownloadModal() {
+            const modal = document.getElementById('download-modal');
+            const content = document.getElementById('download-content');
+            modal.classList.add('opacity-0'); content.classList.remove('scale-100'); content.classList.add('scale-95');
+            setTimeout(() => { modal.classList.add('hidden'); modal.classList.remove('flex'); }, 300);
+        }
+
+        // --- CONEXIÓN CON PIXIE (MAKE.COM) Y DESCARGA DE PDF ---
+        document.getElementById('lead-form').addEventListener('submit', async function(e) {
+            e.preventDefault(); 
+
+            const btn = this.querySelector('button[type="submit"]');
+            const textoOriginal = btn.innerText;
+            btn.innerText = 'Procesando...';
+
+            const nombre = this.Nombre.value;
+            const email = this.Email.value;
+            const manual = document.getElementById('manual-input').value;
+
+            // ⚠️ IMPORTANTE: Reemplaza esto con el Webhook real de Make
+            const makeWebhookUrl = 'https://hook.us1.make.com/TU_WEBHOOK_AQUI';
+
+            const payload = {
+                origen: "landing_manuales",
+                mensaje_predeterminado: `Hola Pixie, soy ${nombre}. Solicito la descarga del manual: ${manual}. Mi correo es ${email}`,
+                nombre: nombre,
+                correo: email,
+                manual: manual
+            };
+
+            try {
+                // Enviamos los datos a Make sin recargar la página
+                await fetch(makeWebhookUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+            } catch (error) {
+                console.error("Error al conectar con Pixie:", error);
+            }
+
+            // NOMBRES EXACTOS DE LOS ARCHIVOS PDF (Asegúrate de subirlos con este nombre a la misma carpeta)
+            let pdfUrl = '';
+            let fileName = '';
+            
+            if (manual.includes('Prompt')) {
+                pdfUrl = 'manual_prompts_du.pdf'; 
+                fileName = 'manual_prompts_du.pdf';
+            } else if (manual.includes('Forense')) {
+                pdfUrl = 'manual_forense_du.pdf'; 
+                fileName = 'manual_forense_du.pdf';
+            } else {
+                pdfUrl = 'manual_vendedor_du.pdf'; 
+                fileName = 'manual_vendedor_du.pdf';
+            }
+
+            // Forzamos la descarga del PDF
+            const a = document.createElement('a');
+            a.href = pdfUrl;
+            a.target = '_blank';
+            a.download = fileName; 
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+
+            // Restaurar y cerrar
+            btn.innerText = textoOriginal;
+            this.reset();
+            closeDownloadModal();
+        });
+    </script>
+    
+    <!-- INYECCIÓN DE MODALES LEGALES -->
+    <script src="privacy.js"></script>
+    <script src="terms.js"></script>
+</body>
+</html>

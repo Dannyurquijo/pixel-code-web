@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NotebookLM: Guía Completa de Herramientas | DU Pixel & Code</title>
+    <link rel="icon" type="image/png" href="du-logo.png">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Montserrat Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Montserrat', 'sans-serif'] },
+                    colors: { gold: '#C5A059', dark: '#0a0a0a', surface: '#f8fafc' }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gold-gradient { background: linear-gradient(135deg, #D4AF37 0%, #AA771C 100%); }
+        .gold-text-gradient { background: linear-gradient(135deg, #D4AF37 0%, #AA771C 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        #features-container::-webkit-scrollbar { display: none; }
+        .feature-card { transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .feature-card.active { border-color: #C5A059; background-color: #0d0d0d; }
+    </style>
+</head>
+<body class="font-sans text-gray-300 bg-dark antialiased selection:bg-gold selection:text-black">
+
+    <!-- Header Especial Webinar -->
+    <header class="relative pt-8 pb-6 px-6 border-b border-gray-900 bg-black/50 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="bg-gold/10 p-2 rounded-xl border border-gold/30">
+                    <i data-lucide="cpu" class="w-6 h-6 text-gold animate-pulse"></i>
+                </div>
+                <div>
+                    <h1 class="text-xs uppercase tracking-[0.2em] font-bold text-white">Webinar Exclusivo</h1>
+                    <p class="text-[9px] uppercase tracking-[0.3em] text-gold font-bold">DU Pixel & Code</p>
+                </div>
+            </div>
+            <a href="index.html" class="text-[10px] uppercase tracking-widest font-bold text-gray-400 hover:text-gold flex items-center gap-2 transition-colors border border-gray-800 px-4 py-2 rounded-full">
+                <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Volver al Inicio
+            </a>
+        </div>
+    </header>
+
+    <!-- Hero Section / Bienvenida -->
+    <section class="py-12 px-6 max-w-4xl mx-auto text-center">
+        <span class="bg-gold/10 text-gold border border-gold/20 text-[9px] uppercase tracking-[0.25em] font-black px-4 py-1.5 rounded-full inline-block mb-4">
+            🎁 Recurso Escaneado Correctamente
+        </span>
+        <h2 class="text-2xl sm:text-4xl font-black text-white italic uppercase leading-tight mb-4">
+            Ecosistema de Herramientas <br><span class="gold-text-gradient">Google NotebookLM</span>
+        </h2>
+        <p class="text-xs sm:text-sm text-gray-400 font-light max-w-2xl mx-auto leading-relaxed">
+            ¡Gracias por acompañarnos en el webinar! Diseñamos esta sección interactiva para que repases a tu propio ritmo la infraestructura cognitiva de NotebookLM y cómo configurarla en tu negocio.
+        </p>
+    </section>
+
+    <!-- Interfaz Dinámica Interactiva -->
+    <section class="px-6 pb-16 max-w-4xl mx-auto grid md:grid-cols-12 gap-8 items-start">
+        
+        <!-- Menú Lateral -->
+        <div class="md:col-span-5 flex flex-row md:flex-col gap-3 overflow-x-auto pb-4 md:pb-0 scrollbar-none w-full" id="features-container">
+            
+            <button onclick="selectFeature('fuentes')" id="btn-fuentes" class="feature-card active flex items-center gap-4 text-left p-4 rounded-2xl border border-gray-900 bg-black/30 shrink-0 w-[240px] md:w-full">
+                <div class="p-3 rounded-xl bg-gray-950 text-gold shadow-md shrink-0"><i data-lucide="file-text" class="w-5 h-5"></i></div>
+                <div>
+                    <h3 class="text-xs font-bold text-white uppercase tracking-wider">Inyección Multi-Fuente</h3>
+                    <p class="text-[10px] text-gray-500 mt-0.5">Soporte RAG de documentos</p>
+                </div>
+            </button>
+
+            <button onclick="selectFeature('audio')" id="btn-audio" class="feature-card flex items-center gap-4 text-left p-4 rounded-2xl border border-gray-900 bg-black/30 shrink-0 w-[240px] md:w-full">
+                <div class="p-3 rounded-xl bg-gray-950 text-gold shadow-md shrink-0"><i data-lucide="headphones" class="w-5 h-5"></i></div>
+                <div>
+                    <h3 class="text-xs font-bold text-white uppercase tracking-wider">Audio Overviews</h3>
+                    <p class="text-[10px] text-gray-500 mt-0.5">Podcasts generados automáticamente</p>
+                </div>
+            </button>
+
+            <button onclick="selectFeature('guias')" id="btn-guias" class="feature-card flex items-center gap-4 text-left p-4 rounded-2xl border border-gray-900 bg-black/30 shrink-0 w-[240px] md:w-full">
+                <div class="p-3 rounded-xl bg-gray-950 text-gold shadow-md shrink-0"><i data-lucide="book-open" class="w-5 h-5"></i></div>
+                <div>
+                    <h3 class="text-xs font-bold text-white uppercase tracking-wider">Guías Automáticas</h3>
+                    <p class="text-[10px] text-gray-500 mt-0.5">FAQs, guías de estudio y briefings</p>
+                </div>
+            </button>
+
+            <button onclick="selectFeature('chat')" id="btn-chat" class="feature-card flex items-center gap-4 text-left p-4 rounded-2xl border border-gray-900 bg-black/30 shrink-0 w-[240px] md:w-full">
+                <div class="p-3 rounded-xl bg-gray-950 text-gold shadow-md shrink-0"><i data-lucide="message-square-code" class="w-5 h-5"></i></div>
+                <div>
+                    <h3 class="text-xs font-bold text-white uppercase tracking-wider">Chat con Citación</h3>
+                    <p class="text-[10px] text-gray-500 mt-0.5">Respuestas ancladas a texto</p>
+                </div>
+            </button>
+
+            <button onclick="selectFeature('workspace')" id="btn-workspace" class="feature-card flex items-center gap-4 text-left p-4 rounded-2xl border border-gray-900 bg-black/30 shrink-0 w-[240px] md:w-full">
+                <div class="p-3 rounded-xl bg-gray-950 text-gold shadow-md shrink-0"><i data-lucide="layout-dashboard" class="w-5 h-5"></i></div>
+                <div>
+                    <h3 class="text-xs font-bold text-white uppercase tracking-wider">Notes Studio</h3>
+                    <p class="text-[10px] text-gray-500 mt-0.5">Área para estructurar ideas</p>
+                </div>
+            </button>
+
+            <button onclick="selectFeature('seguridad')" id="btn-seguridad" class="feature-card flex items-center gap-4 text-left p-4 rounded-2xl border border-gray-900 bg-black/30 shrink-0 w-[240px] md:w-full">
+                <div class="p-3 rounded-xl bg-gray-950 text-gold shadow-md shrink-0"><i data-lucide="shield-check" class="w-5 h-5"></i></div>
+                <div>
+                    <h3 class="text-xs font-bold text-white uppercase tracking-wider">Seguridad B2B</h3>
+                    <p class="text-[10px] text-gray-500 mt-0.5">Privacidad de tus datos</p>
+                </div>
+            </button>
+
+            <button onclick="selectFeature('casos')" id="btn-casos" class="feature-card flex items-center gap-4 text-left p-4 rounded-2xl border border-gray-900 bg-black/30 shrink-0 w-[240px] md:w-full">
+                <div class="p-3 rounded-xl bg-gray-950 text-gold shadow-md shrink-0"><i data-lucide="briefcase" class="w-5 h-5"></i></div>
+                <div>
+                    <h3 class="text-xs font-bold text-white uppercase tracking-wider">Casos de Uso</h3>
+                    <p class="text-[10px] text-gray-500 mt-0.5">Aplicación en la industria</p>
+                </div>
+            </button>
+
+        </div>
+
+        <!-- Panel de Visualización Dinámico -->
+        <div class="md:col-span-7 bg-black/40 border border-gray-900 p-6 sm:p-8 rounded-[2rem] min-h-[380px] flex flex-col justify-between relative overflow-hidden">
+            
+            <div class="absolute -top-10 -right-10 w-40 h-40 bg-gold/5 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div id="dynamic-content">
+                <!-- Se inyecta dinámicamente -->
+            </div>
+
+            <!-- Caja de Conversión de Lead -->
+            <div class="mt-8 pt-6 border-t border-gray-900 flex flex-col sm:flex-row justify-between items-center gap-4 bg-gray-950/50 p-4 rounded-2xl">
+                <div>
+                    <h4 class="text-[10px] uppercase font-bold text-white tracking-widest">¿Quieres llevar esto a tu negocio?</h4>
+                    <p class="text-[9px] text-gray-500 mt-0.5">Creamos arquitecturas RAG privadas a la medida de tu empresa.</p>
+                </div>
+                <a href="https://wa.me/524423479755?text=Hola%20Daniel!%20Escane%C3%A9%20el%20QR%20del%20webinar%20y%20me%20interesa%20un%20sistema%20RAG%20como%20NotebookLM%20para%20mis%20propios%20datos" target="_blank" class="gold-gradient text-black font-black text-[9px] uppercase tracking-wider px-4 py-2.5 rounded-xl shadow-lg hover:scale-105 transition-transform shrink-0 w-full sm:w-auto text-center">
+                    Agendar Diagnóstico 🦾
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- NUEVA SECCIÓN: Comparativa Estratégica -->
+    <section class="py-16 px-6 max-w-4xl mx-auto border-t border-gray-900">
+        <div class="text-center mb-12">
+            <span class="text-gold font-bold tracking-[0.2em] text-[10px] uppercase mb-2 block">Análisis Técnico</span>
+            <h2 class="text-2xl sm:text-3xl font-black text-white italic uppercase">ChatGPT vs <span class="gold-text-gradient">NotebookLM</span></h2>
+            <p class="text-xs text-gray-400 mt-4 max-w-xl mx-auto">¿Por qué las empresas están migrando a NotebookLM para el análisis de sus documentos internos?</p>
+        </div>
+
+        <div class="grid sm:grid-cols-2 gap-6">
+            <!-- ChatGPT Card -->
+            <div class="bg-gray-900/50 border border-gray-800 p-6 rounded-2xl hover:border-gray-600 transition-colors">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center text-gray-400"><i data-lucide="bot" class="w-4 h-4"></i></div>
+                    <h3 class="font-bold text-gray-300">ChatGPT (Genérico)</h3>
+                </div>
+                <ul class="space-y-3 text-xs text-gray-500">
+                    <li class="flex items-start gap-2"><i data-lucide="x" class="w-4 h-4 text-red-500/70 shrink-0"></i> <span>Tiende a "alucinar" o inventar datos si no conoce la respuesta con exactitud.</span></li>
+                    <li class="flex items-start gap-2"><i data-lucide="x" class="w-4 h-4 text-red-500/70 shrink-0"></i> <span>Entrenado con datos de todo internet, resultando en respuestas más genéricas.</span></li>
+                    <li class="flex items-start gap-2"><i data-lucide="x" class="w-4 h-4 text-red-500/70 shrink-0"></i> <span>Difícil auditar de qué fuente o página exacta sacó una afirmación específica.</span></li>
+                </ul>
+            </div>
+
+            <!-- NotebookLM Card -->
+            <div class="bg-black/50 border border-gold/30 p-6 rounded-2xl relative overflow-hidden shadow-[0_0_20px_rgba(197,160,89,0.05)] hover:border-gold/60 transition-colors">
+                <div class="absolute top-0 right-0 w-24 h-24 bg-gold/10 rounded-full blur-2xl pointer-events-none"></div>
+                <div class="flex items-center gap-3 mb-4 relative z-10">
+                    <div class="w-8 h-8 rounded-full bg-gold/20 flex items-center justify-center text-gold border border-gold/30"><i data-lucide="cpu" class="w-4 h-4"></i></div>
+                    <h3 class="font-bold text-white">NotebookLM (RAG)</h3>
+                </div>
+                <ul class="space-y-3 text-xs text-gray-300 relative z-10">
+                    <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-gold shrink-0"></i> <span>Respuestas ancladas <strong>estrictamente</strong> a los documentos que tú subes.</span></li>
+                    <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-gold shrink-0"></i> <span>Te muestra la cita y el párrafo exacto de donde leyó la información.</span></li>
+                    <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-gold shrink-0"></i> <span>Privacidad empresarial: Tus datos cargados no entrenan al modelo base.</span></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Institucional -->
+    <footer class="bg-black py-8 px-6 text-center border-t border-gray-950 text-[9px] uppercase tracking-widest font-bold text-gray-600">
+        © 2026 DU Pixel & Code. Todos los derechos reservados. | Querétaro, México.
+    </footer>
+
+    <!-- LÓGICA DINÁMICA DE LA PÁGINA (VANILLA JS) -->
+    <script>
+        lucide.createIcons();
+
+        // Base de Datos de Información de NotebookLM
+        const infoNotebook = {
+            'fuentes': {
+                icon: 'file-text',
+                title: 'Inyección Multi-Fuente (RAG Nativo)',
+                badge: 'Núcleo del Sistema',
+                desc: 'NotebookLM te permite consolidar un "cerebro digital" subiendo hasta 50 fuentes de información por cuaderno, con un límite masivo de 500,000 palabras por fuente.',
+                pro_tip: 'No subas solo tus manuales. Sube también los PDFs de tu competencia y pídele a la IA que construya una tabla comparativa de debilidades y fortalezas.',
+                items: [
+                    '<b>Formatos Soportados:</b> Google Docs, Slides, PDFs, archivos de texto plano.',
+                    '<b>Fuentes Web Dinámicas:</b> Copia enlaces URL de páginas web completas o artículos de investigación.',
+                    '<b>Multimedia Inyectada:</b> Lee transcripciones de videos de YouTube y archivos de audio locales (como minutas de juntas en MP3).'
+                ]
+            },
+            'audio': {
+                icon: 'headphones',
+                title: 'Audio Overviews (Deep Dive Podcasts)',
+                badge: 'Herramienta Más Viral',
+                desc: 'Convierte tus aburridos manuales técnicos o reportes de auditoría en un podcast de discusión dinámico ejecutado por dos presentadores de Inteligencia Artificial.',
+                pro_tip: 'Ideal para capacitar a tu equipo de ventas. Dales un "podcast" semanal de 10 minutos con el resumen del nuevo producto para que lo escuchen rumbo a la oficina.',
+                items: [
+                    '<b>Interacción Humana:</b> Simula un debate fluido, con entonaciones naturales, interrupciones y analogías complejas.',
+                    '<b>Personalización Avanzada:</b> Puedes darle instrucciones específicas antes de generar el audio para enfocar el debate en un tema o nivel técnico.',
+                    '<b>Consumo Móvil:</b> Ideal para repasar arquitecturas de datos o flujos periciales mientras manejas al parque industrial.'
+                ]
+            },
+            'guias': {
+                icon: 'book-open',
+                title: 'Guías de Estudio Automatizadas',
+                badge: 'Estructuración Instantánea',
+                desc: 'Al inyectar tus datos, el sistema no solo los almacena, sino que genera de forma automática un set de artefactos cognitivos para acelerar tu aprendizaje.',
+                pro_tip: 'Usa el generador de FAQs para extraer las 10 preguntas más comunes de tus manuales complejos y dáselas a tu equipo de atención al cliente.',
+                items: [
+                    '<b>Generador de FAQs:</b> Detecta las dudas lógicas y genera un compendio de preguntas frecuentes con sus respuestas.',
+                    '<b>Briefing Docs:</b> Documentos ejecutivos resumidos para toma de decisiones rápidas de directores de plantas.',
+                    '<b>Líneas de Tiempo y Glosarios:</b> Extrae automáticamente fechas críticas e hitos cronológicos de contratos o manuales.'
+                ]
+            },
+            'chat': {
+                icon: 'message-square-code',
+                title: 'Chat Experto con Citación Precisa',
+                badge: 'Cero Alucinaciones',
+                desc: 'La burbuja de chat te permite interrogar a tus documentos. A diferencia de un ChatGPT genérico, NotebookLM restringe su conocimiento estrictamente a tus fuentes.',
+                pro_tip: 'Si eres perito o consultor, sube un contrato de 100 páginas y pregúntale: "¿En qué página se mencionan las penalizaciones por retraso?". Te dará el texto al instante.',
+                items: [
+                    '<b>Citas Numéricas:</b> Cada afirmación del chat incluye un número indicador.',
+                    '<b>Mapeo en Pantalla:</b> Al dar clic en la cita, la interfaz te despliega el párrafo y la página exacta del PDF original de donde se obtuvo la respuesta.',
+                    '<b>Validación Operativa:</b> Ideal para peritajes técnicos y revisiones legales donde no puedes permitirte errores de inventiva.'
+                ]
+            },
+            'workspace': {
+                icon: 'layout-dashboard',
+                title: 'Notes Studio & Workspace',
+                badge: 'Ecosistema de Redacción',
+                desc: 'Un espacio de trabajo interactivo que actúa como un lienzo digital donde puedes estructurar tus borradores finales combinando tus propias ideas con la analítica de la IA.',
+                pro_tip: 'Selecciona las notas que la IA te generó y usa el botón "Crear esquema" para que te arme el esqueleto perfecto de tu próxima presentación corporativa.',
+                items: [
+                    '<b>Anclado de Respuestas:</b> Guarda directamente cualquier respuesta brillante del chat dentro de una nota estática con un solo clic.',
+                    '<b>Generación a partir de Notas:</b> Selecciona varias notas guardadas y pídele a la IA que cree una propuesta de negocio, una publicación técnica o un resumen ejecutivo.',
+                    '<b>Filtros de Contexto:</b> Elige con precisión qué notas y qué fuentes debe usar el sistema para redactar tu siguiente entregable.'
+                ]
+            },
+            'seguridad': {
+                icon: 'shield-check',
+                title: 'Privacidad y Gobernanza B2B',
+                badge: 'Seguridad Empresarial',
+                desc: 'A diferencia de las IA gratuitas y genéricas, NotebookLM está diseñado bajo los estrictos estándares de privacidad comercial de Google Cloud.',
+                pro_tip: 'Puedes subir documentos confidenciales (estados financieros, manuales operativos) con tranquilidad; tu competencia no tendrá acceso a ellos.',
+                items: [
+                    '<b>Tus datos son tuyos:</b> Google no utiliza tus archivos cargados, ni tus chats, ni tus notas para entrenar a sus modelos base públicos.',
+                    '<b>Aislamiento de cuadernos:</b> Cada "Notebook" opera en un silo cerrado. Las fuentes de un cuaderno no se cruzan con las de otro.',
+                    '<b>Colaboración controlada:</b> Comparte el acceso a tus cuadernos de la misma forma segura que compartes un documento de Google Drive (lectura o edición).'
+                ]
+            },
+            'casos': {
+                icon: 'briefcase',
+                title: 'Casos de Uso Corporativos',
+                badge: 'Aplicación Práctica',
+                desc: 'NotebookLM no es solo para estudiantes; es una potente infraestructura RAG lista para usarse en operaciones empresariales de alto nivel.',
+                pro_tip: 'Crea un "Cuaderno" por cada departamento de tu empresa (Ej. "Notebook RRHH", "Notebook Ventas") para mantener la información hiper-enfocada y libre de ruido.',
+                items: [
+                    '<b>Equipos de Ventas:</b> Sube todos los manuales técnicos. Tus vendedores podrán preguntar especificaciones complejas en segundos antes de una llamada.',
+                    '<b>Recursos Humanos:</b> Sube políticas internas y manuales de inducción. Crea un "Asistente de Onboarding" para resolver dudas de nuevos empleados.',
+                    '<b>Abogados y Contadores:</b> Carga las últimas reformas fiscales, sentencias previas y contratos largos para hacer cruces de información y análisis de riesgo en minutos.'
+                ]
+            }
+        };
+
+        // Función para renderizar dinámicamente el contenido
+        function selectFeature(featureKey) {
+            // 1. Quitar estado activo de todos los botones
+            document.querySelectorAll('.feature-card').forEach(card => {
+                card.classList.remove('active');
+            });
+
+            // 2. Añadir estado activo al botón seleccionado
+            document.getElementById(`btn-${featureKey}`).classList.add('active');
+
+            // 3. Extraer la data
+            const data = infoNotebook[featureKey];
+
+            // 4. Construir la estructura HTML dinámica
+            let itemsHtml = '';
+            data.items.forEach(item => {
+                itemsHtml += `
+                    <li class="flex items-start gap-3 text-[11px] leading-relaxed text-gray-400">
+                        <i data-lucide="check-circle-2" class="w-4 h-4 text-gold shrink-0 mt-0.5"></i>
+                        <span>${item}</span>
+                    </li>`;
+            });
+
+            // Lógica para inyectar el Pro Tip si existe
+            let proTipHtml = data.pro_tip ? `
+                <div class="mb-6 bg-gold/10 border border-gold/20 p-4 rounded-xl relative overflow-hidden">
+                    <div class="absolute -right-4 -top-4 w-16 h-16 bg-gold/20 rounded-full blur-xl pointer-events-none"></div>
+                    <p class="text-[10px] text-gold font-bold uppercase tracking-widest mb-2 flex items-center gap-2">
+                        <i data-lucide="lightbulb" class="w-3.5 h-3.5"></i> Pro Tip de Ingeniería
+                    </p>
+                    <p class="text-xs text-gray-300 relative z-10 leading-relaxed">${data.pro_tip}</p>
+                </div>
+            ` : '';
+
+            const contentContainer = document.getElementById('dynamic-content');
+            contentContainer.innerHTML = `
+                <div class="animate-in fade-in slide-in-from-right-4 duration-300">
+                    <div class="flex justify-between items-start gap-4 mb-4">
+                        <span class="bg-gold/10 text-gold border border-gold/30 text-[8px] font-bold uppercase tracking-widest px-3 py-1 rounded-md">
+                            ${data.badge}
+                        </span>
+                        <div class="text-gold opacity-40"><i data-lucide="${data.icon}" class="w-8 h-8"></i></div>
+                    </div>
+                    <h3 class="text-lg font-bold text-white uppercase tracking-wide mb-3 italic">${data.title}</h3>
+                    <p class="text-xs text-gray-300 font-light leading-relaxed mb-6 bg-dark/40 p-4 rounded-xl border border-gray-900 shadow-inner">${data.desc}</p>
+                    
+                    ${proTipHtml}
+
+                    <h4 class="text-[10px] uppercase font-bold text-white tracking-widest mb-4 flex items-center gap-2">
+                        <i data-lucide="zap" class="w-3.5 h-3.5 text-gold"></i> Capacidades Dinámicas Clave:
+                    </h4>
+                    <ul class="space-y-4">
+                        ${itemsHtml}
+                    </ul>
+                </div>
+            `;
+
+            // 5. Reiniciar los iconos inyectados
+            lucide.createIcons();
+        }
+
+        // Carga inicial por defecto
+        window.onload = () => {
+            selectFeature('fuentes');
+        };
+    </script>
+</body>
+</html>

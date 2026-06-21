@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Masterclass IA Industrial | DU Pixel & Code</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Montserrat Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Montserrat', 'sans-serif'] },
+                    colors: { gold: '#C5A059', dark: '#050505', surface: '#121212' },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'float-delayed': 'float 6s ease-in-out 3s infinite',
+                        'spin-slow': 'spin 15s linear infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #050505; color: #e5e5e5; overflow-x: hidden; }
+        .gold-gradient { background: linear-gradient(135deg, #D4AF37 0%, #AA771C 100%); }
+        .gold-text-gradient { background: linear-gradient(135deg, #D4AF37 0%, #AA771C 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        /* Animación de fondo en movimiento */
+        .bg-animated {
+            background: linear-gradient(-45deg, #050505, #1a150b, #0a0a0a, #141005);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Glassmorphism */
+        .glass-card {
+            background: rgba(20, 20, 20, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(197, 160, 89, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Botón con brillo dinámico */
+        .btn-shine {
+            position: relative; overflow: hidden;
+        }
+        .btn-shine::after {
+            content: ''; position: absolute; top: -50%; left: -60%; width: 20%; height: 200%;
+            background: rgba(255,255,255,0.3); transform: rotate(30deg); transition: 0.5s;
+        }
+        .btn-shine:hover::after { left: 120%; transition: 0.7s ease-in-out; }
+
+        /* Clases para animación al hacer scroll */
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        
+        /* Glow para inputs */
+        input:focus, textarea:focus {
+            box-shadow: 0 0 15px rgba(197, 160, 89, 0.3);
+            border-color: #C5A059 !important;
+            outline: none;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased selection:bg-gold selection:text-black">
+
+    <!-- Navbar Minimalista -->
+    <nav class="fixed w-full z-50 top-0 bg-black/60 backdrop-blur-md border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 border border-gold/30 rounded-lg flex items-center justify-center bg-black shadow-[0_0_15px_rgba(197,160,89,0.2)]">
+                    <i data-lucide="cpu" class="w-5 h-5 text-gold"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-white font-black tracking-[0.2em] text-xs uppercase leading-none">Pixel & Code</span>
+                    <span class="text-gold font-bold text-[8px] uppercase tracking-[0.3em] mt-1">Academy</span>
+                </div>
+            </div>
+            <a href="#registro" class="text-[10px] font-bold uppercase tracking-widest text-white border border-gold/50 px-5 py-2 rounded-full hover:bg-gold hover:text-black transition-all">
+                Asegurar Lugar
+            </a>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION (Altamente Dinámico) -->
+    <section class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden bg-animated">
+        <!-- Elementos flotantes 3D en el fondo -->
+        <div class="absolute top-1/4 left-10 text-gold/10 animate-float-delayed"><i data-lucide="hexagon" class="w-32 h-32"></i></div>
+        <div class="absolute bottom-1/4 right-10 text-gold/10 animate-float"><i data-lucide="database" class="w-40 h-40"></i></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gold/5 rounded-full blur-[100px] pointer-events-none"></div>
+
+        <div class="relative z-10 max-w-5xl mx-auto px-6 text-center reveal active">
+            <span class="inline-flex items-center gap-2 bg-gold/10 border border-gold/30 text-gold text-[10px] uppercase font-bold tracking-[0.2em] px-4 py-2 rounded-full mb-8">
+                <span class="w-2 h-2 rounded-full bg-gold animate-pulse"></span> Inscripciones Abiertas
+            </span>
+            
+            <h1 class="text-4xl md:text-7xl font-black text-white leading-tight mb-6 uppercase tracking-tighter">
+                Masterclass: <br>
+                <span class="gold-text-gradient italic">Arquitectura IA para Negocios</span>
+            </h1>
+            
+            <p class="text-gray-400 text-sm md:text-lg max-w-2xl mx-auto mb-10 leading-relaxed font-light">
+                Aprende a integrar agentes autónomos (RAG), automatizar flujos operativos y transformar los datos de tu empresa en un ecosistema de alta conversión. 🚀🧠
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-5 justify-center items-center">
+                <a href="#registro" class="btn-shine gold-gradient text-black font-black px-10 py-4 rounded-full uppercase text-xs tracking-widest shadow-[0_0_30px_rgba(197,160,89,0.3)] hover:scale-105 transition-transform w-full sm:w-auto">
+                    Inscribirme Ahora
+                </a>
+                <a href="#temario" class="text-white border border-white/20 px-10 py-4 rounded-full font-bold uppercase text-xs tracking-widest hover:bg-white hover:text-black transition-colors w-full sm:w-auto">
+                    Ver Temario
+                </a>
+            </div>
+            
+            <!-- Datos Rápidos -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto mt-16 border-t border-white/10 pt-8">
+                <div class="text-center">
+                    <i data-lucide="calendar" class="w-6 h-6 text-gold mx-auto mb-2"></i>
+                    <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Fecha</p>
+                    <p class="text-sm text-white font-bold">Por Confirmar</p>
+                </div>
+                <div class="text-center">
+                    <i data-lucide="clock" class="w-6 h-6 text-gold mx-auto mb-2"></i>
+                    <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Duración</p>
+                    <p class="text-sm text-white font-bold">4 Horas</p>
+                </div>
+                <div class="text-center">
+                    <i data-lucide="video" class="w-6 h-6 text-gold mx-auto mb-2"></i>
+                    <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Modalidad</p>
+                    <p class="text-sm text-white font-bold">100% Online (En Vivo)</p>
+                </div>
+                <div class="text-center">
+                    <i data-lucide="award" class="w-6 h-6 text-gold mx-auto mb-2"></i>
+                    <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Nivel</p>
+                    <p class="text-sm text-white font-bold">Intermedio - Técnico</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TEMARIO / LO QUE APRENDERÁS -->
+    <section id="temario" class="py-24 px-6 relative">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-3xl md:text-5xl font-black text-white uppercase italic tracking-tighter mb-4">Lo que vas a <span class="gold-text-gradient">dominar</span></h2>
+                <div class="w-16 h-1 bg-gold mx-auto"></div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Tarjeta 1 -->
+                <div class="glass-card p-8 rounded-3xl hover:-translate-y-4 hover:border-gold/50 transition-all duration-500 group reveal">
+                    <div class="w-14 h-14 bg-black border border-gold/30 text-gold rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="brain-circuit" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3 uppercase tracking-wide">Agentes Cognitivos</h3>
+                    <p class="text-sm text-gray-400 leading-relaxed font-light">
+                        Creación de chatbots avanzados con LLMs (Gemini). Aprenderás a inyectarles la personalidad, reglas y base de conocimientos de tu propia empresa (Sistemas RAG). 🤖
+                    </p>
+                </div>
+                <!-- Tarjeta 2 -->
+                <div class="glass-card p-8 rounded-3xl hover:-translate-y-4 hover:border-gold/50 transition-all duration-500 group reveal">
+                    <div class="w-14 h-14 bg-black border border-gold/30 text-gold rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="workflow" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3 uppercase tracking-wide">Automatización B2B</h3>
+                    <p class="text-sm text-gray-400 leading-relaxed font-light">
+                        Conexión de APIs mediante herramientas como Make.com. Automatiza la recolección de Leads y envíalos directamente a tu CRM o WhatsApp sin intervención humana. ⚙️
+                    </p>
+                </div>
+                <!-- Tarjeta 3 -->
+                <div class="glass-card p-8 rounded-3xl hover:-translate-y-4 hover:border-gold/50 transition-all duration-500 group reveal">
+                    <div class="w-14 h-14 bg-black border border-gold/30 text-gold rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="shield-check" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3 uppercase tracking-wide">Seguridad de Datos</h3>
+                    <p class="text-sm text-gray-400 leading-relaxed font-light">
+                        Protocolos Anti-Alucinación. Aprende a estructurar System Prompts para que tu IA nunca invente precios ni prometa servicios fuera de tu catálogo oficial. 🛡️
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FORMULARIO DE REGISTRO (CON FORMSUBMIT) -->
+    <section id="registro" class="py-24 px-6 bg-black relative overflow-hidden">
+        <!-- Glow effect -->
+        <div class="absolute right-0 bottom-0 w-96 h-96 bg-gold/10 rounded-full blur-[120px] pointer-events-none"></div>
+
+        <div class="max-w-4xl mx-auto glass-card rounded-[2.5rem] p-8 md:p-12 relative z-10 reveal border border-gold/20 shadow-[0_0_50px_rgba(197,160,89,0.05)]">
+            
+            <div class="text-center mb-10">
+                <h2 class="text-3xl md:text-4xl font-black text-white uppercase italic tracking-tighter mb-4">Asegura tu <span class="gold-text-gradient">Lugar</span></h2>
+                <p class="text-sm text-gray-400">Cupo limitado para garantizar atención personalizada. Completa el registro y nos pondremos en contacto contigo.</p>
+            </div>
+
+            <!-- 
+                USO DE FORMSUBMIT: 
+                Este form envía los datos gratis a tu correo sin usar backend.
+                La primera vez que alguien lo envíe, te llegará un correo a info@dupixelcode.com pidiendo confirmar la dirección. ¡Acéptalo y listo!
+            -->
+            <form action="https://formsubmit.co/info@dupixelcode.com" method="POST" class="space-y-6">
+                <!-- Configuraciones Ocultas de Formsubmit -->
+                <input type="hidden" name="_subject" value="🚀 Nuevo Lead: Registro Masterclass IA">
+                <!-- <input type="hidden" name="_next" value="https://dupixelcode.com/gracias"> (Puedes crear una pág. de gracias o borrar esto) -->
+                <input type="hidden" name="_captcha" value="false">
+                <input type="hidden" name="_template" value="table">
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <label class="text-[10px] uppercase font-bold text-gray-400 tracking-widest ml-2">Nombre Completo</label>
+                        <input type="text" name="Nombre" required class="w-full bg-surface border border-white/10 rounded-xl px-5 py-4 text-sm text-white placeholder-gray-600 transition-all focus:border-gold" placeholder="Ing. Juan Pérez">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[10px] uppercase font-bold text-gray-400 tracking-widest ml-2">Empresa / Proyecto</label>
+                        <input type="text" name="Empresa" required class="w-full bg-surface border border-white/10 rounded-xl px-5 py-4 text-sm text-white placeholder-gray-600 transition-all focus:border-gold" placeholder="Ej. Manufacturas Industriales SA">
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <label class="text-[10px] uppercase font-bold text-gray-400 tracking-widest ml-2">WhatsApp</label>
+                        <input type="tel" name="Telefono" required class="w-full bg-surface border border-white/10 rounded-xl px-5 py-4 text-sm text-white placeholder-gray-600 transition-all focus:border-gold" placeholder="+52 442 000 0000">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[10px] uppercase font-bold text-gray-400 tracking-widest ml-2">Correo Electrónico</label>
+                        <input type="email" name="Email" required class="w-full bg-surface border border-white/10 rounded-xl px-5 py-4 text-sm text-white placeholder-gray-600 transition-all focus:border-gold" placeholder="juan@empresa.com">
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="text-[10px] uppercase font-bold text-gray-400 tracking-widest ml-2">¿Cuál es tu principal reto digital hoy?</label>
+                    <textarea name="Mensaje" rows="3" class="w-full bg-surface border border-white/10 rounded-xl px-5 py-4 text-sm text-white placeholder-gray-600 transition-all focus:border-gold resize-none" placeholder="Ej. Pierdo clientes por no contestar rápido..."></textarea>
+                </div>
+
+                <button type="submit" class="btn-shine w-full gold-gradient text-black font-black uppercase tracking-widest text-sm py-5 rounded-xl shadow-lg hover:shadow-gold/20 transition-all mt-4">
+                    Enviar Solicitud de Ingreso ✉️
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black py-8 px-6 text-center border-t border-white/5 text-[9px] uppercase tracking-widest font-bold text-gray-600">
+        © 2026 DU Pixel & Code. Arquitectura Digital Pro.
+    </footer>
+
+    <!-- Script para animaciones On-Scroll -->
+    <script>
+        lucide.createIcons();
+
+        // Lógica para revelar elementos al hacer scroll (Efecto muy dinámico)
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 100;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        reveal(); // Llamada inicial
+    </script>
+</body>
+</html>

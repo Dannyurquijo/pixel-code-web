@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daniel Urquijo | Digital Card</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { font-family: 'Montserrat', sans-serif; background-color: #050505; color: white; overflow: hidden; }
+        .gold-text { color: #C5A059; }
+        .gold-border { border-color: #C5A059; }
+        
+        /* Animación 1: Aparición suave */
+        .fade-in-up { animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(20px); }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+        
+        /* Animación 2: Borde resplandeciente */
+        .glow-box { position: relative; }
+        .glow-box::before {
+            content: ''; position: absolute; top: -2px; left: -2px; right: -2px; bottom: -2px;
+            background: linear-gradient(45deg, #C5A059, #000, #C5A059);
+            z-index: -1; filter: blur(10px); animation: glowing 3s linear infinite; border-radius: 1.5rem;
+        }
+        @keyframes glowing { 0% { background-position: 0 0; } 50% { background-position: 400% 0; } 100% { background-position: 0 0; } }
+
+        /* Animación 3: Efecto de máquina de escribir para consola */
+        .typing-effect {
+            border-right: 2px solid #C5A059;
+            white-space: nowrap; overflow: hidden;
+            animation: typing 2s steps(30, end), blink-caret .75s step-end infinite;
+        }
+        @keyframes typing { from { width: 0 } to { width: 100% } }
+        @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: #C5A059; } }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4 relative">
+    
+    <div class="absolute inset-0 opacity-20 pointer-events-none" style="background-image: radial-gradient(#C5A059 1px, transparent 1px); background-size: 30px 30px;"></div>
+
+    <main class="bg-black/80 backdrop-blur-md p-8 rounded-3xl w-full max-w-sm text-center glow-box z-10 border border-gray-800">
+        <div class="mx-auto w-24 h-24 mb-6 rounded-full overflow-hidden border-2 gold-border fade-in-up" style="animation-delay: 0.2s;">
+            <img src="pixel&pode-logo-landing.png" alt="Daniel Urquijo" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/200x200/000/C5A059?text=DU'">
+        </div>
+
+        <h1 class="text-2xl font-black uppercase tracking-widest fade-in-up" style="animation-delay: 0.4s;">Daniel Urquijo</h1>
+        <div class="inline-block mt-2 mb-6">
+            <p class="text-[10px] gold-text uppercase tracking-[0.3em] typing-effect font-mono">System.init(Ing_IA);</p>
+        </div>
+        <p class="text-xs text-gray-400 mb-8 leading-relaxed fade-in-up" style="animation-delay: 0.6s;">
+            Arquitectura Cognitiva & Automatización Industrial. Construimos empleados digitales.
+        </p>
+
+        <div class="space-y-4 fade-in-up" style="animation-delay: 0.8s;">
+            <a href="https://wa.me/524423479755" class="flex items-center justify-center gap-3 w-full bg-white text-black py-3 rounded-xl font-bold uppercase text-[10px] tracking-widest hover:bg-[#C5A059] transition-colors">
+                <i data-lucide="phone"></i> Guardar Contacto
+            </a>
+            <a href="https://dupixelcode.com" class="flex items-center justify-center gap-3 w-full bg-transparent border border-gray-600 text-white py-3 rounded-xl font-bold uppercase text-[10px] tracking-widest hover:border-[#C5A059] hover:text-[#C5A059] transition-colors">
+                <i data-lucide="globe"></i> Visitar Web
+            </a>
+            <a href="https://www.linkedin.com/company/du-pixel-code" class="flex items-center justify-center gap-3 w-full bg-transparent border border-gray-600 text-white py-3 rounded-xl font-bold uppercase text-[10px] tracking-widest hover:border-[#C5A059] hover:text-[#C5A059] transition-colors">
+                <i data-lucide="linkedin"></i> LinkedIn
+            </a>
+        </div>
+    </main>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://sdk.mercadopago.com; style-src 'self' 'unsafe-inline'; connect-src 'self' https://api.mercadopago.com /.netlify/functions/; frame-src 'self' https://www.mercadopago.com.mx https://www.mercadopago.com https://content.mercadopago.com;">
+    
+    <title>Checkout | DU Pixel & Code</title>
+    <link rel="icon" type="image/png" href="du-logo.png">
+    <script src="https://sdk.mercadopago.com/js/v2"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { theme: { extend: { colors: { gold: '#C5A059' } } } }
+    </script>
+    <style>
+        :root {
+            --bg-color: #0a0a0a; --card-bg: #151515; --card-hover: #1f1f1f;
+            --text-color: #ffffff; --text-muted: #a0a0a0; --accent-color: #C5A059;
+            --accent-hover: #d4b26f; --border-color: #333333;
+            --success-color: #22c55e; --danger-color: #ef4444;
+        }
+        
+        /* Ajuste: Cambiamos a flex-col para que el footer baje correctamente */
+        body { 
+            margin: 0; 
+            padding: 0; /* Padding movido al main wrapper */
+            font-family: 'Segoe UI', Tahoma, sans-serif; 
+            background-color: var(--bg-color); 
+            color: var(--text-color); 
+            display: flex; 
+            flex-direction: column;
+            min-height: 100vh; 
+            overflow-x: hidden; 
+        }
+        
+        /* Contenedor central para el checkout */
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        /* Lienzo de Partículas de Fondo */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Elevación y glassmorphism para el contenedor de pagos */
+        .checkout-wrapper { 
+            position: relative; 
+            z-index: 10; 
+            background-color: rgba(15, 15, 15, 0.85); 
+            backdrop-filter: blur(20px); 
+            -webkit-backdrop-filter: blur(20px); 
+            border: 1px solid var(--border-color); 
+            border-top: 4px solid var(--accent-color); 
+            border-radius: 16px; 
+            padding: 35px; 
+            width: 100%; 
+            max-width: 600px; 
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6); 
+        }
+        
+        .header { text-align: center; margin-bottom: 30px; }
+        .packages-container { display: flex; flex-direction: column; gap: 15px; margin-bottom: 30px; }
+        .package-label { display: flex; align-items: center; padding: 20px; border: 2px solid var(--border-color); border-radius: 12px; background-color: var(--card-bg); cursor: pointer; transition: all 0.3s ease; }
+        .package-label.active { border-color: var(--accent-color); background-color: rgba(197, 160, 89, 0.05); }
+        .custom-radio { width: 20px; height: 20px; border: 2px solid var(--text-muted); border-radius: 50%; margin-right: 15px; flex-shrink: 0; position: relative; }
+        .package-label.active .custom-radio { border-color: var(--accent-color); }
+        .package-label.active .custom-radio::after { content: ''; width: 10px; height: 10px; background-color: var(--accent-color); border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        .price-container { display: flex; align-items: center; gap: 10px; }
+        .original-price { text-decoration: line-through; color: var(--danger-color); font-size: 13px; }
+        .sale-price { font-size: 18px; font-weight: bold; color: var(--success-color); }
+        .btn-pay { width: 100%; padding: 16px; background-color: var(--accent-color); color: #000; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; transition: transform 0.2s ease, background-color 0.2s; }
+        .btn-pay:hover { background-color: var(--accent-hover); transform: scale(1.02); }
+    </style>
+</head>
+<body>
+
+    <canvas id="particle-canvas"></canvas>
+
+    <div class="main-content">
+        <div class="checkout-wrapper">
+            <div class="header">
+                <h1>Infraestructura Digital ⚙️</h1>
+                <p>Selecciona tu paquete y aprovecha los precios de Hot Sale 🔥</p>
+            </div>
+
+            <div class="packages-container">
+                <label class="package-label active" onclick="selectPackage('paquete_web_1')">
+                    <input type="radio" name="package" value="paquete_web_1" checked class="hidden">
+                    <div class="custom-radio"></div>
+                    <div class="package-details">
+                        <div class="package-title font-bold">💻 Web Presencia Digital</div>
+                        <div class="text-sm text-gray-400 mb-2">Landing page profesional optimizada para conversión y alta velocidad.</div>
+                        <div class="price-container">
+                            <span class="original-price">$6,900 MXN</span>
+                            <span class="sale-price">$4,830 MXN</span>
+                        </div>
+                    </div>
+                </label>
+
+                <label class="package-label" onclick="selectPackage('paquete_web_2')">
+                    <input type="radio" name="package" value="paquete_web_2" class="hidden">
+                    <div class="custom-radio"></div>
+                    <div class="package-details">
+                        <div class="package-title font-bold">🦾 Web Ecosistema Dinámico</div>
+                        <div class="text-sm text-gray-400 mb-2">Sitio web completo con integración de Chatbot Pixie para atención 24/7.</div>
+                        <div class="price-container">
+                            <span class="original-price">$8,900 MXN</span>
+                            <span class="sale-price">$6,230 MXN</span>
+                        </div>
+                    </div>
+                </label>
+
+                <label class="package-label" onclick="selectPackage('paquete_web_3')">
+                    <input type="radio" name="package" value="paquete_web_3" class="hidden">
+                    <div class="custom-radio"></div>
+                    <div class="package-details">
+                        <div class="package-title font-bold">🏢 Web Infraestructura Premium</div>
+                        <div class="text-sm text-gray-400 mb-2">Portal corporativo avanzado con arquitectura RAG y automatización de procesos.</div>
+                        <div class="price-container">
+                            <span class="original-price">$11,500 MXN</span>
+                            <span class="sale-price">$8,050 MXN</span>
+                        </div>
+                    </div>
+                </label>
+            </div>
+
+            <button id="btn-pay" class="btn-pay" onclick="iniciarPago()">Generar Link Seguro 💳</button>
+            <div id="wallet_container" class="relative z-20 mt-4"></div>
+
+            <div class="mt-6 text-center border-t border-[#333333] pt-6 relative z-20">
+                <p class="text-sm text-gray-400 mb-3">¿Ya tienes tu infraestructura web armada?</p>
+                <button onclick="abrirModalCurso()" class="text-gold font-bold text-sm uppercase tracking-widest hover:text-white transition-colors underline decoration-gold/30 underline-offset-4">
+                    ADQUIRIR ÚNICAMENTE EL CURSO DE IA 🎓
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-curso" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] hidden items-center justify-center p-4">
+        <div class="bg-[#151515] border border-[#333333] border-t-4 border-gold rounded-2xl p-8 max-w-md w-full shadow-2xl relative">
+            <button onclick="cerrarModalCurso()" class="absolute top-4 right-4 text-gray-400 hover:text-white">✕</button>
+            <h3 class="text-2xl font-black text-white uppercase italic mb-2">Masterclass IA</h3>
+            <p class="text-xs text-gray-400 uppercase tracking-widest mb-6">Acceso individual al curso de Peritajes</p>
+            <div class="bg-[#0a0a0a] p-5 rounded-xl border border-[#333333] mb-6">
+                <div class="flex justify-between items-center"><span class="text-sm text-gold">Precio Hot Sale:</span> <span class="text-2xl font-black text-green-500">$1,900 MXN</span></div>
+            </div>
+            <button id="btn-pay-curso" onclick="iniciarPagoCurso()" class="w-full bg-gold text-black font-black uppercase py-4 rounded-xl transition-transform hover:scale-105">Procesar Pago Seguro 💳</button>
+            <div id="wallet_container_curso" class="mt-4"></div>
+        </div>
+    </div>
+
+    <footer class="py-16 px-6 border-t border-white/10 text-gray-500 text-sm relative z-10 bg-black/80 w-full mt-auto">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="flex items-center gap-4">
+                <img src="pixel&code-logo-landing.png" alt="Logo" class="w-8 h-8 rounded-full grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all" onerror="this.src='https://placehold.co/100x100/111/C5A059?text=DU'">
+                <span class="tracking-[0.2em] text-[10px] uppercase font-bold text-gray-400">© 2026 DU Pixel & Code</span>
+            </div>
+            
+            <div class="flex gap-8 text-[10px] uppercase tracking-widest font-bold">
+                <a href="https://www.linkedin.com/company/du-pixel-code" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">LinkedIn</a>
+                <a href="mailto:info@dupixelcode.com" class="hover:text-white transition-colors">Email</a>
+                <button type="button" onclick="openPrivacyModal()" class="hover:text-white transition-colors">Privacidad</button>
+                <button type="button" onclick="openTermsModal()" class="hover:text-white transition-colors">Términos</button>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- SISTEMA DE PARTÍCULAS / NODOS DE FONDO ---
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let particlesArray = [];
+        let mouse = { x: null, y: null, radius: 150 };
+
+        window.addEventListener('mousemove', function(event) {
+            mouse.x = event.x;
+            mouse.y = event.y;
+        });
+
+        window.addEventListener('resize', function() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            initParticles();
+        });
+
+        class Particle {
+            constructor(x, y, directionX, directionY, size, color) {
+                this.x = x;
+                this.y = y;
+                this.directionX = directionX;
+                this.directionY = directionY;
+                this.size = size;
+                this.color = color;
+                this.baseX = this.x;
+                this.baseY = this.y;
+                this.density = (Math.random() * 30) + 1;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+            }
+            update() {
+                let dx = mouse.x - this.x;
+                let dy = mouse.y - this.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+                let forceDirectionX = dx / distance;
+                let forceDirectionY = dy / distance;
+                let maxDistance = mouse.radius;
+                let force = (maxDistance - distance) / maxDistance;
+                let directionX = forceDirectionX * force * this.density;
+                let directionY = forceDirectionY * force * this.density;
+
+                if (distance < mouse.radius) {
+                    this.x -= directionX;
+                    this.y -= directionY;
+                } else {
+                    if (this.x !== this.baseX) {
+                        let dx = this.x - this.baseX;
+                        this.x -= dx / 10;
+                    }
+                    if (this.y !== this.baseY) {
+                        let dy = this.y - this.baseY;
+                        this.y -= dy / 10;
+                    }
+                }
+
+                this.baseX += this.directionX;
+                this.baseY += this.directionY;
+
+                if(this.baseX < 0 || this.baseX > canvas.width) this.directionX = -this.directionX;
+                if(this.baseY < 0 || this.baseY > canvas.height) this.directionY = -this.directionY;
+
+                this.draw();
+            }
+        }
+
+        function initParticles() {
+            particlesArray = [];
+            let numberOfParticles = (canvas.height * canvas.width) / 12000;
+            for (let i = 0; i < numberOfParticles; i++) {
+                let size = (Math.random() * 2) + 1;
+                let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
+                let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
+                let directionX = (Math.random() * .4) - .2;
+                let directionY = (Math.random() * .4) - .2;
+                let color = 'rgba(197, 160, 89, 0.4)'; 
+                particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
+            }
+        }
+
+        function connectParticles() {
+            for (let a = 0; a < particlesArray.length; a++) {
+                for (let b = a; b < particlesArray.length; b++) {
+                    let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x))
+                    + ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
+                    if (distance < (canvas.width / 10) * (canvas.height / 10)) {
+                        let opacityValue = 1 - (distance / 20000);
+                        ctx.strokeStyle = 'rgba(255, 255, 255, ' + (opacityValue * 0.15) + ')';
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+                        ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function animateParticles() {
+            requestAnimationFrame(animateParticles);
+            ctx.clearRect(0, 0, innerWidth, innerHeight);
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+            }
+            connectParticles();
+        }
+
+        initParticles();
+        animateParticles();
+
+        // --- LÓGICA MERCADOPAGO ---
+        const mp = new MercadoPago('APP_USR-da7b2fce-2422-40fb-8136-b0f789cdf562', { locale: 'es-MX' });
+        let currentSelection = 'paquete_web_1';
+
+        function selectPackage(id) {
+            currentSelection = id;
+            document.querySelectorAll('.package-label').forEach(el => el.classList.remove('active'));
+            document.querySelector(`input[value="${id}"]`).closest('.package-label').classList.add('active');
+            document.getElementById('wallet_container').innerHTML = '';
+            document.getElementById('btn-pay').style.display = 'flex';
+        }
+
+        async function iniciarPago() {
+            const btn = document.getElementById('btn-pay');
+            btn.innerText = 'Procesando...';
+            try {
+                const res = await fetch('/.netlify/functions/API_cobros', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ paquete: currentSelection }) });
+                const data = await res.json();
+                if (data.id) {
+                    btn.style.display = 'none';
+                    mp.bricks().create("wallet", "wallet_container", { initialization: { preferenceId: data.id, redirectMode: "self" } });
+                }
+            } catch (error) {
+                btn.innerText = 'Error. Intente de nuevo.';
+            }
+        }
+
+        // Funciones del Modal
+        function abrirModalCurso() { document.getElementById('modal-curso').classList.remove('hidden'); document.getElementById('modal-curso').classList.add('flex'); }
+        function cerrarModalCurso() { document.getElementById('modal-curso').classList.add('hidden'); }
+
+        async function iniciarPagoCurso() {
+            const btn = document.getElementById('btn-pay-curso');
+            btn.innerText = 'Procesando...';
+            try {
+                const res = await fetch('/.netlify/functions/API_cobros', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ paquete: 'solo_curso' }) });
+                const data = await res.json();
+                if (data.id) {
+                    btn.style.display = 'none';
+                    mp.bricks().create("wallet", "wallet_container_curso", { initialization: { preferenceId: data.id, redirectMode: "self" } });
+                }
+            } catch (error) {
+                btn.innerText = 'Error. Intente de nuevo.';
+            }
+        }
+    </script>
+
+    <script src="privacy.js"></script>
+    <script src="terms.js"></script>
+
+</body>
+</html>

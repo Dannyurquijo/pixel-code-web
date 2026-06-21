@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Webinar: El Peritaje Acelerado | DU Pixel & Code</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Montserrat', 'sans-serif'] },
+                    colors: { gold: '#C5A059', dark: '#050505', surface: '#121212' },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'float-delayed': 'float 6s ease-in-out 3s infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #050505; color: #e5e5e5; overflow-x: hidden; }
+        .gold-gradient { background: linear-gradient(135deg, #D4AF37 0%, #AA771C 100%); }
+        .gold-text-gradient { background: linear-gradient(135deg, #D4AF37 0%, #AA771C 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        .bg-animated {
+            background: linear-gradient(-45deg, #050505, #1a150b, #0a0a0a, #141005);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .glass-card {
+            background: rgba(20, 20, 20, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(197, 160, 89, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .btn-shine { position: relative; overflow: hidden; }
+        .btn-shine::after {
+            content: ''; position: absolute; top: -50%; left: -60%; width: 20%; height: 200%;
+            background: rgba(255,255,255,0.3); transform: rotate(30deg); transition: 0.5s;
+        }
+        .btn-shine:hover::after { left: 120%; transition: 0.7s ease-in-out; }
+
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        
+        input:focus, textarea:focus {
+            box-shadow: 0 0 15px rgba(197, 160, 89, 0.3);
+            border-color: #C5A059 !important;
+            outline: none;
+        }
+
+        input[type="checkbox"] { accent-color: #C5A059; }
+    </style>
+</head>
+<body class="font-sans antialiased selection:bg-gold selection:text-black">
+
+    <nav class="fixed w-full z-50 top-0 bg-black/60 backdrop-blur-md border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 border border-gold/30 rounded-lg flex items-center justify-center bg-black shadow-[0_0_15px_rgba(197,160,89,0.2)]">
+                    <i data-lucide="cpu" class="w-5 h-5 text-gold"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-white font-black tracking-[0.2em] text-xs uppercase leading-none">DU Pixel & Code</span>
+                    <span class="text-gold font-bold text-[8px] uppercase tracking-[0.3em] mt-1">Ingeniería & IA</span>
+                </div>
+            </div>
+            <a href="#registro" class="text-[10px] font-bold uppercase tracking-widest text-white border border-gold/50 px-5 py-2 rounded-full hover:bg-gold hover:text-black transition-all">
+                Asegurar Lugar
+            </a>
+        </div>
+    </nav>
+
+    <section class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden bg-animated">
+        <div class="absolute top-1/4 left-10 text-gold/10 animate-float-delayed"><i data-lucide="hard-hat" class="w-32 h-32"></i></div>
+        <div class="absolute bottom-1/4 right-10 text-gold/10 animate-float"><i data-lucide="file-check-2" class="w-40 h-40"></i></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gold/5 rounded-full blur-[100px] pointer-events-none"></div>
+
+        <div class="relative z-10 max-w-5xl mx-auto px-6 text-center reveal active">
+            <span class="inline-flex items-center gap-2 bg-gold/10 border border-gold/30 text-gold text-[10px] uppercase font-bold tracking-[0.2em] px-4 py-2 rounded-full mb-8">
+                <span class="w-2 h-2 rounded-full bg-gold animate-pulse"></span> Alianza CienQro - Webinar Gratuito
+            </span>
+            
+            <h1 class="text-4xl md:text-7xl font-black text-white leading-tight mb-6 uppercase tracking-tighter">
+                El Peritaje <br>
+                <span class="gold-text-gradient italic">Acelerado</span>
+            </h1>
+            
+            <p class="text-gray-400 text-sm md:text-lg max-w-2xl mx-auto mb-10 leading-relaxed font-light">
+                Automatiza la redacción de tus dictámenes técnicos. Aprende el sistema probado para cruzar tus notas de campo con normativas de seguridad (NOM) usando IA en tiempo récord, sin saber programar. 🚀📋
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-5 justify-center items-center">
+                <a href="#registro" class="btn-shine gold-gradient text-black font-black px-10 py-4 rounded-full uppercase text-xs tracking-widest shadow-[0_0_30px_rgba(197,160,89,0.3)] hover:scale-105 transition-transform w-full sm:w-auto">
+                    Inscribirme al Webinar
+                </a>
+                <a href="#temario" class="text-white border border-white/20 px-10 py-4 rounded-full font-bold uppercase text-xs tracking-widest hover:bg-white hover:text-black transition-colors w-full sm:w-auto">
+                    Ver Temario
+                </a>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto mt-16 border-t border-white/10 pt-8">
+                <div class="text-center">
+                    <i data-lucide="calendar" class="w-6 h-6 text-gold mx-auto mb-2"></i>
+                    <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Fecha</p>
+                    <p class="text-sm text-white font-bold">9 de Junio 2026</p>
+                </div>
+                <div class="text-center">
+                    <i data-lucide="clock" class="w-6 h-6 text-gold mx-auto mb-2"></i>
+                    <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Duración</p>
+                    <p class="text-sm text-white font-bold">1 Hora (Práctica)</p>
+                </div>
+                <div class="text-center">
+                    <i data-lucide="video" class="w-6 h-6 text-gold mx-auto mb-2"></i>
+                    <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Modalidad</p>
+                    <p class="text-sm text-white font-bold">100% Online (En Vivo)</p>
+                </div>
+                <div class="text-center">
+                    <i data-lucide="award" class="w-6 h-6 text-gold mx-auto mb-2"></i>
+                    <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Inversión</p>
+                    <p class="text-sm text-white font-bold text-gold">Gratuito</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="temario" class="py-24 px-6 relative">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-3xl md:text-5xl font-black text-white uppercase italic tracking-tighter mb-4">El Flujo <span class="gold-text-gradient">Técnico</span></h2>
+                <div class="w-16 h-1 bg-gold mx-auto mb-4"></div>
+                <p class="text-gray-400">Descubre los 3 ejercicios prácticos que transformarán tu manera de trabajar.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="glass-card p-8 rounded-3xl hover:-translate-y-4 hover:border-gold/50 transition-all duration-500 group reveal">
+                    <div class="w-14 h-14 bg-black border border-gold/30 text-gold rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="mic" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3 uppercase tracking-wide">1. Captura en Trinchera</h3>
+                    <p class="text-sm text-gray-400 leading-relaxed font-light">
+                        <strong>Cero transcripción manual.</strong> Aprenderás a usar Google Keep y el dictado por voz para registrar hallazgos de obra en tiempo real y sincronizarlos automáticamente a tu computadora. 📱
+                    </p>
+                </div>
+                <div class="glass-card p-8 rounded-3xl hover:-translate-y-4 hover:border-gold/50 transition-all duration-500 group reveal">
+                    <div class="w-14 h-14 bg-black border border-gold/30 text-gold rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="brain-circuit" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3 uppercase tracking-wide">2. El Cerebro Normativo</h3>
+                    <p class="text-sm text-gray-400 leading-relaxed font-light">
+                        <strong>Análisis infalible.</strong> Configuraremos NotebookLM para cargar tus normas de seguridad y cruzarlas con tus notas de campo para identificar incumplimientos al instante. 🧠
+                    </p>
+                </div>
+                <div class="glass-card p-8 rounded-3xl hover:-translate-y-4 hover:border-gold/50 transition-all duration-500 group reveal">
+                    <div class="w-14 h-14 bg-black border border-gold/30 text-gold rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="file-signature" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3 uppercase tracking-wide">3. Dictamen Automático</h3>
+                    <p class="text-sm text-gray-400 leading-relaxed font-light">
+                        <strong>Del borrador al PDF.</strong> Crearemos una plantilla maestra en Google Docs lista para recibir la información procesada por la IA y exportar un documento oficial profesional. 📄
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="registro" class="py-24 px-6 bg-black relative overflow-hidden">
+        <div class="absolute right-0 bottom-0 w-96 h-96 bg-gold/10 rounded-full blur-[120px] pointer-events-none"></div>
+
+        <div class="max-w-4xl mx-auto glass-card rounded-[2.5rem] p-8 md:p-12 relative z-10 reveal border border-gold/20 shadow-[0_0_50px_rgba(197,160,89,0.05)]">
+            
+            <div class="text-center mb-10">
+                <h2 class="text-3xl md:text-4xl font-black text-white uppercase italic tracking-tighter mb-4">Asegura tu <span class="gold-text-gradient">Lugar</span></h2>
+                <p class="text-sm text-gray-400">Cupo limitado para garantizar estabilidad en la transmisión. Completa tu registro y recibirás la confirmación al instante. ✅</p>
+            </div>
+
+            <form id="webinarForm" action="https://hook.eu1.make.com/nqz3bnsb3578r4vuw3fnttlg7bmmxnld" method="POST" class="space-y-6">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <label class="text-[10px] uppercase font-bold text-gray-400 tracking-widest ml-2">Nombre Completo</label>
+                        <input type="text" name="Nombre" required minlength="3" title="Por favor ingresa tu nombre real (mínimo 3 letras)" class="w-full bg-surface border border-white/10 rounded-xl px-5 py-4 text-sm text-white placeholder-gray-600 transition-all focus:border-gold" placeholder="Ing. Juan Pérez">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[10px] uppercase font-bold text-gray-400 tracking-widest ml-2">Especialidad / Rama</label>
+                        <input type="text" name="Especialidad" required minlength="3" title="Ingresa tu especialidad" class="w-full bg-surface border border-white/10 rounded-xl px-5 py-4 text-sm text-white placeholder-gray-600 transition-all focus:border-gold" placeholder="Ej. Perito Estructural, Eléctrico, etc.">
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <label class="text-[10px] uppercase font-bold text-gray-400 tracking-widest ml-2">WhatsApp</label>
+                        <input type="tel" name="Telefono" required pattern="[\+0-9\s]{10,15}" title="Ingresa un número válido de al menos 10 dígitos (puedes usar el código de país +52)" class="w-full bg-surface border border-white/10 rounded-xl px-5 py-4 text-sm text-white placeholder-gray-600 transition-all focus:border-gold" placeholder="+52 442 000 0000">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[10px] uppercase font-bold text-gray-400 tracking-widest ml-2">Correo Electrónico</label>
+                        <input type="email" name="Email" required pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$" title="Ingresa un correo electrónico real y válido" class="w-full bg-surface border border-white/10 rounded-xl px-5 py-4 text-sm text-white placeholder-gray-600 transition-all focus:border-gold" placeholder="juan@empresa.com">
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-3 mt-4 bg-surface/50 p-4 rounded-xl border border-white/5">
+                    <input type="checkbox" id="privacy" name="Acepta_Privacidad" required class="mt-1 w-5 h-5 bg-surface border-white/10 rounded cursor-pointer">
+                    <label for="privacy" class="text-xs text-gray-400 font-light leading-snug cursor-pointer">
+                        He leído y acepto el Aviso de Privacidad detallado al final de esta página y consiento el tratamiento de mis datos para recibir el enlace de acceso y avisos del evento. ⚖️
+                    </label>
+                </div>
+
+                <button type="submit" class="btn-shine w-full gold-gradient text-black font-black uppercase tracking-widest text-sm py-5 rounded-xl shadow-lg hover:shadow-gold/20 transition-all mt-4 flex justify-center items-center gap-2">
+                    Completar Registro ✉️
+                </button>
+            </form>
+        </div>
+
+        <div id="aviso" class="max-w-4xl mx-auto mt-12 text-center text-xs text-gray-500 font-light leading-relaxed px-4">
+            <h4 class="font-bold text-gray-400 mb-2 uppercase tracking-widest">Aviso de Privacidad</h4>
+            <p>
+                DU Pixel & Code es el responsable del uso y protección de sus datos personales. La información recabada (nombre, correo electrónico y número telefónico) será utilizada única y exclusivamente con fines de registro, control de asistencia y envío de accesos para el webinar "El Peritaje Acelerado", así como para el envío posterior de información académica y comercial estrictamente relacionada con nuestras capacitaciones tecnológicas. Sus datos están protegidos conforme a las leyes mexicanas vigentes y no serán comercializados ni transferidos a terceros. 🛡️
+            </p>
+        </div>
+    </section>
+
+    <footer class="bg-black py-8 px-6 text-center border-t border-white/5 text-[9px] uppercase tracking-widest font-bold text-gray-600">
+        © 2026 DU Pixel & Code. Herramientas IA para Ingenieros.
+    </footer>
+
+    <script>
+        // Inicializar iconos
+        lucide.createIcons();
+
+        // Animaciones al hacer scroll
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 100;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        reveal(); // Llamada inicial
+
+        // Interceptar el envío del formulario para enviarlo a Make y luego redirigir a gracias.html
+        const form = document.getElementById('webinarForm');
+        
+        form.addEventListener('submit', function(e) {
+            e.preventDefault(); // Evita que la página salte directamente al webhook de Make
+            
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            
+            // Cambiar el botón a estado de carga
+            submitBtn.innerHTML = 'Procesando... ⏳';
+            submitBtn.disabled = true;
+            submitBtn.classList.add('opacity-70', 'cursor-not-allowed');
+
+            const formData = new FormData(form);
+
+            // Envía los datos al Webhook de Make
+            fetch(form.action, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                // Si la conexión es exitosa, redirigimos a la página de gracias
+                window.location.href = 'gracias.html';
+            })
+            .catch(error => {
+                // Si algo falla, restauramos el botón
+                console.error('Error:', error);
+                alert('Hubo un problema con la conexión. Por favor, intenta de nuevo.');
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+            });
+        });
+    </script>
+</body>
+</html>

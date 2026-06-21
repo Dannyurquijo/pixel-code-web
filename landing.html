@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://formsubmit.co; img-src 'self' data: https://placehold.co px.ads.linkedin.com https://images.unsplash.com;">
+    
+    <title>Registro de Proyecto | Pixel & Code</title>
+    <link rel="icon" type="image/png" href="du-logo.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Montserrat', 'sans-serif'] },
+                    colors: { 
+                        gold: '#C5A059', 
+                        dark: '#050505', 
+                        surface: '#111111',
+                        glass: 'rgba(255, 255, 255, 0.03)'
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(40px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #050505; color: #ffffff; }
+        
+        /* Glassmorphism premium */
+        .glass-panel {
+            background: rgba(20, 20, 20, 0.4);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .gold-gradient { background: linear-gradient(135deg, #D4AF37 0%, #AA771C 100%); }
+        .gold-text-gradient { 
+            background: linear-gradient(135deg, #E6C875 0%, #C5A059 50%, #906A20 100%); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+        }
+
+        /* Botón con brillo dinámico */
+        .btn-shine {
+            position: relative; overflow: hidden;
+        }
+        .btn-shine::after {
+            content: ''; position: absolute; top: -50%; left: -60%; width: 20%; height: 200%;
+            background: rgba(255,255,255,0.3); transform: rotate(30deg); transition: 0.5s;
+        }
+        .btn-shine:hover::after { left: 120%; transition: 0.7s ease-in-out; }
+
+        /* Estilos de Inputs para Dark Mode */
+        input:focus, textarea:focus, select:focus {
+            box-shadow: 0 0 15px rgba(197, 160, 89, 0.15);
+            border-color: #C5A059 !important;
+            background-color: rgba(255, 255, 255, 0.08) !important;
+            outline: none;
+        }
+        
+        /* Select dropdown dark styling */
+        select option {
+            background-color: #111111;
+            color: #ffffff;
+        }
+        select optgroup {
+            background-color: #0a0a0a;
+            color: #C5A059;
+            font-weight: 700;
+        }
+
+        .start-transparent { opacity: 0; }
+
+        /* Lienzo de Partículas de Fondo */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased min-h-screen flex flex-col relative overflow-x-hidden selection:bg-gold selection:text-black">
+    
+    <canvas id="particle-canvas"></canvas>
+
+    <nav class="fixed top-4 md:top-8 left-1/2 -translate-x-1/2 w-[92%] md:w-[85%] max-w-4xl z-50 glass-panel rounded-full px-4 sm:px-6 py-3 flex justify-between items-center transition-all duration-500 shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
+        <div class="flex items-center gap-3 cursor-pointer group" onclick="window.location.href='index.html'">
+            <img src="pixel&code-logo-landing.png" alt="DU Logo" class="h-10 w-10 sm:h-12 sm:w-12 object-cover rounded-full border border-white/10 group-hover:border-gold transition-colors duration-500" onerror="this.src='https://placehold.co/100x100/111/C5A059?text=DU'">
+            <div class="flex flex-col hidden sm:flex">
+                <span class="text-white font-bold tracking-[0.1em] text-[11px] uppercase leading-none group-hover:text-gold transition-colors duration-300">Pixel & Code</span>
+            </div>
+        </div>
+        
+        <a href="index.html" class="text-[10px] uppercase tracking-widest font-bold text-gray-400 hover:text-white flex items-center gap-2 transition-colors border border-gray-800 hover:border-white/30 px-4 py-2.5 rounded-full bg-black/50">
+            <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Volver al Inicio
+        </a>
+    </nav>
+
+    <main class="flex-1 flex items-center justify-center p-4 sm:p-6 pt-32 pb-16 md:pt-40 md:pb-24 relative z-10 w-full">
+        <div class="max-w-3xl w-full glass-panel rounded-[2.5rem] shadow-[0_0_50px_rgba(0,0,0,0.8)] border border-white/10 overflow-hidden start-transparent animate-fade-in-up">
+            
+            <div class="bg-black/40 p-8 md:p-12 text-center relative overflow-hidden border-b border-white/5">
+                <h1 class="text-3xl md:text-5xl font-black text-white italic mb-3 tracking-tighter relative z-10">Inicia tu Proyecto</h1>
+                <p class="text-gold font-bold text-[10px] md:text-xs uppercase tracking-[0.3em] relative z-10">Arquitectura Digital & Academia</p>
+            </div>
+
+            <form action="https://formsubmit.co/TU_HASH_AQUI" method="POST" class="p-8 md:p-12 space-y-6 md:space-y-8">
+                
+                <input type="hidden" name="_subject" value="🎯 Nuevo Lead - Proyecto Pixel & Code">
+                <input type="hidden" name="_captcha" value="false">
+                <input type="hidden" name="_template" value="table">
+                
+                <div class="grid md:grid-cols-2 gap-6 md:gap-8">
+                    <div class="space-y-2.5">
+                        <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-2">Nombre Completo</label>
+                        <input type="text" name="Nombre" required class="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-sm text-white placeholder-gray-600 transition-all" placeholder="Ej. Ing. Rubén Rivera">
+                    </div>
+                    <div class="space-y-2.5">
+                        <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-2">Empresa / Proyecto</label>
+                        <input type="text" name="Empresa" required class="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-sm text-white placeholder-gray-600 transition-all" placeholder="Nombre de tu marca">
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6 md:gap-8">
+                    <div class="space-y-2.5">
+                        <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-2">Correo Electrónico</label>
+                        <input type="email" name="Email" required class="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-sm text-white placeholder-gray-600 transition-all" placeholder="tu@correo.com">
+                    </div>
+                    <div class="space-y-2.5">
+                        <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-2">WhatsApp</label>
+                        <input type="tel" name="WhatsApp" required class="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-sm text-white placeholder-gray-600 transition-all" placeholder="A 10 dígitos">
+                    </div>
+                </div>
+
+                <div class="space-y-2.5">
+                    <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-2">Servicio o Curso de Interés</label>
+                    <select name="Servicio_Interes" id="plan-select" class="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-sm text-white transition-all cursor-pointer appearance-none">
+                        <option value="Asesoría General">No estoy seguro, necesito asesoría</option>
+                        
+                        <optgroup label="Servicios Web & IA">
+                            <option value="Emprendedor ($6,900 MXN)" data-plan="emprendedor">Emprendedor ($6,900 MXN) - Presencia Básica</option>
+                            <option value="Negocio Local + IA ($8,900 MXN)" data-plan="ia">Negocio Local + IA ($8,900 MXN) - Nuestro Hit ⭐</option>
+                            <option value="Empresarial ($11,500 MXN)" data-plan="empresarial">Empresarial ($11,500 MXN) - Escalabilidad</option>
+                        </optgroup>
+
+                        <optgroup label="Academia (Cursos IA)">
+                            <option value="Curso: IA Básico para Negocios" data-plan="ia_basico">Curso: IA Básico para Negocios</option>
+                            <option value="Curso: IA para Peritajes" data-plan="ia_peritajes">Curso: IA para Peritajes</option>
+                            <option value="Curso: IA Administrativos" data-plan="ia_administrativos">Curso: IA Administrativos</option>
+                            <option value="Curso: IA para Negocios" data-plan="ia_negocios">Curso: IA para Negocios (Estrategia)</option>
+                        </optgroup>
+                    </select>
+                </div>
+
+                <div class="space-y-2.5">
+                    <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-2">Cuéntanos sobre tu proyecto</label>
+                    <textarea name="Mensaje" rows="4" required class="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-sm text-white placeholder-gray-600 transition-all resize-none" placeholder="¿Qué objetivos quieres lograr con tu ecosistema web, automatización o qué esperas aprender en el curso?"></textarea>
+                </div>
+
+                <div class="flex items-start gap-3 mt-4 mb-2">
+                    <input type="checkbox" id="aviso_privacidad_terminos" required class="mt-1 bg-white/5 border-white/10 rounded cursor-pointer accent-gold w-4 h-4 flex-shrink-0">
+                    <label for="aviso_privacidad_terminos" class="text-xs text-gray-400 font-light leading-snug">
+                        He leído y acepto el <button type="button" onclick="openPrivacyModal()" class="text-gold font-bold underline decoration-gold/30 underline-offset-2 hover:text-white transition-colors">Aviso de Privacidad Integral</button> y los <button type="button" onclick="openTermsModal()" class="text-gold font-bold underline decoration-gold/30 underline-offset-2 hover:text-white transition-colors">Términos y Condiciones</button>.
+                    </label>
+                </div>
+
+                <button type="submit" class="btn-shine w-full bg-white text-black font-black px-8 py-5 rounded-xl uppercase text-xs tracking-[0.2em] shadow-[0_0_30px_rgba(255,255,255,0.15)] hover:bg-gold hover:shadow-gold/20 hover:scale-[1.02] transition-all flex justify-center items-center gap-3 mt-8">
+                    Enviar Solicitud <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
+                
+                <p class="text-center text-[9px] text-gray-500 mt-6 uppercase tracking-widest">Tus datos están encriptados y protegidos bajo nuestras políticas vigentes.</p>
+            </form>
+        </div>
+    </main>
+
+    <footer class="bg-black/60 backdrop-blur-md py-16 px-6 border-t border-white/10 text-gray-500 text-sm mt-auto relative z-10 w-full">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="flex items-center gap-4">
+                <img src="pixel&code-logo-landing.png" alt="Logo" class="w-8 h-8 rounded-full grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all" onerror="this.src='https://placehold.co/100x100/111/C5A059?text=DU'">
+                <span class="tracking-[0.2em] text-[10px] uppercase font-bold text-gray-400">© 2026 DU Pixel & Code</span>
+            </div>
+            
+            <div class="flex gap-8 text-[10px] uppercase tracking-widest font-bold">
+                <a href="https://www.linkedin.com/company/du-pixel-code" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">LinkedIn</a>
+                <a href="mailto:info@dupixelcode.com" class="hover:text-white transition-colors">Email</a>
+                <button type="button" onclick="openPrivacyModal()" class="hover:text-white transition-colors">Privacidad</button>
+                <button type="button" onclick="openTermsModal()" class="hover:text-white transition-colors">Términos</button>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+        
+        // --- SISTEMA DE PARTÍCULAS / NODOS DE FONDO ---
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let particlesArray = [];
+        let mouse = { x: null, y: null, radius: 150 };
+
+        window.addEventListener('mousemove', function(event) {
+            mouse.x = event.x;
+            mouse.y = event.y;
+        });
+
+        window.addEventListener('resize', function() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            initParticles();
+        });
+
+        class Particle {
+            constructor(x, y, directionX, directionY, size, color) {
+                this.x = x;
+                this.y = y;
+                this.directionX = directionX;
+                this.directionY = directionY;
+                this.size = size;
+                this.color = color;
+                this.baseX = this.x;
+                this.baseY = this.y;
+                this.density = (Math.random() * 30) + 1;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+            }
+            update() {
+                let dx = mouse.x - this.x;
+                let dy = mouse.y - this.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+                let forceDirectionX = dx / distance;
+                let forceDirectionY = dy / distance;
+                let maxDistance = mouse.radius;
+                let force = (maxDistance - distance) / maxDistance;
+                let directionX = forceDirectionX * force * this.density;
+                let directionY = forceDirectionY * force * this.density;
+
+                if (distance < mouse.radius) {
+                    this.x -= directionX;
+                    this.y -= directionY;
+                } else {
+                    if (this.x !== this.baseX) {
+                        let dx = this.x - this.baseX;
+                        this.x -= dx / 10;
+                    }
+                    if (this.y !== this.baseY) {
+                        let dy = this.y - this.baseY;
+                        this.y -= dy / 10;
+                    }
+                }
+
+                this.baseX += this.directionX;
+                this.baseY += this.directionY;
+
+                if(this.baseX < 0 || this.baseX > canvas.width) this.directionX = -this.directionX;
+                if(this.baseY < 0 || this.baseY > canvas.height) this.directionY = -this.directionY;
+
+                this.draw();
+            }
+        }
+
+        function initParticles() {
+            particlesArray = [];
+            let numberOfParticles = (canvas.height * canvas.width) / 12000;
+            for (let i = 0; i < numberOfParticles; i++) {
+                let size = (Math.random() * 2) + 1;
+                let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
+                let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
+                let directionX = (Math.random() * .4) - .2;
+                let directionY = (Math.random() * .4) - .2;
+                let color = 'rgba(197, 160, 89, 0.4)'; 
+                particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
+            }
+        }
+
+        function connectParticles() {
+            for (let a = 0; a < particlesArray.length; a++) {
+                for (let b = a; b < particlesArray.length; b++) {
+                    let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x))
+                    + ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
+                    if (distance < (canvas.width / 10) * (canvas.height / 10)) {
+                        let opacityValue = 1 - (distance / 20000);
+                        ctx.strokeStyle = 'rgba(255, 255, 255, ' + (opacityValue * 0.15) + ')';
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+                        ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function animateParticles() {
+            requestAnimationFrame(animateParticles);
+            ctx.clearRect(0, 0, innerWidth, innerHeight);
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+            }
+            connectParticles();
+        }
+
+        initParticles();
+        animateParticles();
+
+        // --- LÓGICA DE AUTO-SELECCIÓN EXACTA (Protegida de colisiones) ---
+        document.addEventListener("DOMContentLoaded", function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const plan = urlParams.get('plan');
+            const select = document.getElementById('plan-select');
+            
+            if(plan) {
+                const planLower = plan.toLowerCase();
+                Array.from(select.options).forEach(option => {
+                    if(option.dataset.plan === planLower) {
+                        option.selected = true;
+                    }
+                });
+            }
+        });
+    </script>
+
+    <script src="privacy.js"></script>
+    <script src="terms.js"></script>
+</body>
+</html>

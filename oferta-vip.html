@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planes VIP - DU Pixel & Code</title>
+    <meta name="robots" content="noindex, nofollow">
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: #151b2b;
+            --primary: #deff9a; /* Color acento tecnológico */
+            --primary-dark: #b8d977;
+            --text-main: #ffffff;
+            --text-muted: #8b949e;
+            --border-color: #30363d;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 50px 20px;
+        }
+
+        .header-title {
+            text-align: center;
+            margin-bottom: 50px;
+            max-width: 700px;
+        }
+
+        .header-title h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            color: var(--text-main);
+        }
+
+        .header-title h1 span {
+            color: var(--primary);
+        }
+
+        .header-title p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .pricing-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .pricing-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 40px 30px;
+            width: 100%;
+            max-width: 350px;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+
+        /* Etiqueta VIP */
+        .badge {
+            background-color: var(--primary);
+            color: #000;
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 5px 12px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .plan-name {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .plan-price {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .plan-price span.currency {
+            font-size: 1.2rem;
+            margin-top: 8px;
+            margin-right: 5px;
+            color: var(--text-muted);
+        }
+
+        .plan-price span.mxn {
+            font-size: 1rem;
+            font-weight: 400;
+            margin-left: 8px;
+            margin-top: auto;
+            margin-bottom: 8px;
+            color: var(--text-muted);
+        }
+
+        .features-list {
+            list-style: none;
+            margin-bottom: 40px;
+            flex-grow: 1;
+        }
+
+        .features-list li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .features-list li svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--primary);
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+
+        .features-list li.highlight {
+            color: var(--bg-color);
+            font-weight: 600;
+            background: var(--primary);
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .btn-pay {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 8px;
+            background-color: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .btn-pay:hover {
+            background-color: var(--primary);
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-title">
+        <h1>Oferta <span>Exclusiva</span></h1>
+        <p>Selecciona tu paquete de desarrollo web hoy mismo y desbloquea el acceso total al curso "El Peritaje Acelerado" sin costo adicional.</p>
+    </div>
+
+    <div class="pricing-container">
+        <div class="pricing-card">
+            <div class="badge">Bono Incluido</div>
+            <div class="plan-name">Paquete Web 1</div>
+            <div class="plan-price">
+                <span class="currency">$</span>4,830<span class="mxn">MXN</span>
+            </div>
+            <ul class="features-list">
+                <li><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>Desarrollo Web Profesional</li>
+                <li><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>Diseño 100% Responsivo</li>
+                <li><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>Integración Básica</li>
+                <li class="highlight">🎁 + Curso "El Peritaje Acelerado"</li>
+            </ul>
+            <a href="https://mpago.la/2gGjMeh" target="_blank" onclick="redirigirPostPago()" class="btn-pay">Contratar Paquete 1</a>
+        </div>
+
+        <div class="pricing-card">
+            <div class="badge">Bono Incluido</div>
+            <div class="plan-name">Paquete Web 2</div>
+            <div class="plan-price">
+                <span class="currency">$</span>6,230<span class="mxn">MXN</span>
+            </div>
+            <ul class="features-list">
+                <li><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>Todo lo del Paquete 1</li>
+                <li><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>Estructura Avanzada</li>
+                <li><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>Automatización Básica</li>
+                <li class="highlight">🎁 + Curso "El Peritaje Acelerado"</li>
+            </ul>
+            <a href="https://mpago.la/1PFn6CN" target="_blank" onclick="redirigirPostPago()" class="btn-pay">Contratar Paquete 2</a>
+        </div>
+
+        <div class="pricing-card">
+            <div class="badge">Bono Incluido</div>
+            <div class="plan-name">Paquete Web 3</div>
+            <div class="plan-price">
+                <span class="currency">$</span>8,050<span class="mxn">MXN</span>
+            </div>
+            <ul class="features-list">
+                <li><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>Todo lo del Paquete 2</li>
+                <li><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>Ecosistema Digital Completo</li>
+                <li><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>Integración IA / Make</li>
+                <li class="highlight">🎁 + Curso "El Peritaje Acelerado"</li>
+            </ul>
+            <a href="https://mpago.la/1NTFngx" target="_blank" onclick="redirigirPostPago()" class="btn-pay">Contratar Paquete 3</a>
+        </div>
+    </div>
+
+    <script>
+        function redirigirPostPago() {
+            // Este script detecta cuando dan clic al botón de pago.
+            // Se abre la pestaña de Mercado Pago y esta pestaña original espera 3.5 segundos.
+            setTimeout(function() {
+                // Redirige a la página correcta de pago exitoso
+                window.location.href = "pago-exitoso.html"; 
+            }, 3500);
+        }
+    </script>
+
+</body>
+</html>

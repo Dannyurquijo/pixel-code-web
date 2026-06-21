@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estado de tu Solicitud | DU Pixel & Code</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: '#C5A059',
+                        darkBg: '#0b0f19',
+                        cardBg: '#151b2b'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-darkBg text-white min-h-screen flex flex-col items-center justify-center p-4 font-sans">
+
+    <div class="max-w-2xl w-full bg-cardBg border border-gray-800 rounded-2xl p-8 shadow-2xl text-center border-t-4 border-gold">
+        
+        <div class="flex justify-center mb-6">
+            <div class="animate-spin rounded-full h-14 w-14 border-b-2 border-gold"></div>
+        </div>
+
+        <h1 id="main-title" class="text-3xl font-black uppercase italic tracking-wide mb-2 text-white">
+            En espera de tu pago ⏳
+        </h1>
+        <p class="text-gray-400 text-sm mb-8 max-w-md mx-auto">
+            Estamos validando la transacción con la pasarela de Mercado Pago. Esto puede tomar desde unos segundos hasta un par de minutos según tu banco o método de elección.
+        </p>
+
+        <div id="instrucciones-container" class="text-left bg-[#0a0a0a]/60 p-6 rounded-xl border border-gray-800 mb-8">
+            </div>
+
+        <div class="border-t border-gray-800 pt-6 text-sm text-gray-400">
+            <p class="mb-3">¿Realizaste un depósito en efectivo (OXXO) o tienes alguna duda con tu activación?</p>
+            <a href="https://wa.me/52XXXXXXXXXX?text=Hola,%20acabo%20de%20realizar%20mi%20solicitud%20y%20me%20encuentro%20en%20la%20pantalla%20de%20espera." 
+               target="_blank" 
+               class="inline-flex items-center text-gold font-bold hover:underline gap-1">
+                💬 Notificar o Contactar a Soporte Técnico Vía WhatsApp
+            </a>
+        </div>
+
+    </div>
+
+    <script>
+        // Captura de los parámetros incrustados en la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const producto = urlParams.get('prod') || 'curso'; // Fallback por defecto a curso si no se envía parámetro
+
+        const contenedor = document.getElementById('instrucciones-container');
+        const tituloPrincipal = document.getElementById('main-title');
+
+        // Lógica de Renderizado Condicional
+        if (producto === 'curso') {
+            tituloPrincipal.innerHTML = '¡Registro Iniciado! 🎓';
+            contenedor.innerHTML = `
+                <h2 class="text-gold font-bold uppercase tracking-wider text-xs mb-4">🚀 Instrucciones para tu acceso a la Masterclass:</h2>
+                <ul class="space-y-4 text-gray-300 text-sm">
+                    <li class="flex items-start">
+                        <span class="text-gold font-bold mr-3">1.</span>
+                        <span><b>Monitorea tu correo:</b> En cuanto el pago se vea reflejado en el sistema, recibirás una notificación de confirmación automatizada (revisa carpetas de Promociones o Spam).</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-gold font-bold mr-3">2.</span>
+                        <span><b>Descarga de Recursos:</b> Dentro del cuerpo de ese correo encontrarás los links directos para acceder a la biblioteca técnica de <b>NotebookLM</b> y las diapositivas de Google Slides.</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-gold font-bold mr-3">3.</span>
+                        <span><b>Comunidad de Alumnos:</b> El mismo mensaje incluirá el enlace de invitación para unirte al grupo exclusivo de WhatsApp.</span>
+                    </li>
+                </ul>
+            `;
+        } else {
+            // Aplica para 'combo', 'web' o cualquier paquete integral
+            tituloPrincipal.innerHTML = '¡Proyecto Recibido! 💻';
+            contenedor.innerHTML = `
+                <h2 class="text-gold font-bold uppercase tracking-wider text-xs mb-4">⚙️ Próximos pasos para tu Infraestructura Digital + Curso:</h2>
+                <ul class="space-y-4 text-gray-300 text-sm">
+                    <li class="flex items-start">
+                        <span class="text-gold font-bold mr-3">1.</span>
+                        <span><b>Activación de Arquitectura:</b> Los datos de tu negocio entrarán al flujo de procesamiento en <b>Make</b> para preparar tu entorno de desarrollo en Netlify.</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-gold font-bold mr-3">2.</span>
+                        <span><b>Llamada de Alineación Técnica (Kick-off):</b> Recibirás un enlace de Calendly en tu correo para programar la sesión inicial donde definiremos los requerimientos de tu sitio web (Presencia, Pixie o RAG).</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-gold font-bold mr-3">3.</span>
+                        <span><b>Acceso Inmediato al Bono:</b> Los accesos para la Masterclass de IA se liberarán de forma independiente en tu bandeja de entrada para que comiences tu capacitación técnica hoy mismo.</span>
+                    </li>
+                </ul>
+            `;
+        }
+    </script>
+</body>
+</html>

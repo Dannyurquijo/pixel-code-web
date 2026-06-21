@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://placehold.co https://images.unsplash.com; connect-src 'self';">
+    
+    <title>Academia de IA | DU Pixel & Code</title>
+    <link rel="icon" type="image/png" href="du-logo.png">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Montserrat', 'sans-serif'] },
+                    colors: { 
+                        gold: '#C5A059', 
+                        dark: '#050505', 
+                        surface: '#111111',
+                        glass: 'rgba(255, 255, 255, 0.03)'
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(40px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #050505; color: #ffffff; overflow-x: hidden; }
+        
+        /* Glassmorphism corporativo */
+        .glass-panel {
+            background: rgba(15, 15, 15, 0.6);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        .gold-text-gradient { 
+            background: linear-gradient(135deg, #E6C875 0%, #C5A059 50%, #906A20 100%); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+        }
+
+        .shimmer-text {
+            background: linear-gradient(90deg, #C5A059 0%, #ffffff 50%, #C5A059 100%);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: shimmer 3s linear infinite;
+        }
+        @keyframes shimmer {
+            to { background-position: 200% center; }
+        }
+
+        .card-glow {
+            transition: all 0.5s ease;
+        }
+        .card-glow:hover {
+            box-shadow: 0 0 30px rgba(197, 160, 89, 0.15);
+            border-color: rgba(197, 160, 89, 0.5);
+            transform: translateY(-4px);
+        }
+
+        .start-transparent { opacity: 0; }
+        
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #C5A059; }
+
+        /* Contenedor WebGL Optimizado */
+        #shader-canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -10;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased min-h-screen flex flex-col relative selection:bg-gold selection:text-black">
+
+    <div id="shader-canvas-container">
+        <canvas id="shader-canvas" style="display:block;width:100%;height:100%"></canvas>
+    </div>
+
+    <nav class="fixed top-4 md:top-8 left-1/2 -translate-x-1/2 w-[92%] md:w-[85%] max-w-6xl z-50 glass-panel rounded-full px-4 sm:px-6 py-3 flex justify-between items-center transition-all duration-500 shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
+        <div class="flex items-center gap-3 cursor-pointer group" onclick="window.location.href='index.html'">
+            <img src="pixel&code-logo-landing.png" alt="DU Logo" class="h-10 w-10 sm:h-12 sm:w-12 object-cover rounded-full border border-white/10 group-hover:border-gold transition-colors duration-500" onerror="this.src='https://placehold.co/100x100/111/C5A059?text=DU'">
+            <div class="flex flex-col hidden sm:flex">
+                <span class="text-white font-bold tracking-[0.1em] text-[11px] uppercase leading-none group-hover:text-gold transition-colors duration-300">Pixel & Code</span>
+            </div>
+        </div>
+        
+        <div class="hidden md:flex gap-8 text-[10px] font-bold uppercase tracking-[0.15em] text-gray-400 items-center">
+            <a href="index.html" class="hover:text-white transition-colors" data-i18n="nav-home">Inicio</a>
+            <a href="servicios.html" class="hover:text-white transition-colors" data-i18n="nav-services">Servicios</a>
+            <a href="landing-manuales.html" class="hover:text-white transition-colors">Descarga Manuales</a>
+            <a href="cursos.html" class="text-gold border-b border-gold pb-1">Academia</a>
+            
+            <div class="w-px h-4 bg-white/20 mx-2"></div>
+            
+            <button onclick="toggleLanguage()" class="flex items-center gap-2 hover:text-gold transition-colors text-white font-bold" id="lang-btn">
+                <span id="lang-text">EN</span>
+            </button>
+            
+            <a href="https://wa.me/524423479755" target="_blank" rel="noopener noreferrer" class="bg-white text-black px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-gold hover:scale-105 transition-all ml-2">WhatsApp</a>
+        </div>
+
+        <div class="md:hidden flex items-center gap-4">
+            <button onclick="toggleLanguage()" class="text-white font-bold text-xs" id="lang-btn-mobile">
+                <span id="lang-text-mobile">EN</span>
+            </button>
+            <button onclick="toggleMobileMenu()" class="text-white hover:text-gold transition-colors">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
+    </nav>
+
+    <div id="mobile-menu" class="fixed inset-0 bg-[#050505]/95 backdrop-blur-2xl z-[200] hidden flex-col items-center justify-center opacity-0 transition-opacity duration-500">
+        <button onclick="toggleMobileMenu()" class="absolute top-8 right-8 text-gray-500 hover:text-white hover:rotate-90 transition-all duration-300">
+            <i data-lucide="x" class="w-8 h-8"></i>
+        </button>
+        <div class="flex flex-col items-center gap-8 text-xl font-bold uppercase tracking-[0.2em] text-gray-400">
+            <a href="index.html" onclick="toggleMobileMenu()" class="hover:text-white transition-colors" data-i18n="nav-home">Inicio</a>
+            <a href="servicios.html" onclick="toggleMobileMenu()" class="hover:text-white transition-colors" data-i18n="nav-services">Servicios</a>
+            <a href="cursos.html" onclick="toggleMobileMenu()" class="text-gold transition-colors">Academia</a>
+            <a href="landing-manuales.html" onclick="toggleMobileMenu()" class="hover:text-white transition-colors">Descarga Manuales</a>
+            <a href="https://wa.me/524423479755" target="_blank" rel="noopener noreferrer" class="mt-6 text-black bg-white px-8 py-4 rounded-full text-sm hover:bg-gold transition-colors">Contactar</a>
+        </div>
+    </div>
+
+    <main class="flex-grow pt-32 pb-24 relative z-10 w-full max-w-7xl mx-auto px-4 md:px-6">
+        
+        <section class="text-center mb-20 start-transparent animate-fade-in-up mt-10">
+            <div class="inline-block border border-gold/30 rounded-full px-4 py-1.5 mb-6 bg-gold/10 backdrop-blur-md">
+                <span class="text-gold text-[10px] font-bold tracking-widest uppercase">Capacitación de Alto Nivel</span>
+            </div>
+            <h1 class="text-5xl md:text-7xl font-black mb-6 tracking-tighter uppercase">
+                Academia <span class="shimmer-text italic">Pixel & Code</span>
+            </h1>
+            <p class="text-gray-400 max-w-2xl mx-auto text-lg md:text-xl font-light leading-relaxed">
+                Domina el futuro de la Inteligencia Artificial. Ingeniería aplicada al ecosistema web para profesionales y empresas exigentes.
+            </p>
+        </section>
+
+        <section class="relative">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-6 relative z-10 start-transparent animate-fade-in-up" style="animation-delay: 0.2s;">
+                
+                <div class="glass-panel border border-white/10 rounded-[2rem] p-8 flex flex-col card-glow relative overflow-hidden group min-h-[400px]">
+                    <div class="mb-6 w-16 h-16 rounded-full border border-gold/30 flex items-center justify-center bg-black relative transform transition-transform duration-500 group-hover:scale-110 shadow-[0_0_20px_rgba(197,160,89,0.2)]">
+                        <i data-lucide="briefcase" class="w-8 h-8 text-gold relative z-10"></i>
+                    </div>
+                    <div class="mb-4 flex-1">
+                        <span class="inline-block px-3 py-1 bg-white/5 border border-white/10 text-white text-[9px] font-bold uppercase tracking-widest rounded-full mb-4">Empresas</span>
+                        <h3 class="text-2xl font-bold text-white mb-3 tracking-tight">IA Básico para Negocios</h3>
+                        <div class="relative h-28 overflow-hidden">
+                            <p class="text-gray-400 text-sm leading-relaxed absolute inset-0 transition-all duration-500 group-hover:-translate-y-full group-hover:opacity-0">Cimientos estratégicos. Aprende a integrar modelos de lenguaje en tu empresa para automatizar tareas repetitivas.</p>
+                            <p class="text-gold text-sm leading-relaxed absolute inset-0 translate-y-full opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100"><strong class="text-white">Aprenderás:</strong> Fundamentos LLM, Prompt Engineering aplicado, y despliegue de agentes básicos de servicio.</p>
+                        </div>
+                    </div>
+                    <div class="mt-auto pt-6 border-t border-white/5">
+                        <a href="landing.html?plan=ia_basico" class="w-full py-4 border border-white/20 rounded-full text-white font-bold uppercase tracking-widest text-[10px] flex items-center justify-center gap-3 hover:bg-gold hover:text-black hover:border-gold transition-all duration-300">
+                            Ver Detalles <i data-lucide="arrow-right" class="w-4 h-4 transform group-hover:translate-x-1 transition"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="glass-panel border border-gold/30 rounded-[2rem] p-8 flex flex-col card-glow relative overflow-hidden group min-h-[400px] shadow-[0_0_30px_rgba(197,160,89,0.05)]">
+                    <div class="absolute top-6 right-6 bg-gold text-black text-[8px] font-bold uppercase tracking-widest px-3 py-1 rounded-full z-20">Más Solicitado</div>
+                    <div class="mb-6 w-16 h-16 rounded-full border border-gold/30 flex items-center justify-center bg-black relative transform transition-transform duration-500 group-hover:scale-110 shadow-[0_0_20px_rgba(197,160,89,0.2)]">
+                        <i data-lucide="scale" class="w-8 h-8 text-gold relative z-10"></i>
+                    </div>
+                    <div class="mb-4 flex-1">
+                        <span class="inline-block px-3 py-1 bg-white/5 border border-white/10 text-white text-[9px] font-bold uppercase tracking-widest rounded-full mb-4">Especialización</span>
+                        <h3 class="text-2xl font-bold text-white mb-3 tracking-tight">IA para Peritajes</h3>
+                        <div class="relative h-28 overflow-hidden">
+                            <p class="text-gray-400 text-sm leading-relaxed absolute inset-0 transition-all duration-500 group-hover:-translate-y-full group-hover:opacity-0">Análisis forense especializado. Entrena arquitecturas RAG para lograr una precisión documental absoluta sin alucinaciones.</p>
+                            <p class="text-gold text-sm leading-relaxed absolute inset-0 translate-y-full opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100"><strong class="text-white">Aprenderás:</strong> Análisis documental forense, Detección de Deepfakes, y Arquitecturas RAG para dictámenes legales.</p>
+                        </div>
+                    </div>
+                    <div class="mt-auto pt-6 border-t border-white/5">
+                        <a href="landing.html?plan=ia_peritajes" class="w-full py-4 bg-white text-black rounded-full font-bold uppercase tracking-widest text-[10px] flex items-center justify-center gap-3 hover:bg-gold transition-all duration-300">
+                            Ver Detalles <i data-lucide="arrow-right" class="w-4 h-4 transform group-hover:translate-x-1 transition"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="glass-panel border border-white/10 rounded-[2rem] p-8 flex flex-col card-glow relative overflow-hidden group min-h-[400px]">
+                    <div class="mb-6 w-16 h-16 rounded-full border border-gold/30 flex items-center justify-center bg-black relative transform transition-transform duration-500 group-hover:scale-110 shadow-[0_0_20px_rgba(197,160,89,0.2)]">
+                        <i data-lucide="file-text" class="w-8 h-8 text-gold relative z-10"></i>
+                    </div>
+                    <div class="mb-4 flex-1">
+                        <span class="inline-block px-3 py-1 bg-white/5 border border-white/10 text-white text-[9px] font-bold uppercase tracking-widest rounded-full mb-4">Automatización</span>
+                        <h3 class="text-2xl font-bold text-white mb-3 tracking-tight">IA Administrativos</h3>
+                        <div class="relative h-28 overflow-hidden">
+                            <p class="text-gray-400 text-sm leading-relaxed absolute inset-0 transition-all duration-500 group-hover:-translate-y-full group-hover:opacity-0">Eficiencia operativa pura. Automatiza flujos de trabajo monótonos conectando hojas de cálculo y bases de datos con IA.</p>
+                            <p class="text-gold text-sm leading-relaxed absolute inset-0 translate-y-full opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100"><strong class="text-white">Aprenderás:</strong> Automatización de correos, Gestión inteligente de agendas, Extracción de datos (OCR) y Webhooks.</p>
+                        </div>
+                    </div>
+                    <div class="mt-auto pt-6 border-t border-white/5">
+                        <a href="landing.html?plan=ia_administrativos" class="w-full py-4 border border-white/20 rounded-full text-white font-bold uppercase tracking-widest text-[10px] flex items-center justify-center gap-3 hover:bg-gold hover:text-black hover:border-gold transition-all duration-300">
+                            Ver Detalles <i data-lucide="arrow-right" class="w-4 h-4 transform group-hover:translate-x-1 transition"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="glass-panel border border-white/10 rounded-[2rem] p-8 flex flex-col card-glow relative overflow-hidden group min-h-[400px]">
+                    <div class="mb-6 w-16 h-16 rounded-full border border-gold/30 flex items-center justify-center bg-black relative transform transition-transform duration-500 group-hover:scale-110 shadow-[0_0_20px_rgba(197,160,89,0.2)]">
+                        <i data-lucide="trending-up" class="w-8 h-8 text-gold relative z-10"></i>
+                    </div>
+                    <div class="mb-4 flex-1">
+                        <span class="inline-block px-3 py-1 bg-white/5 border border-white/10 text-white text-[9px] font-bold uppercase tracking-widest rounded-full mb-4">Consultoría</span>
+                        <h3 class="text-2xl font-bold text-white mb-3 tracking-tight">IA para Negocios</h3>
+                        <div class="relative h-28 overflow-hidden">
+                            <p class="text-gray-400 text-sm leading-relaxed absolute inset-0 transition-all duration-500 group-hover:-translate-y-full group-hover:opacity-0">Dirección y ventaja competitiva. Descubre cómo las empresas de alto nivel estructuran departamentos de IA para escalar.</p>
+                            <p class="text-gold text-sm leading-relaxed absolute inset-0 translate-y-full opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100"><strong class="text-white">Aprenderás:</strong> Estrategia algorítmica, Reducción de costos operativos, y Modelos de negocio escalables con IA.</p>
+                        </div>
+                    </div>
+                    <div class="mt-auto pt-6 border-t border-white/5">
+                        <a href="landing.html?plan=ia_negocios" class="w-full py-4 border border-white/20 rounded-full text-white font-bold uppercase tracking-widest text-[10px] flex items-center justify-center gap-3 hover:bg-gold hover:text-black hover:border-gold transition-all duration-300">
+                            Ver Detalles <i data-lucide="arrow-right" class="w-4 h-4 transform group-hover:translate-x-1 transition"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-black/60 backdrop-blur-md py-16 px-6 border-t border-white/10 text-gray-500 text-sm mt-auto relative z-10 w-full">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="flex items-center gap-4">
+                <img src="pixel&code-logo-landing.png" alt="Logo" class="w-8 h-8 rounded-full grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all" onerror="this.src='https://placehold.co/100x100/111/C5A059?text=DU'">
+                <span class="tracking-[0.2em] text-[10px] uppercase font-bold text-gray-400">© 2026 DU Pixel & Code</span>
+            </div>
+            
+            <div class="flex gap-8 text-[10px] uppercase tracking-widest font-bold">
+                <a href="https://www.linkedin.com/company/du-pixel-code" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">LinkedIn</a>
+                <a href="mailto:info@dupixelcode.com" class="hover:text-white transition-colors">Email</a>
+                <button type="button" onclick="openPrivacyModal()" class="hover:text-white transition-colors">Privacidad</button>
+                <button type="button" onclick="openTermsModal()" class="hover:text-white transition-colors">Términos</button>
+            </div>
+        </div>
+    </footer>
+
+    <div id="privacy-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-[150] hidden items-center justify-center p-4 opacity-0 transition-opacity duration-500">
+        <div class="glass-panel rounded-[2rem] p-8 md:p-12 max-w-2xl w-full max-h-[85vh] overflow-y-auto relative shadow-2xl transform scale-95 transition-transform duration-500 border border-white/20" id="privacy-content">
+            <button onclick="closePrivacyModal()" class="absolute top-6 right-6 text-gray-400 hover:text-white hover:rotate-90 transition-all duration-300">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+            <h2 class="text-2xl sm:text-3xl font-bold text-white mb-4 italic uppercase tracking-tighter">Aviso de Privacidad</h2>
+            <div class="w-16 h-1 bg-gold mb-8"></div>
+            <div class="text-xs sm:text-sm text-gray-400 space-y-5 leading-relaxed font-light">
+                <p>En <strong>Pixel & Code</strong>, protegemos sus datos personales para evitar el daño, pérdida, destrucción o tratamiento no autorizado. 🛡️</p>
+                <h3 class="font-bold text-white text-sm mt-4 uppercase tracking-widest">1. Identidad y domicilio</h3>
+                <p>Ing. Daniel Urquijo, con domicilio en Cam. a Vanegas, 76910 Corregidora, Qro., es el responsable del uso y protección de sus datos.</p>
+                <h3 class="font-bold text-white text-sm mt-4 uppercase tracking-widest">2. Finalidades</h3>
+                <p>Utilizaremos su información para proveer servicios tecnológicos y dar seguimiento a sus proyectos.</p>
+                <h3 class="font-bold text-white text-sm mt-4 uppercase tracking-widest">3. Contacto</h3>
+                <p>Dudas vía: <a href="mailto:info@dupixelcode.com" class="text-gold font-bold hover:text-white transition-colors">info@dupixelcode.com</a>.</p>
+            </div>
+            <div class="mt-10 text-center">
+                <button onclick="closePrivacyModal()" class="w-full sm:w-auto bg-white text-black px-10 py-4 rounded-full font-bold uppercase text-[10px] tracking-widest hover:bg-gold transition-colors duration-300">Entendido</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        // --- SISTEMA WEBGL OPTIMIZADO (Menor consumo de recursos) ---
+        (function() {
+            const canvas = document.getElementById('shader-canvas');
+            
+            function syncSize() {
+                // Limitamos la densidad de píxeles a 1.5 para ahorrar GPU en pantallas retina o 4K
+                const pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5);
+                const w = Math.floor(canvas.clientWidth * pixelRatio) || 1280;
+                const h = Math.floor(canvas.clientHeight * pixelRatio) || 720;
+                if (canvas.width !== w || canvas.height !== h) {
+                    canvas.width  = w;
+                    canvas.height = h;
+                }
+            }
+            if (typeof ResizeObserver !== 'undefined') {
+                new ResizeObserver(syncSize).observe(canvas);
+            }
+            syncSize();
+
+            const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+            if (!gl) return;
+
+            const vs = `attribute vec2 a_position; varying vec2 v_texCoord; void main() { v_texCoord = a_position * 0.5 + 0.5; gl_Position = vec4(a_position, 0.0, 1.0); }`;
+            
+            // Fragment Shader Optimizado: Ciclos reducidos de 80 a 45 para mayor FPS
+            const fs = `precision highp float;
+            uniform float u_time;
+            uniform vec2 u_resolution;
+            uniform vec2 u_mouse;
+            varying vec2 v_texCoord;
+
+            vec3 permute(vec3 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
+            float snoise(vec2 v){
+                const vec4 C = vec4(0.211324865405187, 0.366025403784439, -0.577350269189626, 0.024390243902439);
+                vec2 i  = floor(v + dot(v, C.yy) );
+                vec2 x0 = v -   i + dot(i, C.xx);
+                vec2 i1;
+                i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+                vec4 x12 = x0.xyxy + C.xxzz;
+                x12.xy -= i1;
+                i = mod(i, 289.0);
+                vec3 p = permute( permute( i.y + vec3(0.0, i1.y, 1.0 )) + i.x + vec3(0.0, i1.x, 1.0 ));
+                vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy), dot(x12.zw,x12.zw)), 0.0);
+                m = m*m; m = m*m;
+                vec3 x = 2.0 * fract(p * C.www) - 1.0;
+                vec3 h = abs(x) - 0.5;
+                vec3 a0 = x - floor(x + 0.5);
+                float m3 = m.z; float m1 = m.y; float m0 = m.x;
+                m.z = m3 * ( 1.79284291400159 - 0.85373472095314 * ( a0.z*a0.z + h.z*h.z ) );
+                m.y = m1 * ( 1.79284291400159 - 0.85373472095314 * ( a0.y*a0.y + h.y*h.y ) );
+                m.x = m0 * ( 1.79284291400159 - 0.85373472095314 * ( a0.x*a0.x + h.x*h.x ) );
+                vec3 g;
+                g.x  = a0.x  * x0.x  + h.x  * x0.y;
+                g.yz = a0.yz * x12.xz + h.yz * x12.yw;
+                return 130.0 * dot(m, g);
+            }
+
+            void main() {
+                vec2 uv = v_texCoord;
+                vec2 center = uv - 0.5;
+                center.x *= u_resolution.x / u_resolution.y;
+                
+                float t = u_time * 0.4;
+                float particle = 0.0;
+                
+                vec2 mouse = u_mouse / u_resolution - 0.5;
+                mouse.x *= u_resolution.x / u_resolution.y;
+                float mouseDist = length(center - mouse);
+                
+                // Ciclo optimizado a 45 pasadas
+                for(float i = 0.0; i < 3.0; i++) {
+                    float strandOffset = i * 2.094;
+                    for(float j = 0.0; j < 45.0; j++) { 
+                        float progress = j / 45.0;
+                        float yPos = (progress - 0.5) * 3.0;
+                        float xOffset = sin(yPos * 3.5 + t + strandOffset) * 0.4;
+                        float zDepth = cos(yPos * 3.5 + t + strandOffset);
+                        vec2 pPos = vec2(xOffset, yPos);
+                        
+                        float pull = smoothstep(0.5, 0.0, mouseDist) * 0.05;
+                        pPos += normalize(mouse - pPos) * pull;
+                        float dist = length(center - pPos);
+                        
+                        float size = 0.005 + zDepth * 0.002; 
+                        float brightness = (0.7 + 0.3 * zDepth) * (0.8 + 0.2 * sin(yPos * 10.0 + t * 2.0));
+                        particle += smoothstep(size, 0.0, dist) * brightness * 1.5; // Compensamos el brillo por menos partículas
+                    }
+                }
+                
+                // Colores Corporativos DU
+                vec3 color = vec3(0.05, 0.05, 0.05); 
+                vec3 gold = vec3(0.77, 0.62, 0.35); // #C5A059
+                color = mix(color, gold, particle * 0.9);
+                
+                float n1 = snoise(uv * 1.5 + t * 0.1);
+                color += vec3(0.05, 0.04, 0.02) * n1 * 0.2; 
+                
+                color += gold * (smoothstep(0.4, 0.0, mouseDist) * 0.15);
+                gl_FragColor = vec4(color, 1.0);
+            }`;
+
+            function cs(type, src) {
+                const s = gl.createShader(type);
+                gl.shaderSource(s, src);
+                gl.compileShader(s);
+                return s;
+            }
+            const prog = gl.createProgram();
+            gl.attachShader(prog, cs(gl.VERTEX_SHADER, vs));
+            gl.attachShader(prog, cs(gl.FRAGMENT_SHADER, fs));
+            gl.linkProgram(prog);
+            gl.useProgram(prog);
+            const buf = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+            const pos = gl.getAttribLocation(prog, 'a_position');
+            gl.enableVertexAttribArray(pos);
+            gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+            
+            const uTime = gl.getUniformLocation(prog, 'u_time');
+            const uRes = gl.getUniformLocation(prog, 'u_resolution');
+            const uMouse = gl.getUniformLocation(prog, 'u_mouse');
+
+            let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
+            window.addEventListener('mousemove', (event) => {
+                const rect = canvas.getBoundingClientRect();
+                if (rect.width && rect.height) {
+                    const nx = (event.clientX - rect.left) / rect.width;
+                    const ny = 1.0 - (event.clientY - rect.top) / rect.height;
+                    mouse.x = nx * canvas.width;
+                    mouse.y = ny * canvas.height;
+                }
+            });
+
+            function render(t) {
+                if (typeof ResizeObserver === 'undefined') syncSize();
+                gl.viewport(0, 0, canvas.width, canvas.height);
+                if (uTime) gl.uniform1f(uTime, t * 0.001);
+                if (uRes) gl.uniform2f(uRes, canvas.width, canvas.height);
+                if (uMouse) gl.uniform2f(uMouse, mouse.x, mouse.y);
+                gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+                requestAnimationFrame(render);
+            }
+            render(0);
+        })();
+
+        // --- CONTROL MENÚ MÓVIL ---
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                menu.classList.add('flex');
+                setTimeout(() => menu.classList.remove('opacity-0'), 10);
+            } else {
+                menu.classList.add('opacity-0');
+                setTimeout(() => {
+                    menu.classList.add('hidden');
+                    menu.classList.remove('flex');
+                }, 300);
+            }
+        }
+
+        // --- CONTROL MODAL PRIVACIDAD ---
+        function openPrivacyModal() {
+            const modal = document.getElementById('privacy-modal');
+            const content = document.getElementById('privacy-content');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                content.classList.remove('scale-95');
+                content.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closePrivacyModal() {
+            const modal = document.getElementById('privacy-modal');
+            const content = document.getElementById('privacy-content');
+            modal.classList.add('opacity-0');
+            content.classList.remove('scale-100');
+            content.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }, 300);
+        }
+
+        // --- LÓGICA DE TRADUCCIÓN ---
+        let currentLang = 'es';
+        function toggleLanguage() {
+            currentLang = currentLang === 'es' ? 'en' : 'es';
+            document.getElementById('lang-text').innerText = currentLang.toUpperCase();
+            document.getElementById('lang-text-mobile').innerText = currentLang.toUpperCase();
+        }
+    </script>
+
+    <script src="privacy.js"></script>
+    <script src="terms.js"></script>
+    
+</body>
+</html>

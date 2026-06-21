@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iron Nutrition | Demo E-commerce</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Roboto Condensed -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700;900&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['"Roboto Condensed"', 'sans-serif'] },
+                    // Paleta Dark/Neón
+                    colors: { primary: '#39FF14', dark: '#0a0a0a', surface: '#171717', surfaceLight: '#222222' }
+                }
+            }
+        }
+    </script>
+    <style>
+        .neon-glow:hover {
+            box-shadow: 0 0 20px rgba(57, 255, 20, 0.15);
+            border-color: #39FF14;
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-200 bg-dark antialiased">
+
+    <!-- Top Banner -->
+    <div class="bg-primary text-dark font-bold text-center py-2 text-xs uppercase tracking-widest flex items-center justify-center gap-2">
+        <i data-lucide="zap" class="w-4 h-4"></i> Promoción activa: Envío gratis en tu primera orden
+    </div>
+
+    <!-- Navbar -->
+    <nav class="bg-surface/95 backdrop-blur-md border-b border-gray-800 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex justify-between items-center">
+            <div class="flex items-center gap-2 sm:gap-3">
+                <i data-lucide="dumbbell" class="w-6 h-6 sm:w-8 sm:h-8 text-primary"></i>
+                <span class="font-black text-xl sm:text-2xl tracking-tighter uppercase text-white">Iron<span class="text-primary">Nutrition</span></span>
+            </div>
+            
+            <div class="hidden md:flex gap-8 text-sm font-bold uppercase tracking-wider text-gray-400">
+                <a href="#" class="hover:text-primary transition">Proteínas</a>
+                <a href="#" class="hover:text-primary transition">Aminoácidos</a>
+                <a href="#" class="hover:text-primary transition">Accesorios</a>
+            </div>
+
+            <div class="flex items-center gap-4 sm:gap-6">
+                <a href="#" class="text-white hover:text-primary transition hidden sm:block"><i data-lucide="search" class="w-5 h-5"></i></a>
+                <a href="#" class="text-white hover:text-primary transition relative">
+                    <i data-lucide="shopping-cart" class="w-5 h-5"></i>
+                    <span class="absolute -top-2 -right-2 bg-primary text-dark text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center">3</span>
+                </a>
+                <button class="md:hidden text-white"><i data-lucide="menu" class="w-6 h-6"></i></button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative bg-dark min-h-[70vh] flex items-center overflow-hidden border-b border-gray-900">
+        <!-- Fondo de Atleta Seguro -->
+        <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 bg-gradient-to-r from-dark via-dark/80 to-transparent z-10"></div>
+            <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2000&auto=format&fit=crop" 
+                 onerror="this.src='https://placehold.co/2000x1000/0a0a0a/39FF14?text=Fondo+Fitness'" 
+                 alt="Atleta en gimnasio" class="w-full h-full object-cover opacity-50">
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-6 w-full relative z-20 py-16">
+            <span class="bg-primary/20 text-primary border border-primary/50 font-bold tracking-widest text-xs uppercase px-3 py-1 rounded mb-4 inline-block">
+                🔥 Más de 10,000 atletas nos respaldan
+            </span>
+            <h1 class="text-5xl md:text-7xl font-black text-white leading-none uppercase mb-6 transform -skew-x-6">
+                Eleva tu <br><span class="text-primary">Rendimiento.</span>
+            </h1>
+            <p class="text-gray-400 text-lg mb-8 max-w-md font-light">
+                Suplementación científica para resultados reales. Construye músculo, quema grasa y supera tus propios récords.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4">
+                <button class="bg-primary text-dark px-8 py-4 rounded font-black uppercase tracking-widest text-lg hover:bg-white transition flex items-center justify-center gap-2 transform -skew-x-6">
+                    Ir a la Tienda <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Banner Comercial Pixel & Code -->
+    <div class="bg-surfaceLight border-b border-gray-800 py-3 px-4 text-center text-xs sm:text-sm text-gray-300">
+        🚀 <span class="text-primary font-bold">Demo de Tienda Online (DU Pixel & Code).</span> Tu marca de suplementos podría verse así de profesional. <a href="https://wa.me/524423479766" class="text-white hover:text-primary font-bold underline">Haz clic aquí para cotizar.</a>
+    </div>
+
+    <!-- Catálogo de Productos -->
+    <section class="py-16 px-6 max-w-7xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-black text-white uppercase transform -skew-x-6 mb-10 border-l-4 border-primary pl-4">Nuestro <span class="text-primary">Top 4</span></h2>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            
+            <!-- Producto 1: Proteína (Con imagen 100% funcional) -->
+            <div class="bg-surface border border-gray-800 rounded-lg p-4 group neon-glow transition-all duration-300 flex flex-col relative overflow-hidden">
+                <div class="absolute top-2 left-2 bg-primary text-dark text-[10px] font-black uppercase px-2 py-1 z-10 rounded">-20% OFF</div>
+                
+                <div class="relative h-56 mb-4 bg-surfaceLight rounded overflow-hidden flex justify-center items-center">
+                    <img src="https://images.unsplash.com/photo-1550989460-0adf9ea622e2?q=80&w=400&auto=format&fit=crop" 
+                         onerror="this.src='https://placehold.co/400x400/222/39FF14?text=WHEY+PROTEIN'" 
+                         alt="Batido de Proteína" class="h-full w-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition duration-500">
+                    
+                    <!-- Botón Flotante UX -->
+                    <div class="absolute inset-x-0 bottom-0 p-3 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 z-20">
+                        <button class="w-full bg-primary text-dark font-black uppercase text-xs py-2 rounded flex items-center justify-center gap-2">
+                            <i data-lucide="shopping-cart" class="w-4 h-4"></i> Añadir
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="flex-1 flex flex-col">
+                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1">Crecimiento Muscular</p>
+                    <h3 class="font-bold text-lg text-white mb-2 leading-tight">Whey Protein Premium 5lbs</h3>
+                    <div class="mt-auto flex justify-between items-end">
+                        <span class="text-xs text-gray-500 line-through">$1,450</span>
+                        <span class="font-black text-2xl text-primary">$1,160 <span class="text-[10px] text-white">MXN</span></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 2: Shaker/Pre-entreno -->
+            <div class="bg-surface border border-gray-800 rounded-lg p-4 group neon-glow transition-all duration-300 flex flex-col relative overflow-hidden">
+                <div class="relative h-56 mb-4 bg-surfaceLight rounded overflow-hidden flex justify-center items-center">
+                    <img src="https://images.unsplash.com/photo-1594381898411-846e7d193883?q=80&w=400&auto=format&fit=crop" 
+                         onerror="this.src='https://placehold.co/400x400/222/39FF14?text=PRE-WORKOUT'" 
+                         alt="Shaker Deportivo" class="h-full w-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition duration-500">
+                    
+                    <!-- Botón Flotante UX -->
+                    <div class="absolute inset-x-0 bottom-0 p-3 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 z-20">
+                        <button class="w-full bg-primary text-dark font-black uppercase text-xs py-2 rounded flex items-center justify-center gap-2">
+                            <i data-lucide="shopping-cart" class="w-4 h-4"></i> Añadir
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="flex-1 flex flex-col">
+                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1">Energía</p>
+                    <h3 class="font-bold text-lg text-white mb-2 leading-tight">Pre-Entreno Explosivo</h3>
+                    <div class="mt-auto flex justify-between items-end">
+                        <span class="font-black text-2xl text-primary">$550 <span class="text-[10px] text-white">MXN</span></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 3: Vitaminas/Pastillas -->
+            <div class="bg-surface border border-gray-800 rounded-lg p-4 group neon-glow transition-all duration-300 flex flex-col relative overflow-hidden">
+                <div class="absolute top-2 left-2 bg-white text-dark text-[10px] font-black uppercase px-2 py-1 z-10 rounded">Bestseller</div>
+                
+                <div class="relative h-56 mb-4 bg-surfaceLight rounded overflow-hidden flex justify-center items-center">
+                    <img src="https://images.unsplash.com/photo-1640539130635-f1bcbf20e588?q=80&w=400&auto=format&fit=crop" 
+                         onerror="this.src='https://placehold.co/400x400/222/39FF14?text=VITAMINAS'" 
+                         alt="Frasco de Vitaminas" class="h-full w-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition duration-500">
+                    
+                    <!-- Botón Flotante UX -->
+                    <div class="absolute inset-x-0 bottom-0 p-3 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 z-20">
+                        <button class="w-full bg-primary text-dark font-black uppercase text-xs py-2 rounded flex items-center justify-center gap-2">
+                            <i data-lucide="shopping-cart" class="w-4 h-4"></i> Añadir
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="flex-1 flex flex-col">
+                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1">Salud Integral</p>
+                    <h3 class="font-bold text-lg text-white mb-2 leading-tight">Multivitamínico Atleta Pro</h3>
+                    <div class="mt-auto flex justify-between items-end">
+                        <span class="font-black text-2xl text-primary">$420 <span class="text-[10px] text-white">MXN</span></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 4: Creatina/Pesas -->
+            <div class="bg-surface border border-gray-800 rounded-lg p-4 group neon-glow transition-all duration-300 flex flex-col relative overflow-hidden">
+                <div class="relative h-56 mb-4 bg-surfaceLight rounded overflow-hidden flex justify-center items-center">
+                    <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=400&auto=format&fit=crop" 
+                         onerror="this.src='https://placehold.co/400x400/222/39FF14?text=CREATINA'" 
+                         alt="Pesas de Gimnasio" class="h-full w-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition duration-500">
+                    
+                    <!-- Botón Flotante UX -->
+                    <div class="absolute inset-x-0 bottom-0 p-3 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 z-20">
+                        <button class="w-full bg-primary text-dark font-black uppercase text-xs py-2 rounded flex items-center justify-center gap-2">
+                            <i data-lucide="shopping-cart" class="w-4 h-4"></i> Añadir
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="flex-1 flex flex-col">
+                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1">Fuerza</p>
+                    <h3 class="font-bold text-lg text-white mb-2 leading-tight">Creatina Monohidratada Pura</h3>
+                    <div class="mt-auto flex justify-between items-end">
+                        <span class="font-black text-2xl text-primary">$380 <span class="text-[10px] text-white">MXN</span></span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-surface pt-12 pb-8 px-6 text-center text-gray-500 text-sm border-t border-gray-800">
+        <p class="font-black text-white tracking-widest uppercase text-xl mb-4">IRON NUTRITION</p>
+        <p class="mb-4 text-xs">Desarrollado y optimizado para ventas con Inteligencia Artificial.</p>
+        <p class="text-[10px] uppercase tracking-widest border-t border-gray-800 pt-6 inline-block">
+            Tecnología por <a href="https://www.dupixelcode.com" target="_blank" class="text-primary hover:text-white transition font-bold">Pixel & Code Agency</a>
+        </p>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
+
+
+
