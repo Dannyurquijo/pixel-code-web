@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Pago | DU Pixel & Code</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Montserrat', 'sans-serif'] },
+                    colors: { gold: '#C5A059', dark: '#050505' }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { 
+            background-color: #050505; 
+            color: #ffffff; 
+            background-image: radial-gradient(circle at 50% 0%, rgba(197, 160, 89, 0.05) 0%, transparent 50%);
+            overflow-x: hidden;
+        }
+        
+        /* Lienzo de Partículas de Fondo */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .glass-panel {
+            background: rgba(15, 15, 15, 0.7);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(197, 160, 89, 0.2);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+        }
+
+        .data-row {
+            transition: background-color 0.3s;
+        }
+        .data-row:hover {
+            background-color: rgba(255, 255, 255, 0.02);
+            border-radius: 0.5rem;
+        }
+
+        .tooltip {
+            visibility: hidden;
+            opacity: 0;
+            transition: all 0.3s;
+        }
+        .show-tooltip {
+            visibility: visible;
+            opacity: 1;
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4 selection:bg-gold selection:text-black relative">
+
+    <!-- Canvas de Partículas -->
+    <canvas id="particle-canvas"></canvas>
+
+    <div class="glass-panel w-full max-w-lg rounded-[2rem] p-8 md:p-10 relative overflow-hidden z-10">
+        
+        <!-- Elemento decorativo de fondo -->
+        <div class="absolute top-0 right-0 w-32 h-32 bg-gold/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+
+        <!-- Encabezado -->
+        <div class="text-center mb-10 relative z-10">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full border border-gold/30 bg-black mb-6 shadow-[0_0_20px_rgba(197,160,89,0.15)]">
+                <i data-lucide="building-2" class="w-7 h-7 text-gold"></i>
+            </div>
+            <h1 class="text-2xl font-black uppercase tracking-tighter mb-2">Portal de <span class="text-gold italic">Despliegue</span></h1>
+            <p class="text-[10px] text-gray-400 uppercase tracking-[0.2em]">Ficha de Transferencia Digital</p>
+        </div>
+
+        <!-- Tarjeta de Datos -->
+        <div class="space-y-2 mb-10 relative z-10">
+            
+            <div class="data-row flex justify-between items-center p-3 border-b border-white/5">
+                <span class="text-gray-500 text-[10px] uppercase tracking-widest font-medium">Banco</span>
+                <span class="text-white text-sm font-bold">BANAMEX</span>
+            </div>
+
+            <div class="data-row flex justify-between items-center p-3 border-b border-white/5">
+                <span class="text-gray-500 text-[10px] uppercase tracking-widest font-medium">Titular</span>
+                <span class="text-white text-sm font-bold">Jose Daniel Urquijo Beltrán</span>
+            </div>
+
+            <!-- Fila de Cuenta con botón de copiar -->
+            <div class="data-row flex justify-between items-center p-3 border-b border-white/5 group relative">
+                <span class="text-gray-500 text-[10px] uppercase tracking-widest font-medium">Cuenta</span>
+                <div class="flex items-center gap-3">
+                    <span class="text-white text-sm font-bold tracking-widest" id="cuenta-txt">6500209</span>
+                    <button onclick="copyToClipboard('cuenta-txt', 'tooltip-cuenta')" class="text-gold hover:text-white transition-colors relative">
+                        <i data-lucide="copy" class="w-4 h-4"></i>
+                        <span id="tooltip-cuenta" class="tooltip absolute -top-8 left-1/2 -translate-x-1/2 bg-white text-black text-[9px] font-bold px-2 py-1 rounded uppercase tracking-wider">Copiado</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Fila de CLABE con botón de copiar -->
+            <div class="data-row flex justify-between items-center p-3 border-b border-white/5 group relative">
+                <span class="text-gray-500 text-[10px] uppercase tracking-widest font-medium">CLABE</span>
+                <div class="flex items-center gap-3">
+                    <span class="text-white text-sm font-bold tracking-widest" id="clabe-txt">002212702265002092</span>
+                    <button onclick="copyToClipboard('clabe-txt', 'tooltip-clabe')" class="text-gold hover:text-white transition-colors relative">
+                        <i data-lucide="copy" class="w-4 h-4"></i>
+                        <span id="tooltip-clabe" class="tooltip absolute -top-8 left-1/2 -translate-x-1/2 bg-white text-black text-[9px] font-bold px-2 py-1 rounded uppercase tracking-wider">Copiado</span>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Instrucciones Finales -->
+        <div class="bg-black/50 border border-white/5 rounded-2xl p-5 flex items-start gap-4 relative z-10">
+            <i data-lucide="check-circle" class="w-5 h-5 text-gold flex-shrink-0 mt-0.5"></i>
+            <div>
+                <h4 class="text-[11px] text-white font-bold uppercase tracking-widest mb-1">Siguiente Paso</h4>
+                <p class="text-[10px] text-gray-400 leading-relaxed">
+                    Al realizar la transferencia, favor de enviar tu comprobante a 
+                    <a href="mailto:info@dupixelcode.com" class="text-gold hover:underline">info@dupixelcode.com</a>. 
+                    El sistema registrará tu ingreso y habilitaremos tu proyecto.
+                </p>
+            </div>
+        </div>
+
+        <!-- Botón Volver -->
+        <div class="mt-8 text-center relative z-10">
+            <a href="index.html" class="inline-flex items-center gap-2 text-[10px] text-gray-500 hover:text-gold uppercase tracking-[0.2em] font-bold transition-colors">
+                <i data-lucide="arrow-left" class="w-3 h-3"></i> Volver al Inicio
+            </a>
+        </div>
+
+    </div>
+
+    <script>
+        // Inicializar Iconos
+        lucide.createIcons();
+
+        // --- FUNCIÓN COPIAR AL PORTAPAPELES ---
+        function copyToClipboard(elementId, tooltipId) {
+            const textToCopy = document.getElementById(elementId).innerText;
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const tooltip = document.getElementById(tooltipId);
+                tooltip.classList.add('show-tooltip');
+                setTimeout(() => { tooltip.classList.remove('show-tooltip'); }, 2000);
+            }).catch(err => console.error('Error al copiar: ', err));
+        }
+
+        // --- SISTEMA DE PARTÍCULAS / NODOS DE FONDO ---
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let particlesArray = [];
+        let mouse = { x: null, y: null, radius: 150 };
+
+        window.addEventListener('mousemove', function(event) {
+            mouse.x = event.x;
+            mouse.y = event.y;
+        });
+
+        window.addEventListener('resize', function() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            initParticles();
+        });
+
+        class Particle {
+            constructor(x, y, directionX, directionY, size, color) {
+                this.x = x;
+                this.y = y;
+                this.directionX = directionX;
+                this.directionY = directionY;
+                this.size = size;
+                this.color = color;
+                this.baseX = this.x;
+                this.baseY = this.y;
+                this.density = (Math.random() * 30) + 1;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+            }
+            update() {
+                let dx = mouse.x - this.x;
+                let dy = mouse.y - this.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+                let forceDirectionX = dx / distance;
+                let forceDirectionY = dy / distance;
+                let maxDistance = mouse.radius;
+                let force = (maxDistance - distance) / maxDistance;
+                let directionX = forceDirectionX * force * this.density;
+                let directionY = forceDirectionY * force * this.density;
+
+                if (distance < mouse.radius) {
+                    this.x -= directionX;
+                    this.y -= directionY;
+                } else {
+                    if (this.x !== this.baseX) {
+                        let dx = this.x - this.baseX;
+                        this.x -= dx / 10;
+                    }
+                    if (this.y !== this.baseY) {
+                        let dy = this.y - this.baseY;
+                        this.y -= dy / 10;
+                    }
+                }
+
+                this.baseX += this.directionX;
+                this.baseY += this.directionY;
+
+                if(this.baseX < 0 || this.baseX > canvas.width) this.directionX = -this.directionX;
+                if(this.baseY < 0 || this.baseY > canvas.height) this.directionY = -this.directionY;
+
+                this.draw();
+            }
+        }
+
+        function initParticles() {
+            particlesArray = [];
+            let numberOfParticles = (canvas.height * canvas.width) / 12000;
+            for (let i = 0; i < numberOfParticles; i++) {
+                let size = (Math.random() * 2) + 1;
+                let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
+                let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
+                let directionX = (Math.random() * .4) - .2;
+                let directionY = (Math.random() * .4) - .2;
+                let color = 'rgba(197, 160, 89, 0.4)'; 
+                particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
+            }
+        }
+
+        function connectParticles() {
+            for (let a = 0; a < particlesArray.length; a++) {
+                for (let b = a; b < particlesArray.length; b++) {
+                    let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x))
+                    + ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
+                    if (distance < (canvas.width / 10) * (canvas.height / 10)) {
+                        let opacityValue = 1 - (distance / 20000);
+                        ctx.strokeStyle = 'rgba(255, 255, 255, ' + (opacityValue * 0.15) + ')';
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+                        ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function animateParticles() {
+            requestAnimationFrame(animateParticles);
+            ctx.clearRect(0, 0, innerWidth, innerHeight);
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+            }
+            connectParticles();
+        }
+
+        initParticles();
+        animateParticles();
+    </script>
+</body>
+</html>
