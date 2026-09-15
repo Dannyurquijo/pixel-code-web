@@ -306,3 +306,30 @@ body::before { background-image: radial-gradient(circle at 72% 18%,rgba(55,42,16
   .ecosystem-node b { font-size: 10px; }
   .ecosystem-node small { font-size: 9px; }
 }
+
+/* Academia: programas aplicados presentados como módulos del mismo sistema. */
+.academy { position: relative; max-width: 1400px; overflow: hidden; }
+.academy::before { position: absolute; top: 24%; left: 50%; width: min(72vw,980px); aspect-ratio: 1; content: ''; border: 1px solid rgba(197,160,89,.07); border-radius: 50%; background: radial-gradient(circle,rgba(197,160,89,.08),transparent 62%); transform: translateX(-50%) rotateX(68deg); pointer-events: none; }
+.academy-grid { position: relative; display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; perspective: 1600px; }
+.course-card { position: relative; display: flex; min-height: 470px; flex-direction: column; padding: 30px; overflow: hidden; border: 1px solid rgba(255,255,255,.1); border-radius: 18px; background: linear-gradient(155deg,rgba(255,255,255,.045),rgba(7,7,7,.96) 42%,rgba(25,20,10,.72)); box-shadow: 0 30px 75px rgba(0,0,0,.28); transform-style: preserve-3d; transition: border-color 450ms var(--ease), box-shadow 450ms var(--ease), transform 550ms var(--ease), background 450ms ease; }
+.course-card::before { position: absolute; inset: 0; content: ''; opacity: .18; background-image: linear-gradient(rgba(197,160,89,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(197,160,89,.12) 1px,transparent 1px); background-size: 44px 44px; mask-image: linear-gradient(to bottom,black,transparent 68%); pointer-events: none; }
+.course-card::after { position: absolute; right: -45%; bottom: -36%; width: 110%; aspect-ratio: 1; content: ''; opacity: .5; border: 1px solid rgba(197,160,89,.15); border-radius: 50%; box-shadow: 0 0 0 24px rgba(197,160,89,.018),0 0 0 55px rgba(197,160,89,.012); transition: transform 700ms var(--ease),opacity 450ms ease; pointer-events: none; }
+.course-card:hover { z-index: 2; border-color: rgba(240,213,138,.45); background: linear-gradient(155deg,rgba(197,160,89,.09),rgba(7,7,7,.97) 46%,rgba(37,28,11,.8)); box-shadow: 0 38px 95px rgba(0,0,0,.48),0 0 45px rgba(197,160,89,.07); transform: translateY(-9px) rotateX(1.5deg); }
+.course-card:hover::after { opacity: .9; transform: scale(1.08) rotate(8deg); }
+.course-card--featured { border-color: rgba(197,160,89,.42); background: linear-gradient(155deg,rgba(197,160,89,.13),rgba(7,7,7,.98) 48%,rgba(42,31,11,.8)); }
+.course-card__number { position: relative; z-index: 1; color: #8f887a; font-size: 11px; letter-spacing: .18em; }
+.course-card__badge { position: absolute; z-index: 3; top: 22px; right: 22px; padding: 7px 10px; border-radius: 999px; color: #090704; background: var(--gold-light); font-size: 9px; font-weight: 700; letter-spacing: .11em; text-transform: uppercase; }
+.course-card__icon { position: relative; z-index: 1; display: grid; place-items: center; width: 70px; height: 70px; margin: 50px 0 32px; border: 1px solid rgba(197,160,89,.42); border-radius: 50%; color: var(--gold-light); background: radial-gradient(circle,rgba(197,160,89,.12),rgba(5,5,5,.9)); box-shadow: 0 0 0 10px rgba(197,160,89,.025),0 0 35px rgba(197,160,89,.08); font: 400 25px Montserrat,sans-serif; transition: transform 600ms var(--ease),box-shadow 450ms ease; }
+.course-card:hover .course-card__icon { box-shadow: 0 0 0 14px rgba(197,160,89,.035),0 0 45px rgba(197,160,89,.15); transform: rotate(12deg) scale(1.05); }
+.course-card__type { position: relative; z-index: 1; margin: 0 0 15px; color: #aaa49a; font-size: 10px; font-weight: 600; letter-spacing: .13em; text-transform: uppercase; }
+.course-card h3 { position: relative; z-index: 1; margin: 0 0 22px; font: 550 clamp(1.55rem,2vw,2rem)/1.06 Montserrat,sans-serif; letter-spacing: -.04em; }
+.course-card__copy { position: relative; z-index: 1; margin: 0 0 30px; color: #adb2b9; font-size: 13px; line-height: 1.7; }
+.course-card__footer { position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 20px; border-top: 1px solid rgba(255,255,255,.09); color: #e8e3d9; font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+.course-card__footer b { display: grid; place-items: center; width: 34px; height: 34px; border: 1px solid rgba(197,160,89,.28); border-radius: 50%; color: var(--gold-light); transition: color 350ms ease,background 350ms ease,transform 450ms var(--ease); }
+.course-card:hover .course-card__footer b { color: #080604; background: var(--gold-light); transform: rotate(45deg); }
+.academy-more { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 28px; margin-top: 18px; padding: 24px 28px; border: 1px solid rgba(255,255,255,.09); border-radius: 14px; background: rgba(6,6,6,.78); }
+.academy-more p { display: flex; align-items: center; gap: 14px; margin: 0; color: #a9afb6; font-size: 13px; }
+.academy-more p span { display: grid; place-items: center; width: 36px; height: 36px; flex: 0 0 auto; border: 1px solid rgba(197,160,89,.4); border-radius: 50%; color: var(--gold-light); font-size: 10px; font-weight: 700; }
+
+@media (max-width: 1120px) { .academy-grid { grid-template-columns: repeat(2,1fr); }.course-card { min-height: 430px; } }
+@media (max-width: 650px) { .academy-grid { grid-template-columns: 1fr; }.course-card { min-height: 420px; padding: 26px; }.course-card__icon { margin: 42px 0 28px; }.academy-more { align-items: stretch; flex-direction: column; }.academy-more .button { justify-content: center; } }
