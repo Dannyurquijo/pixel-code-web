@@ -34,6 +34,7 @@
   let nodes = [];
   let raf = 0;
   let lastTime = performance.now();
+  let lastFrame = 0;
   let activeMode = 'hero';
   let modeBlend = { ...modes.hero };
   let visible = !document.hidden;
@@ -59,16 +60,16 @@
   function resize() {
     width = window.innerWidth;
     height = window.innerHeight;
-    dpr = Math.min(window.devicePixelRatio || 1, width < 768 ? 1 : 1.5);
+    dpr = Math.min(window.devicePixelRatio || 1, width < 768 ? 1 : 1.25);
     canvas.width = Math.round(width * dpr);
     canvas.height = Math.round(height * dpr);
     canvas.style.width = `${width}px`;
     canvas.style.height = `${height}px`;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-    const areaCount = Math.round((width * height) / 18000);
-    const minimum = width < 520 ? 22 : width < 768 ? 40 : 52;
-    const target = Math.max(minimum, Math.min(width < 768 ? 44 : 76, areaCount));
+    const areaCount = Math.round((width * height) / 28000);
+    const minimum = width < 520 ? 16 : width < 768 ? 24 : 36;
+    const target = Math.max(minimum, Math.min(width < 768 ? 28 : 48, areaCount));
     if (nodes.length > target) nodes.length = target;
     while (nodes.length < target) nodes.push(randomNode());
   }
@@ -91,6 +92,12 @@
 
   function draw(time) {
     if (!visible) return;
+    const frameInterval = coarsePointer.matches ? 50 : 33.3;
+    if (lastFrame && time - lastFrame < frameInterval) {
+      raf = requestAnimationFrame(draw);
+      return;
+    }
+    lastFrame = time;
     const delta = Math.min(2, (time - lastTime) / 16.67 || 1);
     lastTime = time;
     const target = modes[activeMode];
@@ -205,6 +212,7 @@
   function start() {
     cancelAnimationFrame(raf);
     lastTime = performance.now();
+    lastFrame = 0;
     if (reducedMotion.matches) draw(lastTime);
     else raf = requestAnimationFrame(draw);
   }

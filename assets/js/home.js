@@ -18,9 +18,17 @@
     const available = document.documentElement.scrollHeight - innerHeight;
     if (progress) progress.style.transform = `scaleX(${available > 0 ? Math.min(scrollY / available, 1) : 0})`;
   };
+  let pageStateFrame = 0;
+  const schedulePageState = () => {
+    if (pageStateFrame) return;
+    pageStateFrame = requestAnimationFrame(() => {
+      updatePageState();
+      pageStateFrame = 0;
+    });
+  };
   updatePageState();
-  addEventListener('scroll', updatePageState, { passive: true });
-  addEventListener('resize', updatePageState, { passive: true });
+  addEventListener('scroll', schedulePageState, { passive: true });
+  addEventListener('resize', schedulePageState, { passive: true });
 
   const closeMenu = () => {
     if (!menuButton || !mobileMenu) return;
@@ -39,6 +47,16 @@
   addEventListener('keydown', (event) => { if (event.key === 'Escape') closeMenu(); });
 
   document.querySelectorAll('[data-year]').forEach((node) => { node.textContent = new Date().getFullYear(); });
+
+  const activeScenes = document.querySelectorAll('.system-architecture,.intelligence-system,.ecosystem-stage');
+  if ('IntersectionObserver' in window && !reduceMotion) {
+    const sceneObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => entry.target.classList.toggle('is-in-view', entry.isIntersecting));
+    }, { rootMargin: '12% 0px', threshold: .01 });
+    activeScenes.forEach((scene) => sceneObserver.observe(scene));
+  } else {
+    activeScenes.forEach((scene) => scene.classList.add('is-in-view'));
+  }
 
   if (!reduceMotion && !matchMedia('(pointer: coarse)').matches) {
     document.querySelectorAll('[data-tilt]').forEach((stage) => {

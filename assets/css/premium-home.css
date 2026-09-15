@@ -267,3 +267,42 @@ body::before { background-image: radial-gradient(circle at 72% 18%,rgba(55,42,16
   .ecosystem-stage { min-height:560px;margin-top:35px;transform:scale(.91)!important }.ecosystem-node{min-width:86px;padding:10px}.ecosystem-node::after{display:none}.en1{top:2%;left:38%}.en2{top:18%;right:0}.en3{right:0;bottom:18%}.en4{bottom:2%;left:38%}.en5{bottom:18%;left:0}.en6{top:18%;left:0}.en7{top:47%;right:-2%}.en8{top:47%;left:-2%}
 }
 @media (prefers-reduced-motion: reduce) { .site-intro{display:none}.router-core::before,.router-core::after,.route,.intelligence-rings i,.loop-signal,.ecosystem-pulse{animation:none!important} }
+
+/* Legibilidad y rendimiento: el texto auxiliar nunca baja de una escala útil. */
+:root { --muted: #b3b8bf; }
+#ambient-canvas { opacity: .7; mix-blend-mode: normal; }
+.eyebrow { font-size: 12px; color: var(--gold-light); }
+.brand small { color: #aeb2b8; font-size: 10px; }
+.hero__proof span { color: #a4aab1; font-size: 11px; }
+.core-label { font-size: 10px; backdrop-filter: none; }
+.core-status,.scroll-cue { color: #92979d; font-size: 10px; }
+.signal-strip { color: #a2a7ad; font-size: 10px; }
+.section-index { color: #9ca2a9; font-size: 11px; }
+.solution-card li { color: #9da3aa; font-size: 12px; }
+.solution-card b { font-size: 10px; }
+.case-row > span { font-size: 11px; }.case-row p,.case-row b { color: #9ea4ab; font-size: 11px; }
+.process-grid li > span { color: #898f96; font-size: 10px; }.process-grid p { color: #a7adb4; font-size: 14px; }
+.tech-principles p { color: #a3a9b0; font-size: 13px; }.tech-principles span { font-size: 10px; }.tech-stack { color: #969ca3; font-size: 10px; }
+.site-footer { color: #92989f; font-size: 11px; }
+.architecture-head { color: #aaa294; font-size: 10px; }
+.source-cluster b,.outcome-cluster b { font-size: 12px; }.source-cluster small,.outcome-cluster small { color: #a5a9ae; font-size: 11px; }
+.router-core small { color: #aaa293; font-size: 10px; }.router-core strong { font-size: 11px; }
+.outcome-cluster article > span { font-size: 10px; }
+.intelligence-core small,.intelligence-core span { color: #aaa294; font-size: 10px; }
+.intelligence-step { background: rgba(5,5,5,.95); backdrop-filter: none; }.intelligence-step > span { font-size: 10px; }.intelligence-step p { color: #b0b5bc; font-size: 13px; }.intelligence-step small { color: #aaa59a; font-size: 10px; }
+.ecosystem-legend { color: #aaa49a; font-size: 10px; }
+.ecosystem-node { background: rgba(5,5,5,.96); backdrop-filter: none; }.ecosystem-node b { font-size: 11px; }.ecosystem-node small { color: #b2aea4; font-size: 10px; }
+.intro-copy p,.intro-status,.intro-skip { font-size: 10px; }
+
+/* Los desenfoques de bloques grandes y las escenas fuera de vista causaban repaints al hacer scroll. */
+.reveal,.reveal.is-visible { filter: none; }
+.system-architecture:not(.is-in-view) .router-core::before,.system-architecture:not(.is-in-view) .router-core::after,.system-architecture:not(.is-in-view) .route,.intelligence-system:not(.is-in-view) .intelligence-rings i,.intelligence-system:not(.is-in-view) .loop-signal,.ecosystem-stage:not(.is-in-view) .ecosystem-pulse { animation-play-state: paused; }
+
+@media (max-width: 520px) {
+  .eyebrow { font-size: 10px; line-height: 1.5; }
+  .hero__proof span { font-size: 10px; }
+  .source-cluster b,.outcome-cluster b { font-size: 11px; }
+  .source-cluster small,.outcome-cluster small { font-size: 10px; }
+  .ecosystem-node b { font-size: 10px; }
+  .ecosystem-node small { font-size: 9px; }
+}
