@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://dupixelcode.com/sitemap.xml
