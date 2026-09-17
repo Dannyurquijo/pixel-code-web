@@ -215,12 +215,14 @@ test('Seguridad: rechaza cuerpos grandes, orígenes externos y tipos incorrectos
   const previousContext = process.env.CONTEXT;
   process.env.CONTEXT = 'production';
   const { _test } = require('../netlify/functions/pixie/chat-core');
-  const oversized = _test.validateRequest({ httpMethod: 'POST', headers: { origin: 'https://dupixelcode.com', 'content-type': 'application/json' }, body: 'x'.repeat(_test.MAX_BODY_BYTES + 1) });
-  const wrongOrigin = _test.validateRequest({ httpMethod: 'POST', headers: { origin: 'https://attacker.example', 'content-type': 'application/json' }, body: '{}' });
-  const wrongType = _test.validateRequest({ httpMethod: 'POST', headers: { origin: 'https://dupixelcode.com', 'content-type': 'text/plain' }, body: '{}' });
+  const oversized = _test.validateRequest({ httpMethod: 'POST', headers: { host: 'dupixelcode.com', origin: 'https://dupixelcode.com', 'content-type': 'application/json' }, body: 'x'.repeat(_test.MAX_BODY_BYTES + 1) });
+  const wrongOrigin = _test.validateRequest({ httpMethod: 'POST', headers: { host: 'dupixelcode.com', origin: 'https://attacker.example', 'content-type': 'application/json' }, body: '{}' });
+  const wrongType = _test.validateRequest({ httpMethod: 'POST', headers: { host: 'dupixelcode.com', origin: 'https://dupixelcode.com', 'content-type': 'text/plain' }, body: '{}' });
+  const missingOrigin = _test.validateRequest({ httpMethod: 'POST', headers: { host: 'dupixelcode.com', 'content-type': 'application/json' }, body: '{}' });
   assert.equal(oversized.statusCode, 413);
   assert.equal(wrongOrigin.statusCode, 403);
   assert.equal(wrongType.statusCode, 415);
+  assert.equal(missingOrigin.statusCode, 403);
   if (previousContext === undefined) delete process.env.CONTEXT; else process.env.CONTEXT = previousContext;
 });
 

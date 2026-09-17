@@ -56,9 +56,13 @@ const validateRequest = (event) => {
     return jsonResponse(415, { reply: 'El contenido debe enviarse como JSON.' });
   }
 
-  if (process.env.CONTEXT === 'production') {
+  if (event.headers && Object.keys(event.headers).length) {
     const origin = header(event.headers, 'origin');
-    if (!origin || !allowedOrigins().has(origin)) {
+    const requestHost = (header(event.headers, 'host') || '').split(':')[0].toLowerCase();
+    const localRequest = ['localhost', '127.0.0.1', '::1'].includes(requestHost);
+    let localOrigin = false;
+    try { localOrigin = ['localhost', '127.0.0.1', '::1'].includes(new URL(origin).hostname); } catch (_) { localOrigin = false; }
+    if (!origin || (!allowedOrigins().has(origin) && !(localRequest && localOrigin))) {
       return jsonResponse(403, { reply: 'Origen no permitido.' });
     }
   }
