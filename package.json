@@ -1,12 +1,9 @@
 {
   "name": "du-pixel-code-web",
   "version": "1.0.0",
-  "description": "Infraestructura web y pagos",
+  "description": "Sitio e infraestructura digital de DU Pixel Code",
   "scripts": {
     "test": "node tests/pixie-v2.test.js",
     "test:pixie": "node tests/pixie-v2.test.js"
-  },
-  "dependencies": {
-    "mercadopago": "^2.0.9"
   }
 }

@@ -29,6 +29,8 @@ El contexto del LLM y el historial comercial son independientes. El modelo recib
 - Duración: 24 horas desde la última actividad. Después se crea una sesión nueva.
 - Recargar la página conserva sesión, mensajes y estado de notificación.
 - Borrar datos del navegador, usar otro dispositivo o bloquear `localStorage` elimina esa persistencia. Si `localStorage` falla, Pixie conserva memoria solo mientras permanezca abierta la pestaña.
+- El servidor firma criptográficamente el historial y el estado de notificaciones. Si un visitante altera el contexto guardado, el backend lo descarta y continúa únicamente con el mensaje actual.
+- La entrada queda acotada a 128 KB y a los 80 mensajes saneados más recientes para evitar consumo de recursos sin límite.
 - Para pruebas manuales se puede ejecutar `PixieV2.startNewSession()` en la consola del navegador.
 
 Esta persistencia es un fallback adecuado para la infraestructura actual. La interfaz del backend ya recibe una conversación normalizada, por lo que posteriormente puede sustituirse `localStorage` por Postgres, Supabase, Redis u otra base sin cambiar el contrato de Make.
@@ -145,6 +147,7 @@ Los tres campos finales mantienen funcionando el correo actual de Make durante l
 | `PIXIE_WEBHOOK_ENABLED` | Interruptor de envío |
 | `PIXIE_WEBHOOK_DEBOUNCE_MINUTES` | Ventana anti-spam, predeterminada 10 |
 | `PIXIE_WEBHOOK_TIMEOUT_MS` | Timeout, predeterminado 5000 ms |
+| `PIXIE_STATE_SECRET` | Secreto aleatorio largo para firmar el historial. Recomendado en producción; mientras no exista, el servidor usa la credencial del modelo como respaldo HMAC sin exponerla. |
 | `PIXIE_DEBUG_PAYLOAD` | Payload de depuración solo fuera de producción |
 
 No se guardan secretos en frontend ni en Git.
@@ -159,6 +162,7 @@ En Netlify Dev, establecer `PIXIE_DEBUG_PAYLOAD=true` y abrir la web con `?pixie
 - El webhook tiene timeout y `try/catch`.
 - Los logs incluyen `session_id`, evento, `event_id` y timestamp, pero no payloads, mensajes, credenciales ni datos de contacto.
 - Claves, tokens, contraseñas, encabezados de autorización y secuencias similares a tarjetas se redactan antes de persistir o enviar la conversación. La URL enviada omite query string y fragmentos.
+- `/api/chat` limita 12 solicitudes por minuto por IP y dominio, exige JSON y valida el origen en producción. La ruta directa de la función queda deshabilitada mediante la ruta personalizada de Netlify.
 - Mensajes esperados: `Session created`, `Message stored`, `Lead detected`, `Sending webhook`, `Webhook success`, `Webhook failed`.
 
 ## Pruebas

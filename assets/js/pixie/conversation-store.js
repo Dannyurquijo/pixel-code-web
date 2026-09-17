@@ -28,7 +28,8 @@
       created_at: initialTimestamp,
       updated_at: initialTimestamp,
       messages: greeting ? [{ role: 'assistant', content: greeting, timestamp: initialTimestamp }] : [],
-      notification: { last_sent_at: null, last_score: 0, last_event: null, contact_fingerprint: null }
+      notification: { last_sent_at: null, last_score: 0, last_event: null, contact_fingerprint: null },
+      state_token: null
     };
 
     const load = () => {
@@ -62,6 +63,11 @@
       updateNotification(notification) {
         const conversation = load();
         conversation.notification = { ...conversation.notification, ...notification };
+        return save(conversation);
+      },
+      updateStateToken(stateToken) {
+        const conversation = load();
+        conversation.state_token = typeof stateToken === 'string' ? stateToken : null;
         return save(conversation);
       },
       clear() {

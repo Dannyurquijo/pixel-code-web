@@ -1,4 +1,6 @@
 const VALID_ROLES = new Set(['user', 'assistant']);
+const MAX_CONVERSATION_MESSAGES = 80;
+const MAX_MESSAGE_LENGTH = 4000;
 
 const redactSensitive = (value) => value
   .replace(/\b(sk-[A-Za-z0-9_-]{12,}|gh[pousr]_[A-Za-z0-9_]{12,}|AIza[A-Za-z0-9_-]{20,}|xox[baprs]-[A-Za-z0-9-]{12,})\b/g, '[DATO SENSIBLE REDACTADO]')
@@ -7,7 +9,10 @@ const redactSensitive = (value) => value
 
 const cleanText = (value, maxLength = 4000) => {
   if (typeof value !== 'string') return null;
-  const text = value.trim().replace(/\u0000/g, '');
+  const text = value
+    .trim()
+    .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, '')
+    .replace(/[\u200B\u200E\u200F\u202A-\u202E\u2060-\u2064\u2066-\u206F\uFEFF]/g, '');
   return text ? text.slice(0, maxLength) : null;
 };
 
@@ -19,14 +24,17 @@ const normalizeTimestamp = (value, fallback = new Date().toISOString()) => {
 const sanitizeMessage = (message, fallbackTimestamp) => {
   const sourceRole = message?.role === 'model' ? 'assistant' : message?.role;
   const role = VALID_ROLES.has(sourceRole) ? sourceRole : null;
-  const content = cleanText(message?.content ?? message?.text);
+  const content = cleanText(message?.content ?? message?.text, MAX_MESSAGE_LENGTH);
   if (!role || !content) return null;
   return { role, content, timestamp: normalizeTimestamp(message?.timestamp, fallbackTimestamp) };
 };
 
 const sanitizeConversation = (messages, now = new Date().toISOString()) => {
   if (!Array.isArray(messages)) return [];
-  return messages.map((message) => sanitizeMessage(message, now)).filter(Boolean);
+  return messages
+    .slice(-MAX_CONVERSATION_MESSAGES)
+    .map((message) => sanitizeMessage(message, now))
+    .filter(Boolean);
 };
 
 const ensureLatestUserMessage = (messages, userMessage, timestamp) => {
@@ -64,5 +72,6 @@ module.exports = {
   sanitizeConversation,
   ensureLatestUserMessage,
   toLlmContents,
-  formatConversationText
+  formatConversationText,
+  MAX_CONVERSATION_MESSAGES
 };

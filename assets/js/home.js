@@ -178,7 +178,7 @@
       messages.scrollTop = messages.scrollHeight;
 
       try {
-        const response = await fetch('/.netlify/functions/chat', {
+        const response = await fetch('/api/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -188,6 +188,7 @@
             conversation: conversation?.messages || [{ role: 'user', content: text, timestamp: userTimestamp }],
             history: (conversation?.messages || []).slice(0, -1).slice(-20).map((message) => ({ role: message.role, text: message.content })),
             notification_state: conversation?.notification,
+            state_token: conversation?.state_token,
             page_url: `${location.origin}${location.pathname}`,
             campaign,
             debug: location.hostname === 'localhost' && new URLSearchParams(location.search).get('pixie_debug') === '1'
@@ -200,6 +201,7 @@
           : 'No pude generar una respuesta en este momento. Intenta nuevamente.';
         conversationStore?.append({ role: 'assistant', content: reply, timestamp: new Date().toISOString() });
         if (data.notification?.sent) conversationStore?.updateNotification(data.notification);
+        if (data.state_token) conversationStore?.updateStateToken(data.state_token);
         addMessage(reply, 'bot');
         if (data.debug_payload) console.info('[PIXIE] Debug payload', data.debug_payload);
       } catch (_) {
