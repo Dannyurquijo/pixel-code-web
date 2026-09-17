@@ -122,7 +122,10 @@
     const input = pixieWidget.querySelector('[data-pixie-input]');
     const messages = pixieWidget.querySelector('[data-pixie-messages]');
     const typing = pixieWidget.querySelector('[data-pixie-typing]');
-    const history = [];
+    const greeting = 'Hola, soy Pixie. Puedo orientarte sobre automatización, IA, desarrollo web y cursos de DU Pixel Code. ¿Qué quieres mejorar?';
+    const storage = (() => { try { return localStorage; } catch (_) { return null; } })();
+    let pixieSession = window.PixieSession?.getOrCreate(storage);
+    const conversationStore = window.PixieConversationStore?.create({ storage, session: pixieSession, greeting });
     let waiting = false;
 
     const setPixieOpen = (open) => {
@@ -141,6 +144,14 @@
       messages.scrollTop = messages.scrollHeight;
     };
 
+    const renderConversation = () => {
+      if (!conversationStore) return;
+      messages.replaceChildren();
+      conversationStore.get().messages.forEach((message) => addMessage(message.content, message.role));
+    };
+
+    renderConversation();
+
     launcher?.addEventListener('click', () => setPixieOpen(launcher.getAttribute('aria-expanded') !== 'true'));
     closeButton?.addEventListener('click', () => setPixieOpen(false));
     addEventListener('keydown', (event) => {
@@ -155,8 +166,9 @@
       const text = input.value.trim();
       if (!text || waiting) return;
 
-      const priorHistory = history.slice(-10);
-      history.push({ role: 'user', text });
+      const userTimestamp = new Date().toISOString();
+      const conversation = conversationStore?.append({ role: 'user', content: text, timestamp: userTimestamp });
+      pixieSession = window.PixieSession?.touch(storage, pixieSession) || pixieSession;
       addMessage(text, 'user');
       input.value = '';
       waiting = true;
@@ -169,15 +181,27 @@
         const response = await fetch('/.netlify/functions/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: text, history: priorHistory })
+          body: JSON.stringify({
+            message: text,
+            session_id: pixieSession?.session_id,
+            created_at: conversation?.created_at,
+            conversation: conversation?.messages || [{ role: 'user', content: text, timestamp: userTimestamp }],
+            history: (conversation?.messages || []).slice(0, -1).slice(-20).map((message) => ({ role: message.role, text: message.content })),
+            notification_state: conversation?.notification,
+            page_url: `${location.origin}${location.pathname}`,
+            campaign,
+            debug: location.hostname === 'localhost' && new URLSearchParams(location.search).get('pixie_debug') === '1'
+          })
         });
         if (!response.ok) throw new Error(`Pixie API ${response.status}`);
         const data = await response.json();
         const reply = typeof data.reply === 'string' && data.reply.trim()
           ? data.reply.trim()
           : 'No pude generar una respuesta en este momento. Intenta nuevamente.';
-        history.push({ role: 'model', text: reply });
+        conversationStore?.append({ role: 'assistant', content: reply, timestamp: new Date().toISOString() });
+        if (data.notification?.sent) conversationStore?.updateNotification(data.notification);
         addMessage(reply, 'bot');
+        if (data.debug_payload) console.info('[PIXIE] Debug payload', data.debug_payload);
       } catch (_) {
         addMessage('Mis circuitos están tardando más de lo normal. Intenta otra vez en un momento o solicita tu diagnóstico por WhatsApp.', 'bot');
       } finally {
@@ -188,5 +212,15 @@
         input.focus();
       }
     });
+
+    window.PixieV2 = {
+      getSession: () => ({ ...pixieSession }),
+      getConversation: () => conversationStore?.get() || null,
+      startNewSession: () => {
+        conversationStore?.clear();
+        pixieSession = window.PixieSession?.reset(storage);
+        location.reload();
+      }
+    };
   }
 })();

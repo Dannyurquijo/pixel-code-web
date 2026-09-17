@@ -1,108 +1,131 @@
-exports.handler = async (event) => {
-    // Seguridad: Solo aceptamos peticiones POST
-    if (event.httpMethod !== "POST") return { statusCode: 405, body: "Método no permitido" };
+const { cleanText, ensureLatestUserMessage, sanitizeConversation, toLlmContents } = require('./pixie/conversation');
+const { analyzeLead, selectEvent } = require('./pixie/lead-analyzer');
+const { shouldNotify } = require('./pixie/notification-policy');
+const { buildPayload } = require('./pixie/payload-builder');
+const { sendMakeWebhook } = require('./pixie/make-webhook');
+const { buildSystemPrompt } = require('./pixie/system-prompt');
 
-    try {
-        const body = JSON.parse(event.body);
-        const userMessage = body.message;
-        const history = body.history || []; // Historial limpio enviado desde tu frontend
+const jsonResponse = (statusCode, body) => ({
+  statusCode,
+  headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' },
+  body: JSON.stringify(body)
+});
 
-        const apiKey = process.env.GEMINI_API_KEY;
-        if (!apiKey) throw new Error("API Key no configurada");
+const validSessionId = (value) => typeof value === 'string' && /^px_\d+_[a-f0-9]{6,16}$/i.test(value);
+const fallbackSessionId = () => `px_${Date.now()}_${Math.random().toString(16).slice(2, 12)}`;
 
-       // System Prompt Blindado: Anti-Alucinaciones, Cierre de Ventas y Capacitaciones
-        const systemPrompt = `Tu nombre es Pixie. Eres el Asistente Virtual humano, empático y Arquitecto de Soluciones de "DU Pixel & Code", agencia de desarrollo de software e Inteligencia Artificial del Ing. Daniel Urquijo (Querétaro, MX).
-        
-        REGLAS DE COMPORTAMIENTO Y LÍMITES (ESTRICTAS - CRÍTICO PARA SEGURIDAD):
-        0. MEMORIA CONTEXTUAL: Analiza el historial de la conversación. Si el usuario ya te saludó o ya te presentaste antes, NO VUELVAS A PRESENTARTE. Continúa la charla de forma natural y responde directamente.
-        1. CERO ALUCINACIONES: NUNCA inventes precios, promociones, ni ofrezcas servicios que no estén explícitamente en la 'Base de Conocimientos'. 
-        2. CONTROL DE FUERA DE ALCANCE: Si un cliente pide algo que no está listado (ej. hardware específico), responde: "Para proyectos a la medida, el Ing. Daniel diseña la solución personalmente. ¿Me regalas tu número de WhatsApp a 10 dígitos para que te contacte?"
-        3. SÉ BREVE Y CONVERSACIONAL: Máximo 2 o 3 oraciones por mensaje. Mantén un balance divertido de emojis sin exagerar.
-        4. REGLA DE CIERRE (LEADS): En CADA MENSAJE donde des información de precios, servicios o cursos, DEBES terminar pidiendo explícitamente su número a 10 dígitos o correo electrónico para enviarle el temario o una propuesta.
-        5. CAPTURA EXITOSA: Si el usuario escribe su teléfono o correo, agradécele, dile que Daniel lo contactará hoy mismo y no sigas ofreciendo paquetes.
-        
-        BASE DE CONOCIMIENTOS OFICIAL (NUESTROS SERVICIOS Y COSTOS REALES):
-        - Lo que SÍ hacemos: Arquitectura SaaS, Agentes de IA con RAG (como tú), Automatización de flujos de trabajo (Make/n8n/CRM), desarrollo web, y CAPACITACIÓN/CURSOS en Inteligencia Artificial.
-        
-        CURSOS Y CAPACITACIÓN PERSONALIZADA EN IA (NUEVO SERVICIO):
-        - ¿Qué hacemos?: Diseñamos cursos de IA 100% a la medida, enfocados en enseñar "haciendo" para automatizar procesos y ahorrar tiempo.
-        - ¿A quiénes capacitamos?: 
-            * Escuelas y Universidades (Docentes, Administrativos, Directores, Alumnos). Ej. Automatización de rúbricas o reportes.
-            * Corporativos y PyMES (Áreas de finanzas, ingeniería, logística, RH).
-            * Freelancers y Emprendedores.
-        - Precios de Capacitación: NO des un precio fijo general. Responde que el costo se adapta al número de personas y nivel técnico requerido. (Para escuelas, menciona que los talleres base arrancan desde $1,000 MXN por participante o grupo, sujeto a diagnóstico).
-        
-        PAQUETES DE DESARROLLO WEB/SOFTWARE:
-        - Paquete Emprendedor ($6,900 MXN + IVA): Landing Page Express, Dominio/Hosting 1 año.
-        - Paquete Negocio Local + IA ($8,900 MXN + IVA): Web 4 secciones + Chatbot de IA integrado. (Producto Estrella).
-        - Paquete Empresarial ($11,500 MXN + IVA): Portal completo, IA con base de datos propia, 5 correos empresariales.
-        - Tiempos y Extras: Entregas en 3 semanas con 2 rondas de ajustes. Correo extra: $950 MXN.
-        - WhatsApp de la agencia: 4433479755.`;
-
-        let chatContents = [];
-
-        // 1. Cargamos la Memoria (Sin recortar nada, mapeo directo)
-        history.forEach(msg => {
-            chatContents.push({
-                role: msg.role === "user" ? "user" : "model",
-                parts: [{ text: msg.text }]
-            });
-        });
-
-        // 2. Cargamos el mensaje actual del usuario
-        chatContents.push({
-            role: "user",
-            parts: [{ text: userMessage }]
-        });
-
-        const requestBody = {
-            systemInstruction: { parts: [{ text: systemPrompt }] },
-            contents: chatContents
-        };
-
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(requestBody)
-        });
-        
-        const data = await response.json();
-        if (data.error) throw new Error(data.error.message);
-
-        const aiReply = data.candidates?.[0]?.content?.parts?.[0]?.text;
-
-        // ---------------------------------------------------------
-        // NUEVO: SISTEMA DE NOTIFICACIONES (Detector de Leads)
-        // ---------------------------------------------------------
-        // Busca si el usuario escribió un número de 10 dígitos o un correo electrónico
-        const containsContactInfo = /[0-9]{10}|[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/.test(userMessage);
-        
-        if (containsContactInfo) {
-            const webhookUrl = process.env.MAKE_WEBHOOK_URL; 
-            if (webhookUrl) {
-                // Enviamos la alerta silenciosa a Make.com
-                await fetch(webhookUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                        origen: "Chatbot Pixie",
-                        mensaje_cliente: userMessage,
-                        respuesta_pixie: aiReply
-                    })
-                }).catch(err => console.error("Error al notificar", err));
-            }
-        }
-
-        return {
-            statusCode: 200,
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ reply: aiReply })
-        };
-
-    } catch (error) {
-        return {
-            statusCode: 500,
-            body: JSON.stringify({ reply: "⚠️ Error en mis circuitos. Intenta de nuevo en un momento." })
-        };
-    }
+const safeCampaign = (value) => {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return null;
+  const allowed = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'];
+  const entries = allowed.map((key) => [key, cleanText(value[key], 120)]).filter(([, item]) => item);
+  return entries.length ? Object.fromEntries(entries) : null;
 };
+
+const getQueretaroContext = (date = new Date()) => {
+  const time = new Intl.DateTimeFormat('es-MX', {
+    timeZone: 'America/Mexico_City', hour: '2-digit', minute: '2-digit', hourCycle: 'h23'
+  }).format(date);
+  const hour = Number(time.split(':')[0]);
+  return { time, afterHours: hour >= 20 || hour < 8 };
+};
+
+const requestLlm = async ({ apiKey, systemPrompt, contents, fetchImpl = global.fetch }) => {
+  const response = await fetchImpl(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ systemInstruction: { parts: [{ text: systemPrompt }] }, contents })
+  });
+  const data = await response.json();
+  if (!response.ok || data.error) throw new Error('LLM request failed');
+  const reply = cleanText(data.candidates?.[0]?.content?.parts?.[0]?.text, 4000);
+  if (!reply) throw new Error('LLM returned an empty reply');
+  return reply;
+};
+
+exports.handler = async (event) => {
+  if (event.httpMethod !== 'POST') return jsonResponse(405, { reply: 'Método no permitido.' });
+
+  const now = new Date();
+  const timestamp = now.toISOString();
+  let sessionId = null;
+
+  try {
+    const body = JSON.parse(event.body || '{}');
+    const userMessage = cleanText(body.message, 600);
+    if (!userMessage) return jsonResponse(400, { reply: 'Escribe un mensaje para continuar.' });
+
+    sessionId = validSessionId(body.session_id) ? body.session_id : fallbackSessionId();
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) throw new Error('LLM unavailable');
+
+    const legacyHistory = sanitizeConversation(body.history, timestamp);
+    const receivedConversation = sanitizeConversation(body.conversation, timestamp);
+    const canonicalConversation = ensureLatestUserMessage(
+      receivedConversation.length ? receivedConversation : legacyHistory,
+      userMessage,
+      timestamp
+    );
+    const { time, afterHours } = getQueretaroContext(now);
+    const reply = await requestLlm({
+      apiKey,
+      systemPrompt: buildSystemPrompt({ queretaroTime: time, afterHours }),
+      contents: toLlmContents(canonicalConversation, 20)
+    });
+    const completeConversation = [...canonicalConversation, { role: 'assistant', content: reply, timestamp: new Date().toISOString() }];
+
+    const lead = analyzeLead(completeConversation, { threshold: Number(process.env.PIXIE_LEAD_THRESHOLD || 30) });
+    const commercialEvent = selectEvent(lead);
+    const debounceMinutes = Math.max(1, Number(process.env.PIXIE_WEBHOOK_DEBOUNCE_MINUTES || 10));
+    const policy = shouldNotify({
+      event: commercialEvent,
+      lead,
+      previous: body.notification_state,
+      now: Date.now(),
+      debounceMs: debounceMinutes * 60 * 1000
+    });
+
+    const createdAt = body.created_at && Number.isFinite(Date.parse(body.created_at)) ? new Date(body.created_at).toISOString() : completeConversation[0]?.timestamp || timestamp;
+    const payload = commercialEvent ? buildPayload({
+      event: commercialEvent,
+      sessionId,
+      lead,
+      conversation: completeConversation,
+      latestUser: userMessage,
+      latestPixie: reply,
+      origin: { page_url: cleanText(body.page_url, 500), campaign: safeCampaign(body.campaign) },
+      createdAt,
+      updatedAt: completeConversation.at(-1).timestamp
+    }) : null;
+
+    let notification = { sent: false, event: commercialEvent, reason: policy.reason };
+    const webhookEnabled = process.env.PIXIE_WEBHOOK_ENABLED !== 'false';
+    if (payload && policy.notify && webhookEnabled) {
+      console.info('[PIXIE] Lead detected', { session_id: sessionId, event: commercialEvent, score: lead.lead_score, timestamp });
+      const webhookResult = await sendMakeWebhook({
+        url: process.env.MAKE_PIXIE_WEBHOOK_URL || process.env.MAKE_WEBHOOK_URL,
+        payload,
+        timeoutMs: Math.max(1000, Number(process.env.PIXIE_WEBHOOK_TIMEOUT_MS || 5000))
+      });
+      notification = {
+        sent: webhookResult.sent,
+        event: commercialEvent,
+        event_id: payload.event_id,
+        reason: webhookResult.sent ? 'sent' : webhookResult.reason,
+        last_sent_at: webhookResult.sent ? timestamp : null,
+        last_score: webhookResult.sent ? lead.lead_score : Number(body.notification_state?.last_score || 0),
+        last_event: webhookResult.sent ? commercialEvent : body.notification_state?.last_event || null,
+        contact_fingerprint: webhookResult.sent ? policy.contact_fingerprint : body.notification_state?.contact_fingerprint || null
+      };
+    }
+
+    const responseBody = { reply, session_id: sessionId, lead_detected: lead.lead_detected, notification };
+    const debugAllowed = process.env.PIXIE_DEBUG_PAYLOAD === 'true' && process.env.CONTEXT !== 'production';
+    if (debugAllowed && body.debug === true) responseBody.debug_payload = payload;
+    return jsonResponse(200, responseBody);
+  } catch (error) {
+    console.error('[PIXIE] Chat failed', { session_id: sessionId, timestamp, error: error.message === 'LLM unavailable' ? 'configuration_missing' : 'request_failed' });
+    return jsonResponse(500, { reply: '⚠️ Mis circuitos están tardando más de lo normal. Intenta de nuevo en un momento.' });
+  }
+};
+
+exports._test = { getQueretaroContext, requestLlm, validSessionId, safeCampaign };
