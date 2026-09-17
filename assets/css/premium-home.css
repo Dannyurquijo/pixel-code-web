@@ -175,19 +175,19 @@ h2 { font-weight: 800; }
 
 /* Intro cinematográfico: una secuencia breve de profundidad antes de revelar la interfaz. */
 body.intro-lock { overflow: hidden; }
-.site-intro { position: fixed; z-index: 500; inset: 0; overflow: hidden; color: #fff; background: #030303; clip-path: circle(150% at 50% 50%); transition: opacity 700ms ease, clip-path 1050ms var(--ease), visibility 1050ms; }
+.site-intro { position: fixed; z-index: 500; inset: 0; overflow: hidden; color: #fff; background: #030303; clip-path: circle(150% at 50% 50%); transition: opacity 480ms ease, clip-path 700ms var(--ease), visibility 700ms; }
 .site-intro.is-exiting { visibility: hidden; opacity: 0; clip-path: circle(0 at 50% 50%); pointer-events: none; }
 #intro-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
 .intro-vignette { position: absolute; inset: 0; background: radial-gradient(circle at center, transparent 0 20%, rgba(3,3,3,.12) 52%, rgba(3,3,3,.88) 100%), linear-gradient(90deg,rgba(0,0,0,.55),transparent 25% 75%,rgba(0,0,0,.55)); }
-.intro-brand { position: absolute; top: 36px; left: 42px; display: flex; align-items: center; gap: 14px; opacity: 0; font-size: 10px; font-weight: 700; letter-spacing: .18em; animation: introFade 700ms var(--ease) 120ms forwards; }
+.intro-brand { position: absolute; top: 36px; left: 42px; display: flex; align-items: center; gap: 14px; opacity: 0; font-size: 10px; font-weight: 700; letter-spacing: .18em; animation: introFade 380ms var(--ease) 50ms forwards; }
 .intro-brand img { width: 46px; height: 46px; border: 1px solid rgba(197,160,89,.35); border-radius: 13px; }
 .intro-copy { position: absolute; top: 50%; left: 50%; width: min(92vw,1100px); text-align: center; transform: translate(-50%,-50%); }
-.intro-copy p { margin: 0 0 22px; opacity: 0; color: var(--gold); font-size: 9px; font-weight: 600; letter-spacing: .32em; animation: introFade 700ms ease 650ms forwards; }
+.intro-copy p { margin: 0 0 22px; opacity: 0; color: var(--gold); font-size: 9px; font-weight: 600; letter-spacing: .32em; animation: introFade 420ms ease 220ms forwards; }
 .intro-copy h2 { margin: 0; font-size: clamp(2.3rem,6.2vw,6.7rem); line-height: .98; letter-spacing: -.055em; }
 .intro-copy h2 span { display: block; overflow: hidden; padding-bottom: .06em; }
 .intro-copy h2 span::first-line { transform-origin: center; }
-.intro-copy h2 span:first-child { opacity: 0; filter: blur(10px); transform: translateY(70px) scale(.92); animation: introTitle 1050ms var(--ease) 950ms forwards; }
-.intro-copy h2 span:last-child { opacity: 0; filter: blur(10px); transform: translateY(70px) scale(.92); animation: introTitle 1050ms var(--ease) 1320ms forwards; }
+.intro-copy h2 span:first-child { opacity: 0; filter: blur(8px); transform: translateY(50px) scale(.94); animation: introTitle 650ms var(--ease) 340ms forwards; }
+.intro-copy h2 span:last-child { opacity: 0; filter: blur(8px); transform: translateY(50px) scale(.94); animation: introTitle 650ms var(--ease) 560ms forwards; }
 .intro-copy em { color: var(--gold-light); font-style: italic; font-weight: 500; }
 .intro-status { position: absolute; right: 42px; bottom: 34px; left: 42px; display: flex; justify-content: space-between; padding-top: 12px; border-top: 1px solid rgba(197,160,89,.22); color: #827b6c; font-size: 8px; letter-spacing: .2em; }
 .intro-status::before { position: absolute; top: -1px; left: 0; width: var(--intro-progress,0%); height: 1px; content: ''; background: linear-gradient(90deg,var(--gold-dark),var(--gold-light)); box-shadow: 0 0 16px rgba(197,160,89,.5); }
@@ -333,3 +333,23 @@ body::before { background-image: radial-gradient(circle at 72% 18%,rgba(55,42,16
 
 @media (max-width: 1120px) { .academy-grid { grid-template-columns: repeat(2,1fr); }.course-card { min-height: 430px; } }
 @media (max-width: 650px) { .academy-grid { grid-template-columns: 1fr; }.course-card { min-height: 420px; padding: 26px; }.course-card__icon { margin: 42px 0 28px; }.academy-more { align-items: stretch; flex-direction: column; }.academy-more .button { justify-content: center; } }
+
+/* Primera capa CRO: una promesa más concreta y un diagnóstico entendible. */
+.hero h1 { max-width: 900px; font-size: clamp(2.8rem,5.15vw,5.45rem); }
+.hero__proof { row-gap: 12px; }
+.hero__proof span { color: #bbc0c6; }
+.final-cta { min-height: 900px; }
+.final-cta__content { width: min(100%,980px); }
+.final-cta__content > p:not(.eyebrow) { margin-bottom: 28px; }
+.diagnostic-points { display: grid; width: min(100%,860px); grid-template-columns: repeat(3,1fr); gap: 10px; margin: 0 0 34px; text-align: left; }
+.diagnostic-points article { display: grid; grid-template-columns: 36px 1fr; gap: 7px 12px; min-height: 128px; padding: 22px; border: 1px solid rgba(197,160,89,.18); border-radius: 13px; background: rgba(5,5,5,.78); box-shadow: inset 0 1px rgba(255,255,255,.035); }
+.diagnostic-points span { grid-row: 1/3; display: grid; place-items: center; width: 34px; height: 34px; border: 1px solid rgba(197,160,89,.35); border-radius: 50%; color: var(--gold-light); font-size: 10px; }
+.diagnostic-points b { align-self: end; color: #f2eee6; font-size: 12px; letter-spacing: .045em; }
+.diagnostic-points small { color: #aeb3b9; font-size: 11px; line-height: 1.55; }
+
+@media (max-width: 760px) {
+  .hero h1 { font-size: clamp(2.65rem,10vw,4.15rem); }
+  .diagnostic-points { grid-template-columns: 1fr; }
+  .diagnostic-points article { min-height: 100px; }
+  .final-cta { min-height: 980px; }
+}

@@ -48,6 +48,30 @@
 
   document.querySelectorAll('[data-year]').forEach((node) => { node.textContent = new Date().getFullYear(); });
 
+  let campaign = {};
+  try { campaign = JSON.parse(sessionStorage.getItem('du:campaign') || '{}'); } catch (_) { campaign = {}; }
+  const campaignKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'];
+  const query = new URLSearchParams(location.search);
+  campaignKeys.forEach((key) => {
+    const value = query.get(key);
+    if (value) campaign[key] = value;
+  });
+  try { sessionStorage.setItem('du:campaign', JSON.stringify(campaign)); } catch (_) { /* Storage can be blocked. */ }
+  document.addEventListener('click', (event) => {
+    const element = event.target instanceof Element ? event.target.closest('[data-track]') : null;
+    if (!element) return;
+    const detail = {
+      event: element.dataset.track,
+      location: element.dataset.trackLocation || 'unknown',
+      label: element.textContent.trim().replace(/\s+/g, ' '),
+      page: location.pathname,
+      ...campaign
+    };
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push(detail);
+    window.dispatchEvent(new CustomEvent('du:track', { detail }));
+  });
+
   const activeScenes = document.querySelectorAll('.system-architecture,.intelligence-system,.ecosystem-stage');
   if ('IntersectionObserver' in window && !reduceMotion) {
     const sceneObserver = new IntersectionObserver((entries) => {

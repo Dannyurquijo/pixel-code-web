@@ -6,6 +6,12 @@
   if (!intro || !canvas) return;
 
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let introSeen = false;
+  try { introSeen = sessionStorage.getItem('du:intro-seen') === '1'; } catch (_) { /* Storage can be blocked. */ }
+  if (reduced || introSeen) {
+    intro.remove();
+    return;
+  }
   const ctx = canvas.getContext('2d', { alpha: false });
   if (!ctx) {
     intro.remove();
@@ -21,7 +27,8 @@
   let raf = 0;
   let finished = false;
   const pointer = { x: 0, y: 0, tx: 0, ty: 0 };
-  const particles = Array.from({ length: 110 }, () => ({
+  const particleCount = matchMedia('(max-width: 700px)').matches ? 52 : 84;
+  const particles = Array.from({ length: particleCount }, () => ({
     x: (Math.random() - .5) * 18,
     y: (Math.random() - .5) * 11,
     z: .8 + Math.random() * 17,
@@ -78,8 +85,8 @@
   function render(now) {
     if (!start) start = now;
     const elapsed = now - start;
-    const progress = Math.min(elapsed / 3350, 1);
-    const reveal = Math.max(0, Math.min((elapsed - 350) / 1200, 1));
+    const progress = Math.min(elapsed / 1500, 1);
+    const reveal = Math.max(0, Math.min((elapsed - 100) / 650, 1));
     pointer.x += (pointer.tx - pointer.x) * .035;
     pointer.y += (pointer.ty - pointer.y) * .035;
     ctx.fillStyle = '#030303';
@@ -120,8 +127,9 @@
     cancelAnimationFrame(raf);
     intro.classList.add('is-exiting');
     document.body.classList.remove('intro-lock');
+    try { sessionStorage.setItem('du:intro-seen', '1'); } catch (_) { /* Storage can be blocked. */ }
     window.dispatchEvent(new CustomEvent('du:intro-complete'));
-    setTimeout(() => intro.remove(), 1100);
+    setTimeout(() => intro.remove(), 760);
   }
 
   addEventListener('pointermove', event => {
@@ -133,9 +141,6 @@
   addEventListener('keydown', event => { if (event.key === 'Escape') finish(); });
 
   resize();
-  if (reduced || !ctx) setTimeout(finish, 80);
-  else {
-    raf = requestAnimationFrame(render);
-    setTimeout(finish, 3900);
-  }
+  raf = requestAnimationFrame(render);
+  setTimeout(finish, 1850);
 })();
