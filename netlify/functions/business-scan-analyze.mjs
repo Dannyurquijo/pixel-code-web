@@ -74,10 +74,12 @@ async function withGemini(input, scores) {
       config: {
         systemInstruction: "Eres consultor de transformación digital de DU Pixel Code. Sé ejecutivo, claro y prudente. No inventes ROI, ahorros, horas, porcentajes, facturación, costos, tamaño, procesos, integraciones ni problemas. Distingue Detectado, Potencial y Por validar. Usa expresiones como 'Existe una oportunidad potencial'. Una oportunidad principal y máximo tres secundarias. Evita tecnicismos y promesas.",
         responseMimeType: 'application/json', responseJsonSchema: responseSchema,
-        maxOutputTokens: 1300, temperature: 0.25, abortSignal: controller.signal
+        thinkingConfig: { thinkingBudget: 0 },
+        maxOutputTokens: 2400, temperature: 0.25, abortSignal: controller.signal
       }
     });
-    const parsed = JSON.parse(result.text || '');
+    const normalized = (result.text || '').trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '');
+    const parsed = JSON.parse(normalized);
     return engine.validAiDiagnostic(parsed) ? { ...parsed, scores, source: 'gemini' } : null;
   } finally {
     clearTimeout(timer);
