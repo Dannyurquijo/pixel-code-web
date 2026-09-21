@@ -3,7 +3,27 @@
   "version": "1.0.0",
   "description": "Sitio e infraestructura digital de DU Pixel Code",
   "scripts": {
-    "test": "node tests/pixie-v2.test.js",
+    "build": "vite build --config business-scan-src/vite.config.mjs",
+    "typecheck": "tsc -p business-scan-src/tsconfig.json",
+    "test": "node --test --test-isolation=none tests/pixie-v2.test.js tests/business-scan.test.js",
     "test:pixie": "node tests/pixie-v2.test.js"
-  }
+  },
+  "dependencies": {
+    "@google/genai": "2.23.0",
+    "jspdf": "4.2.1",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "24.10.0",
+    "@types/react": "19.2.0",
+    "@types/react-dom": "19.2.0",
+    "@vitejs/plugin-react": "^6.1.1",
+    "typescript": "5.9.3",
+    "vite": "^8.3.0"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "packageManager": "pnpm@11.19.0"
 }
