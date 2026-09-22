@@ -127,13 +127,26 @@
     let pixieSession = window.PixieSession?.getOrCreate(storage);
     const conversationStore = window.PixieConversationStore?.create({ storage, session: pixieSession, greeting });
     let waiting = false;
+    let reactionTimer = 0;
+    const reactionClasses = ['is-waving', 'is-celebrating', 'is-concerned'];
+
+    const react = (state, duration = 1200) => {
+      clearTimeout(reactionTimer);
+      reactionClasses.forEach((className) => pixieWidget.classList.remove(className));
+      if (!state) return;
+      pixieWidget.classList.add(state);
+      reactionTimer = window.setTimeout(() => pixieWidget.classList.remove(state), duration);
+    };
 
     const setPixieOpen = (open) => {
       launcher?.setAttribute('aria-expanded', String(open));
       panel.hidden = !open;
       panel.setAttribute('aria-hidden', String(!open));
       pixieWidget.classList.toggle('is-open', open);
-      if (open) requestAnimationFrame(() => input?.focus());
+      if (open) {
+        react('is-celebrating', 900);
+        requestAnimationFrame(() => input?.focus());
+      }
     };
 
     const addMessage = (text, role) => {
@@ -153,7 +166,11 @@
     renderConversation();
 
     launcher?.addEventListener('click', () => setPixieOpen(launcher.getAttribute('aria-expanded') !== 'true'));
+    launcher?.addEventListener('pointerenter', () => { if (!waiting) pixieWidget.classList.add('is-waving'); });
+    launcher?.addEventListener('pointerleave', () => pixieWidget.classList.remove('is-waving'));
     closeButton?.addEventListener('click', () => setPixieOpen(false));
+    input?.addEventListener('input', () => pixieWidget.classList.toggle('is-listening', Boolean(input.value.trim()) && !waiting));
+    window.setTimeout(() => { if (launcher?.getAttribute('aria-expanded') !== 'true') react('is-waving', 1400); }, 1800);
     addEventListener('keydown', (event) => {
       if (event.key === 'Escape' && launcher?.getAttribute('aria-expanded') === 'true') {
         setPixieOpen(false);
@@ -172,11 +189,14 @@
       addMessage(text, 'user');
       input.value = '';
       waiting = true;
+      pixieWidget.classList.remove('is-listening');
+      pixieWidget.classList.add('is-thinking');
       input.disabled = true;
       form.querySelector('button').disabled = true;
       typing.hidden = false;
       messages.scrollTop = messages.scrollHeight;
 
+      let answered = false;
       try {
         const response = await fetch('/api/chat', {
           method: 'POST',
@@ -203,11 +223,15 @@
         if (data.notification?.sent) conversationStore?.updateNotification(data.notification);
         if (data.state_token) conversationStore?.updateStateToken(data.state_token);
         addMessage(reply, 'bot');
+        answered = true;
         if (data.debug_payload) console.info('[PIXIE] Debug payload', data.debug_payload);
       } catch (_) {
         addMessage('Mis circuitos están tardando más de lo normal. Intenta otra vez en un momento o solicita tu diagnóstico por WhatsApp.', 'bot');
+        react('is-concerned', 1400);
       } finally {
         waiting = false;
+        pixieWidget.classList.remove('is-thinking');
+        if (answered) react('is-celebrating', 1350);
         typing.hidden = true;
         input.disabled = false;
         form.querySelector('button').disabled = false;
