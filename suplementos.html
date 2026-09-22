@@ -1,222 +1,32 @@
-<!DOCTYPE html>
-<html lang="es" class="scroll-smooth">
+<!doctype html>
+<html lang="es-MX">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iron Nutrition | Demo E-commerce</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Roboto Condensed -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700;900&display=swap" rel="stylesheet">
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['"Roboto Condensed"', 'sans-serif'] },
-                    // Paleta Dark/Neón
-                    colors: { primary: '#39FF14', dark: '#0a0a0a', surface: '#171717', surfaceLight: '#222222' }
-                }
-            }
-        }
-    </script>
-    <style>
-        .neon-glow:hover {
-            box-shadow: 0 0 20px rgba(57, 255, 20, 0.15);
-            border-color: #39FF14;
-        }
-    </style>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#050505">
+  <meta name="description" content="Demo interactiva de ecommerce de suplementos con recomendador, catálogo filtrable, carrito y checkout simulado."><meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://dupixelcode.com/suplementos.html"><link rel="icon" type="image/png" href="du-logo-Cuadrado.png">
+  <meta property="og:type" content="website"><meta property="og:locale" content="es_MX"><meta property="og:title" content="Núcleo Performance | Demo ecommerce"><meta property="og:description" content="Catálogo, recomendación por objetivo, carrito y compra simulada en una experiencia premium."><meta property="og:image" content="https://dupixelcode.com/assets/images/demos/suplementos-hero.png">
+  <link rel="preload" as="image" href="assets/images/demos/suplementos-hero.webp"><link rel="stylesheet" href="assets/css/premium-home.css"><link rel="stylesheet" href="assets/css/demo-suplementos.css?v=20260921a">
+  <title>Núcleo Performance | Demo de tienda de suplementos</title>
 </head>
-<body class="font-sans text-gray-200 bg-dark antialiased">
-
-    <!-- Top Banner -->
-    <div class="bg-primary text-dark font-bold text-center py-2 text-xs uppercase tracking-widest flex items-center justify-center gap-2">
-        <i data-lucide="zap" class="w-4 h-4"></i> Promoción activa: Envío gratis en tu primera orden
-    </div>
-
-    <!-- Navbar -->
-    <nav class="bg-surface/95 backdrop-blur-md border-b border-gray-800 sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex justify-between items-center">
-            <div class="flex items-center gap-2 sm:gap-3">
-                <i data-lucide="dumbbell" class="w-6 h-6 sm:w-8 sm:h-8 text-primary"></i>
-                <span class="font-black text-xl sm:text-2xl tracking-tighter uppercase text-white">Iron<span class="text-primary">Nutrition</span></span>
-            </div>
-            
-            <div class="hidden md:flex gap-8 text-sm font-bold uppercase tracking-wider text-gray-400">
-                <a href="#" class="hover:text-primary transition">Proteínas</a>
-                <a href="#" class="hover:text-primary transition">Aminoácidos</a>
-                <a href="#" class="hover:text-primary transition">Accesorios</a>
-            </div>
-
-            <div class="flex items-center gap-4 sm:gap-6">
-                <a href="#" class="text-white hover:text-primary transition hidden sm:block"><i data-lucide="search" class="w-5 h-5"></i></a>
-                <a href="#" class="text-white hover:text-primary transition relative">
-                    <i data-lucide="shopping-cart" class="w-5 h-5"></i>
-                    <span class="absolute -top-2 -right-2 bg-primary text-dark text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center">3</span>
-                </a>
-                <button class="md:hidden text-white"><i data-lucide="menu" class="w-6 h-6"></i></button>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section class="relative bg-dark min-h-[70vh] flex items-center overflow-hidden border-b border-gray-900">
-        <!-- Fondo de Atleta Seguro -->
-        <div class="absolute inset-0 z-0">
-            <div class="absolute inset-0 bg-gradient-to-r from-dark via-dark/80 to-transparent z-10"></div>
-            <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2000&auto=format&fit=crop" 
-                 onerror="this.src='https://placehold.co/2000x1000/0a0a0a/39FF14?text=Fondo+Fitness'" 
-                 alt="Atleta en gimnasio" class="w-full h-full object-cover opacity-50">
-        </div>
-        
-        <div class="max-w-7xl mx-auto px-6 w-full relative z-20 py-16">
-            <span class="bg-primary/20 text-primary border border-primary/50 font-bold tracking-widest text-xs uppercase px-3 py-1 rounded mb-4 inline-block">
-                🔥 Más de 10,000 atletas nos respaldan
-            </span>
-            <h1 class="text-5xl md:text-7xl font-black text-white leading-none uppercase mb-6 transform -skew-x-6">
-                Eleva tu <br><span class="text-primary">Rendimiento.</span>
-            </h1>
-            <p class="text-gray-400 text-lg mb-8 max-w-md font-light">
-                Suplementación científica para resultados reales. Construye músculo, quema grasa y supera tus propios récords.
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4">
-                <button class="bg-primary text-dark px-8 py-4 rounded font-black uppercase tracking-widest text-lg hover:bg-white transition flex items-center justify-center gap-2 transform -skew-x-6">
-                    Ir a la Tienda <i data-lucide="arrow-right" class="w-5 h-5"></i>
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Banner Comercial Pixel & Code -->
-    <div class="bg-surfaceLight border-b border-gray-800 py-3 px-4 text-center text-xs sm:text-sm text-gray-300">
-        🚀 <span class="text-primary font-bold">Demo de Tienda Online (DU Pixel & Code).</span> Tu marca de suplementos podría verse así de profesional. <a href="https://wa.me/524423479766" class="text-white hover:text-primary font-bold underline">Haz clic aquí para cotizar.</a>
-    </div>
-
-    <!-- Catálogo de Productos -->
-    <section class="py-16 px-6 max-w-7xl mx-auto">
-        <h2 class="text-3xl md:text-4xl font-black text-white uppercase transform -skew-x-6 mb-10 border-l-4 border-primary pl-4">Nuestro <span class="text-primary">Top 4</span></h2>
-        
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            
-            <!-- Producto 1: Proteína (Con imagen 100% funcional) -->
-            <div class="bg-surface border border-gray-800 rounded-lg p-4 group neon-glow transition-all duration-300 flex flex-col relative overflow-hidden">
-                <div class="absolute top-2 left-2 bg-primary text-dark text-[10px] font-black uppercase px-2 py-1 z-10 rounded">-20% OFF</div>
-                
-                <div class="relative h-56 mb-4 bg-surfaceLight rounded overflow-hidden flex justify-center items-center">
-                    <img src="https://images.unsplash.com/photo-1550989460-0adf9ea622e2?q=80&w=400&auto=format&fit=crop" 
-                         onerror="this.src='https://placehold.co/400x400/222/39FF14?text=WHEY+PROTEIN'" 
-                         alt="Batido de Proteína" class="h-full w-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition duration-500">
-                    
-                    <!-- Botón Flotante UX -->
-                    <div class="absolute inset-x-0 bottom-0 p-3 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 z-20">
-                        <button class="w-full bg-primary text-dark font-black uppercase text-xs py-2 rounded flex items-center justify-center gap-2">
-                            <i data-lucide="shopping-cart" class="w-4 h-4"></i> Añadir
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="flex-1 flex flex-col">
-                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1">Crecimiento Muscular</p>
-                    <h3 class="font-bold text-lg text-white mb-2 leading-tight">Whey Protein Premium 5lbs</h3>
-                    <div class="mt-auto flex justify-between items-end">
-                        <span class="text-xs text-gray-500 line-through">$1,450</span>
-                        <span class="font-black text-2xl text-primary">$1,160 <span class="text-[10px] text-white">MXN</span></span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Producto 2: Shaker/Pre-entreno -->
-            <div class="bg-surface border border-gray-800 rounded-lg p-4 group neon-glow transition-all duration-300 flex flex-col relative overflow-hidden">
-                <div class="relative h-56 mb-4 bg-surfaceLight rounded overflow-hidden flex justify-center items-center">
-                    <img src="https://images.unsplash.com/photo-1594381898411-846e7d193883?q=80&w=400&auto=format&fit=crop" 
-                         onerror="this.src='https://placehold.co/400x400/222/39FF14?text=PRE-WORKOUT'" 
-                         alt="Shaker Deportivo" class="h-full w-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition duration-500">
-                    
-                    <!-- Botón Flotante UX -->
-                    <div class="absolute inset-x-0 bottom-0 p-3 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 z-20">
-                        <button class="w-full bg-primary text-dark font-black uppercase text-xs py-2 rounded flex items-center justify-center gap-2">
-                            <i data-lucide="shopping-cart" class="w-4 h-4"></i> Añadir
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="flex-1 flex flex-col">
-                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1">Energía</p>
-                    <h3 class="font-bold text-lg text-white mb-2 leading-tight">Pre-Entreno Explosivo</h3>
-                    <div class="mt-auto flex justify-between items-end">
-                        <span class="font-black text-2xl text-primary">$550 <span class="text-[10px] text-white">MXN</span></span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Producto 3: Vitaminas/Pastillas -->
-            <div class="bg-surface border border-gray-800 rounded-lg p-4 group neon-glow transition-all duration-300 flex flex-col relative overflow-hidden">
-                <div class="absolute top-2 left-2 bg-white text-dark text-[10px] font-black uppercase px-2 py-1 z-10 rounded">Bestseller</div>
-                
-                <div class="relative h-56 mb-4 bg-surfaceLight rounded overflow-hidden flex justify-center items-center">
-                    <img src="https://images.unsplash.com/photo-1640539130635-f1bcbf20e588?q=80&w=400&auto=format&fit=crop" 
-                         onerror="this.src='https://placehold.co/400x400/222/39FF14?text=VITAMINAS'" 
-                         alt="Frasco de Vitaminas" class="h-full w-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition duration-500">
-                    
-                    <!-- Botón Flotante UX -->
-                    <div class="absolute inset-x-0 bottom-0 p-3 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 z-20">
-                        <button class="w-full bg-primary text-dark font-black uppercase text-xs py-2 rounded flex items-center justify-center gap-2">
-                            <i data-lucide="shopping-cart" class="w-4 h-4"></i> Añadir
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="flex-1 flex flex-col">
-                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1">Salud Integral</p>
-                    <h3 class="font-bold text-lg text-white mb-2 leading-tight">Multivitamínico Atleta Pro</h3>
-                    <div class="mt-auto flex justify-between items-end">
-                        <span class="font-black text-2xl text-primary">$420 <span class="text-[10px] text-white">MXN</span></span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Producto 4: Creatina/Pesas -->
-            <div class="bg-surface border border-gray-800 rounded-lg p-4 group neon-glow transition-all duration-300 flex flex-col relative overflow-hidden">
-                <div class="relative h-56 mb-4 bg-surfaceLight rounded overflow-hidden flex justify-center items-center">
-                    <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=400&auto=format&fit=crop" 
-                         onerror="this.src='https://placehold.co/400x400/222/39FF14?text=CREATINA'" 
-                         alt="Pesas de Gimnasio" class="h-full w-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition duration-500">
-                    
-                    <!-- Botón Flotante UX -->
-                    <div class="absolute inset-x-0 bottom-0 p-3 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 z-20">
-                        <button class="w-full bg-primary text-dark font-black uppercase text-xs py-2 rounded flex items-center justify-center gap-2">
-                            <i data-lucide="shopping-cart" class="w-4 h-4"></i> Añadir
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="flex-1 flex flex-col">
-                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1">Fuerza</p>
-                    <h3 class="font-bold text-lg text-white mb-2 leading-tight">Creatina Monohidratada Pura</h3>
-                    <div class="mt-auto flex justify-between items-end">
-                        <span class="font-black text-2xl text-primary">$380 <span class="text-[10px] text-white">MXN</span></span>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-surface pt-12 pb-8 px-6 text-center text-gray-500 text-sm border-t border-gray-800">
-        <p class="font-black text-white tracking-widest uppercase text-xl mb-4">IRON NUTRITION</p>
-        <p class="mb-4 text-xs">Desarrollado y optimizado para ventas con Inteligencia Artificial.</p>
-        <p class="text-[10px] uppercase tracking-widest border-t border-gray-800 pt-6 inline-block">
-            Tecnología por <a href="https://www.dupixelcode.com" target="_blank" class="text-primary hover:text-white transition font-bold">Pixel & Code Agency</a>
-        </p>
-    </footer>
-
-    <script>
-        lucide.createIcons();
-    </script>
+<body class="shop-page">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a><div class="demo-ribbon">Tienda demo de DU Pixel Code · Productos y compra ficticios</div><div class="scroll-progress" aria-hidden="true"><i></i></div>
+  <header class="site-header" data-header>
+    <a class="brand" href="servicios.html#demos" aria-label="Volver a las demos de DU Pixel Code"><img src="du-logo-Cuadrado.png" width="46" height="46" alt=""><span><strong>Núcleo Performance</strong><small>Nutrition store · Demo</small></span></a>
+    <nav class="desktop-nav" aria-label="Navegación de la tienda"><a href="#finder">Encuentra tu opción</a><a href="#catalogo" aria-current="page">Productos</a><a href="#compra">Experiencia</a></nav>
+    <button class="button button--small button--ghost desktop-cta cart-button" type="button" data-cart-open>Carrito <span class="cart-count" data-cart-count>0</span></button>
+    <button class="menu-button" type="button" aria-label="Abrir menú" aria-expanded="false" data-menu-button><i></i><i></i></button>
+  </header>
+  <div class="mobile-menu" data-mobile-menu hidden><nav><a href="#finder"><small>01</small>Encuentra tu opción</a><a href="#catalogo"><small>02</small>Productos</a><a href="#compra"><small>03</small>Experiencia</a><button class="button button--primary cart-button" type="button" data-cart-open>Ver carrito <span class="cart-count" data-cart-count>0</span></button><a class="button button--ghost" href="servicios.html#demos">Volver a demos</a></nav></div>
+  <main id="contenido">
+    <section class="shop-hero" id="inicio"><div class="shop-hero__copy reveal"><p class="eyebrow"><span></span> Nutrición deportiva · Compra inteligente</p><h1>Elige con claridad. Entrena con <em>intención.</em></h1><p class="shop-hero__lead">Una tienda que explica qué contiene cada producto, ayuda a navegar por objetivo y convierte la compra en un recorrido simple.</p><div class="shop-hero__actions"><a class="button button--primary" href="#catalogo">Explorar catálogo <span>↓</span></a><a class="button button--ghost" href="#finder">Encontrar mi opción</a></div><div class="shop-stats"><div><strong>6 productos</strong><small>Catálogo demo</small></div><div><strong>4 objetivos</strong><small>Filtros claros</small></div><div><strong>1 flujo</strong><small>Compra completa</small></div></div></div></section>
+    <section class="shop-section" id="finder"><p class="shop-kicker">Selector por objetivo</p><div class="shop-heading reveal"><h2>Empieza por lo que quieres <em>construir.</em></h2><p>Un recomendador breve reduce fricción sin fingir que sustituye la orientación de un profesional.</p></div><div class="goal-finder reveal"><div class="goal-finder__copy"><h3>¿Cuál es tu objetivo principal?</h3><p>Elige una opción para filtrar el catálogo. La sugerencia es orientativa y forma parte de esta demostración.</p></div><div class="goal-options"><button class="goal-option" type="button" data-goal="fuerza" aria-pressed="false"><b>Fuerza</b><span>↗</span></button><button class="goal-option" type="button" data-goal="recuperacion" aria-pressed="false"><b>Recuperación</b><span>↗</span></button><button class="goal-option" type="button" data-goal="energia" aria-pressed="false"><b>Energía e hidratación</b><span>↗</span></button><button class="goal-option" type="button" data-goal="bienestar" aria-pressed="false"><b>Bienestar diario</b><span>↗</span></button><div class="finder-result" data-finder-result>Selecciona un objetivo y te mostraremos una ruta posible.</div></div></div></section>
+    <section class="shop-section" id="catalogo"><p class="shop-kicker">Catálogo interactivo</p><div class="shop-heading reveal"><h2>Menos ruido. Más información <em>útil.</em></h2><p>Productos ficticios con precio, porciones e ingrediente clave. Agrega varios, cambia cantidades y prueba el checkout.</p></div><div class="catalog-toolbar"><div class="filters" aria-label="Filtrar productos"><button class="filter-button" type="button" data-filter="todos" aria-pressed="true">Todos</button><button class="filter-button" type="button" data-filter="fuerza" aria-pressed="false">Fuerza</button><button class="filter-button" type="button" data-filter="recuperacion" aria-pressed="false">Recuperación</button><button class="filter-button" type="button" data-filter="energia" aria-pressed="false">Energía</button><button class="filter-button" type="button" data-filter="bienestar" aria-pressed="false">Bienestar</button></div><span class="product-count" data-product-count></span></div><div class="product-grid" data-product-grid></div><div class="shop-disclosure">Productos, precios e información creados exclusivamente para esta demo. Los suplementos no sustituyen una alimentación equilibrada ni la orientación de un profesional de salud. En un comercio real deben mostrarse ingredientes, advertencias, lote, caducidad y cumplimiento regulatorio.</div></section>
+    <section class="shop-section" id="compra"><p class="shop-kicker">Arquitectura de comercio</p><div class="shop-heading reveal"><h2>La venta continúa después del botón <em>“comprar”.</em></h2><p>El valor real está en conectar inventario, cobro, confirmaciones y seguimiento sin duplicar trabajo.</p></div><div class="commerce-grid reveal"><article><span>01 · CATÁLOGO</span><h3>Inventario sincronizado</h3><p>Stock, variantes y promociones administrados desde una sola fuente.</p></article><article><span>02 · CHECKOUT</span><h3>Compra sin fricción</h3><p>Carrito persistente, cálculo de envío y pagos protegidos.</p></article><article><span>03 · OPERACIÓN</span><h3>Seguimiento automático</h3><p>Confirmaciones, estatus de pedido y recompra conectados al CRM.</p></article></div></section>
+    <section class="shop-end reveal"><p class="eyebrow"><span></span> De catálogo visual a sistema de venta</p><h2>Tu tienda puede vender y operar como una sola <em>arquitectura.</em></h2><p>DU Pixel Code construye ecommerce a medida, integra pagos, inventario, CRM y automatizaciones sin depender de una plantilla lenta.</p><a class="button button--primary" href="/diagnostico/">Solicitar diagnóstico completo <span>↗</span></a></section>
+  </main>
+  <div class="cart-backdrop" data-cart-backdrop hidden></div><aside class="cart-drawer" data-cart aria-hidden="true" aria-label="Carrito demo"><div class="cart-drawer__head"><h2>Tu carrito</h2><button class="icon-button" type="button" data-cart-close aria-label="Cerrar carrito">×</button></div><div class="cart-items" data-cart-items></div><div class="cart-total"><span>Subtotal demo</span><strong data-cart-total>$0</strong></div><button class="button button--primary" type="button" data-checkout-open>Continuar a checkout</button><p class="cart-note">No se realiza ningún cobro. Esta interacción ocurre únicamente en tu navegador.</p></aside>
+  <div class="checkout-modal" data-checkout hidden role="dialog" aria-modal="true" aria-labelledby="checkout-title"><div class="checkout-card"><button class="icon-button" type="button" data-checkout-close aria-label="Cerrar">×</button><h2 id="checkout-title">Checkout de demostración</h2><p>Completa los datos ficticios para probar la confirmación. No solicitamos datos de tarjeta ni enviamos información.</p><form class="checkout-form" data-checkout-form><label>Nombre<input name="name" required placeholder="Nombre de prueba"></label><label>Correo<input name="email" type="email" required placeholder="demo@ejemplo.com"></label><label>Código postal<input name="zip" inputmode="numeric" required placeholder="76000" maxlength="5"></label><button class="button button--primary" type="submit">Crear orden demo</button></form><div class="checkout-result" data-checkout-result hidden></div></div></div>
+  <footer class="site-footer"><a class="brand" href="servicios.html#demos"><img src="du-logo-Cuadrado.png" width="42" height="42" alt=""><span><strong>DU Pixel Code</strong><small>Demo de experiencia digital</small></span></a><p>© <span data-year></span> DU Pixel Code. Tienda conceptual.</p><div><a href="servicios.html#demos">Más demos</a><a href="/diagnostico/">Diagnóstico</a></div></footer>
+  <script src="assets/js/home.js" defer></script><script src="assets/js/demo-suplementos.js?v=20260921a" defer></script>
 </body>
 </html>
-
-
-
