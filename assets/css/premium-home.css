@@ -213,6 +213,15 @@ body::before { background-image: radial-gradient(circle at 72% 18%,rgba(55,42,16
 .final-cta__signal i:nth-child(2) { border-color: rgba(197,160,89,.14); }
 .scroll-progress i { background: linear-gradient(90deg,var(--gold-dark),var(--gold-light)); }
 
+/* La portada usa una sola escala institucional: oro, carbón y blanco. */
+.mini-core { box-shadow:0 0 40px rgba(197,160,89,.16),inset 0 0 30px rgba(197,160,89,.10); }
+.orbit--inner { border-color:rgba(197,160,89,.24); }
+.orbit-core { border-color:var(--gold);background:#0d0a04;box-shadow:0 0 70px rgba(197,160,89,.17); }
+.process-grid li { border-top-color:rgba(197,160,89,.48); }
+.final-cta { background:radial-gradient(circle at center,rgba(55,42,16,.42),transparent 58%); }
+.final-cta__signal i:nth-child(2) { border-color:rgba(197,160,89,.14); }
+@keyframes coreBreathe { 50% { border-color:var(--gold-light);box-shadow:0 0 55px rgba(197,160,89,.2),inset 0 0 35px rgba(197,160,89,.12); } }
+
 /* Antes / después: arquitectura legible en lugar de una colección de bloques. */
 .system-architecture { --rx: 0deg; --ry: 0deg; position: relative; display: grid; grid-template-columns: 1fr .72fr 1fr; align-items: center; gap: clamp(24px,4vw,60px); min-height: 520px; margin-top: 80px; padding: clamp(28px,4vw,54px); border: 1px solid rgba(197,160,89,.18); border-radius: 28px; background: linear-gradient(135deg,rgba(255,255,255,.035),rgba(197,160,89,.018) 55%,rgba(255,255,255,.015)); box-shadow: 0 40px 100px rgba(0,0,0,.35), inset 0 1px rgba(255,255,255,.04); transform-style: preserve-3d; }
 [data-tilt].is-visible { transform: perspective(1400px) rotateX(var(--rx)) rotateY(var(--ry)); transition: opacity var(--cinematic) var(--ease), transform 650ms var(--ease); }
