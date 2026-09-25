@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex,nofollow">
     <title>Portal de Pago | DU Pixel & Code</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
@@ -18,13 +19,13 @@
         }
     </script>
     <style>
-        body { 
-            background-color: #050505; 
-            color: #ffffff; 
+        body {
+            background-color: #050505;
+            color: #ffffff;
             background-image: radial-gradient(circle at 50% 0%, rgba(197, 160, 89, 0.05) 0%, transparent 50%);
             overflow-x: hidden;
         }
-        
+
         /* Lienzo de Partículas de Fondo */
         #particle-canvas {
             position: fixed;
@@ -35,7 +36,7 @@
             z-index: -1;
             pointer-events: none;
         }
-        
+
         .glass-panel {
             background: rgba(15, 15, 15, 0.7);
             backdrop-filter: blur(24px);
@@ -70,7 +71,7 @@
     <canvas id="particle-canvas"></canvas>
 
     <div class="glass-panel w-full max-w-lg rounded-[2rem] p-8 md:p-10 relative overflow-hidden z-10">
-        
+
         <!-- Elemento decorativo de fondo -->
         <div class="absolute top-0 right-0 w-32 h-32 bg-gold/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
 
@@ -85,7 +86,7 @@
 
         <!-- Tarjeta de Datos -->
         <div class="space-y-2 mb-10 relative z-10">
-            
+
             <div class="data-row flex justify-between items-center p-3 border-b border-white/5">
                 <span class="text-gray-500 text-[10px] uppercase tracking-widest font-medium">Banco</span>
                 <span class="text-white text-sm font-bold">BANAMEX</span>
@@ -128,8 +129,8 @@
             <div>
                 <h4 class="text-[11px] text-white font-bold uppercase tracking-widest mb-1">Siguiente Paso</h4>
                 <p class="text-[10px] text-gray-400 leading-relaxed">
-                    Al realizar la transferencia, favor de enviar tu comprobante a 
-                    <a href="mailto:info@dupixelcode.com" class="text-gold hover:underline">info@dupixelcode.com</a>. 
+                    Al realizar la transferencia, favor de enviar tu comprobante a
+                    <a href="mailto:info@dupixelcode.com" class="text-gold hover:underline">info@dupixelcode.com</a>.
                     El sistema registrará tu ingreso y habilitaremos tu proyecto.
                 </p>
             </div>
@@ -240,7 +241,7 @@
                 let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
                 let directionX = (Math.random() * .4) - .2;
                 let directionY = (Math.random() * .4) - .2;
-                let color = 'rgba(197, 160, 89, 0.4)'; 
+                let color = 'rgba(197, 160, 89, 0.4)';
                 particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
             }
         }

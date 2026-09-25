@@ -14,6 +14,8 @@ const msg = (role, content, index = 0) => ({ role, content, timestamp: at(index)
 
 class FakeStorage {
   constructor() { this.data = new Map(); }
+  get length() { return this.data.size; }
+  key(index) { return [...this.data.keys()][index] ?? null; }
   getItem(key) { return this.data.has(key) ? this.data.get(key) : null; }
   setItem(key, value) { this.data.set(key, String(value)); }
   removeItem(key) { this.data.delete(key); }
@@ -64,10 +66,14 @@ test('TEST 6: un fallo del webhook no rompe la respuesta de Pixie', async () => 
   const previousValues = {
     GEMINI_API_KEY: process.env.GEMINI_API_KEY,
     MAKE_PIXIE_WEBHOOK_URL: process.env.MAKE_PIXIE_WEBHOOK_URL,
+    MAKE_PIXIE_API_KEY: process.env.MAKE_PIXIE_API_KEY,
+    PIXIE_STATE_SECRET: process.env.PIXIE_STATE_SECRET,
     PIXIE_WEBHOOK_ENABLED: process.env.PIXIE_WEBHOOK_ENABLED
   };
   process.env.GEMINI_API_KEY = 'test-key';
   process.env.MAKE_PIXIE_WEBHOOK_URL = 'https://example.invalid/webhook';
+  process.env.MAKE_PIXIE_API_KEY = 'test-make-key';
+  process.env.PIXIE_STATE_SECRET = 'test-key';
   process.env.PIXIE_WEBHOOK_ENABLED = 'true';
   global.fetch = async (url) => {
     if (String(url).includes('generativelanguage.googleapis.com')) {
@@ -111,6 +117,18 @@ test('TEST 8: una sesión nueva no mezcla el historial anterior', () => {
   assert.doesNotMatch(JSON.stringify(secondStore.get()), /Mensaje privado/);
 });
 
+test('Privacidad: elimina conversaciones vencidas y limita el historial local', () => {
+  const storage = new FakeStorage();
+  const oldKey = `${PixieStore.KEY_PREFIX}old-session`;
+  storage.setItem(oldKey, JSON.stringify({ created_at: '2025-01-01T00:00:00.000Z', updated_at: '2025-01-01T00:00:00.000Z', messages: [] }));
+  PixieStore.purgeExpired(storage, Date.parse('2026-09-24T00:00:00.000Z'));
+  assert.equal(storage.getItem(oldKey), null);
+  const session = PixieSession.getOrCreate(storage, { now: Date.parse('2026-09-24T00:00:00.000Z') });
+  const store = PixieStore.create({ storage, session, greeting: 'Hola' });
+  for (let index = 0; index < 50; index += 1) store.append({ role: 'user', content: `Mensaje ${index}`, timestamp: new Date(Date.parse('2026-09-24T00:00:00.000Z') + index * 1000).toISOString() });
+  assert.equal(store.get().messages.length, PixieStore.MAX_STORED_MESSAGES);
+});
+
 test('TEST 9: los campos desconocidos son null y nunca cadenas vacías', () => {
   const lead = analyzeLead([msg('user', 'Quiero información sobre automatización')]);
   ['name', 'email', 'phone', 'company', 'budget', 'timeline', 'city'].forEach((field) => assert.equal(lead[field], null));
@@ -143,11 +161,15 @@ test('Criterio final: Make recibe sesión, lead, contacto e historial completo',
   const previousValues = {
     GEMINI_API_KEY: process.env.GEMINI_API_KEY,
     MAKE_PIXIE_WEBHOOK_URL: process.env.MAKE_PIXIE_WEBHOOK_URL,
+    MAKE_PIXIE_API_KEY: process.env.MAKE_PIXIE_API_KEY,
+    PIXIE_STATE_SECRET: process.env.PIXIE_STATE_SECRET,
     PIXIE_WEBHOOK_ENABLED: process.env.PIXIE_WEBHOOK_ENABLED
   };
   let receivedPayload = null;
   process.env.GEMINI_API_KEY = 'test-key';
   process.env.MAKE_PIXIE_WEBHOOK_URL = 'https://example.invalid/pixie';
+  process.env.MAKE_PIXIE_API_KEY = 'test-make-key';
+  process.env.PIXIE_STATE_SECRET = 'test-key';
   process.env.PIXIE_WEBHOOK_ENABLED = 'true';
   global.fetch = async (url, options = {}) => {
     if (String(url).includes('generativelanguage.googleapis.com')) {

@@ -1,9 +1,10 @@
 const log = (message, context) => console.info(`[PIXIE] ${message}`, context);
 
-const sendMakeWebhook = async ({ url, payload, timeoutMs = 5000, fetchImpl = global.fetch }) => {
+const sendMakeWebhook = async ({ url, apiKey, payload, timeoutMs = 5000, fetchImpl = global.fetch }) => {
   const timestamp = new Date().toISOString();
   const context = { session_id: payload.session_id, event: payload.event, event_id: payload.event_id, timestamp };
   if (!url) return { sent: false, skipped: true, reason: 'webhook_not_configured' };
+  if (!apiKey) return { sent: false, skipped: true, reason: 'webhook_auth_not_configured' };
 
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
@@ -11,7 +12,11 @@ const sendMakeWebhook = async ({ url, payload, timeoutMs = 5000, fetchImpl = glo
   try {
     const response = await fetchImpl(url, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Pixie-Event-Id': payload.event_id },
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Pixie-Event-Id': payload.event_id,
+        'x-make-apikey': apiKey
+      },
       body: JSON.stringify(payload),
       signal: controller.signal
     });

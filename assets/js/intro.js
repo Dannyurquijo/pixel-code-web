@@ -85,8 +85,8 @@
   function render(now) {
     if (!start) start = now;
     const elapsed = now - start;
-    const progress = Math.min(elapsed / 1500, 1);
-    const reveal = Math.max(0, Math.min((elapsed - 100) / 650, 1));
+    const progress = Math.min(elapsed / 700, 1);
+    const reveal = Math.max(0, Math.min((elapsed - 60) / 360, 1));
     pointer.x += (pointer.tx - pointer.x) * .035;
     pointer.y += (pointer.ty - pointer.y) * .035;
     ctx.fillStyle = '#030303';
@@ -129,7 +129,7 @@
     document.body.classList.remove('intro-lock');
     try { sessionStorage.setItem('du:intro-seen', '1'); } catch (_) { /* Storage can be blocked. */ }
     window.dispatchEvent(new CustomEvent('du:intro-complete'));
-    setTimeout(() => intro.remove(), 760);
+    setTimeout(() => intro.remove(), 360);
   }
 
   addEventListener('pointermove', event => {
@@ -142,5 +142,5 @@
 
   resize();
   raf = requestAnimationFrame(render);
-  setTimeout(finish, 1850);
+  setTimeout(finish, 760);
 })();

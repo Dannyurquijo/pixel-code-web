@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,500;1,700;1,900&display=swap');
-
 :root {
   --black: #050505; --ink: #0a0a0a; --navy: #17130b; --white: #fff;
   --muted: #9ba3af; --cyan: #d8b56a; --gold: #c5a059; --gold-light: #f0d58a; --gold-dark: #906a20; --line: rgba(255,255,255,.11);
@@ -332,6 +330,15 @@ body::before { background-image: radial-gradient(circle at 72% 18%,rgba(55,42,16
   .source-cluster small,.outcome-cluster small { font-size: 10px; }
   .ecosystem-node b { font-size: 10px; }
   .ecosystem-node small { font-size: 9px; }
+}
+
+/* El titular principal se pinta de inmediato; la animación no bloquea el LCP. */
+.motion-ready .hero-line > span,.motion-active .hero-line > span { opacity: 1; filter: none; transform: none; transition: none; }
+.site-footer > div a,.site-footer > div button { display: inline-flex; min-height: 44px; align-items: center; }
+.pixie-note button { padding: 4px 6px; border: 0; color: #cfc5af; background: transparent; font: inherit; text-decoration: underline; cursor: pointer; }
+@media (max-width: 520px) {
+  body.has-scrolled .pixie-launcher__speech { opacity: 0; pointer-events: none; transform: translateX(20px); }
+  body.has-scrolled .pixie-launcher { width: 78px; }
 }
 
 /* Academia: programas aplicados presentados como módulos del mismo sistema. */

@@ -156,8 +156,8 @@ exports.handler = async (event) => {
       ? receivedConversation.slice(0, -1)
       : receivedConversation;
     const receivedNotification = normalizeNotification(body.notification_state);
-    const stateSecret = process.env.PIXIE_STATE_SECRET || apiKey;
-    const stateIsTrusted = verifyState({
+    const stateSecret = process.env.PIXIE_STATE_SECRET;
+    const stateIsTrusted = Boolean(stateSecret) && verifyState({
       token: body.state_token,
       secret: stateSecret,
       sessionId,
@@ -214,6 +214,7 @@ exports.handler = async (event) => {
       console.info('[PIXIE] Lead detected', { session_id: sessionId, event: commercialEvent, score: lead.lead_score, timestamp });
       const webhookResult = await sendMakeWebhook({
         url: process.env.MAKE_PIXIE_WEBHOOK_URL || process.env.MAKE_WEBHOOK_URL,
+        apiKey: process.env.MAKE_PIXIE_API_KEY,
         payload,
         timeoutMs: Math.max(1000, Number(process.env.PIXIE_WEBHOOK_TIMEOUT_MS || 5000))
       });
@@ -234,12 +235,12 @@ exports.handler = async (event) => {
       session_id: sessionId,
       lead_detected: lead.lead_detected,
       notification,
-      state_token: signState({
+      state_token: stateSecret ? signState({
         secret: stateSecret,
         sessionId,
         conversation: completeConversation,
         notification
-      })
+      }) : null
     };
     const debugAllowed = process.env.PIXIE_DEBUG_PAYLOAD === 'true' && process.env.CONTEXT !== 'production';
     if (debugAllowed && body.debug === true) responseBody.debug_payload = payload;

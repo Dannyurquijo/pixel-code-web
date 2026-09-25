@@ -10,14 +10,15 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="w-16 h-1 bg-gold mb-8" style="background-color: #C5A059;"></div>
             
             <div class="text-xs sm:text-sm text-gray-400 space-y-5 leading-relaxed font-light text-left">
-                <p><strong>1. Identidad y Domicilio:</strong> El Ing. Daniel Urquijo (DU Pixel & Code), con domicilio en Cam. a Vanegas, 76910 Corregidora, Qro., es responsable de sus datos bajo la LFPDPPP.</p>
-                <p><strong>2. Datos Recabados:</strong> Nombre, email, WhatsApp, proyecto y datos de navegación. <em>No recabamos datos sensibles ni almacenamos tarjetas bancarias.</em></p>
-                <p><strong>3. Finalidades:</strong> Proveer servicios de arquitectura de software, gestión de la Academia, procesamiento de pagos y soporte técnico.</p>
-                <p><strong>4. Uso de Inteligencia Artificial (CRÍTICO):</strong> Utilizamos modelos de lenguaje (API Gemini). Al interactuar con Pixie AI, sus textos son procesados algorítmicamente. <strong>Se prohíbe ingresar contraseñas, datos financieros o sensibles en los chats.</strong></p>
-                <p><strong>5. Transferencia a Terceros:</strong> Compartimos datos estrictamente operativos con MercadoPago (pagos), FormSubmit (correos) y Google Cloud (IA).</p>
-                <p><strong>6. Derechos ARCO:</strong> Puede acceder, rectificar, cancelar u oponerse al uso de sus datos enviando un correo a <strong>info@dupixelcode.com</strong>.</p>
-                <p><strong>7. Cookies:</strong> Usamos tecnologías de rastreo para funcionalidad técnica y pasarelas de pago.</p>
-                <p class="italic text-[10px] mt-6">Última actualización: Junio de 2026.</p>
+                <p><strong>1. Responsable:</strong> DU Pixel Code es responsable del tratamiento. Contacto de privacidad: <strong>info@dupixelcode.com</strong>.</p>
+                <p><strong>2. Datos recabados:</strong> Nombre, empresa, email, teléfono, proyecto, respuestas de diagnóstico, mensajes enviados a Pixie y datos técnicos mínimos. <em>No solicitamos datos sensibles ni almacenamos tarjetas bancarias.</em></p>
+                <p><strong>3. Finalidades:</strong> Responder solicitudes, generar diagnósticos, prestar servicios, dar seguimiento autorizado, prevenir abuso y diagnosticar errores.</p>
+                <p><strong>4. Inteligencia artificial:</strong> Pixie y el Business Scan pueden procesar texto mediante servicios de Google. <strong>No ingrese contraseñas, datos financieros ni información sensible.</strong></p>
+                <p><strong>5. Proveedores:</strong> Netlify, Make, Google y, cuando esté configurado, Supabase pueden tratar datos estrictamente para operar los flujos descritos.</p>
+                <p><strong>6. Conservación:</strong> El historial de Pixie se limita a 40 mensajes, se depura después de 30 días y puede eliminarse desde el chat.</p>
+                <p><strong>7. Derechos ARCO:</strong> Puede solicitar acceso, rectificación, cancelación, oposición o revocar su consentimiento escribiendo a <strong>info@dupixelcode.com</strong>.</p>
+                <p><a href="/privacidad.html" class="text-gold underline">Consultar el aviso completo</a>.</p>
+                <p class="italic text-[10px] mt-6">Última actualización: 24 de septiembre de 2026.</p>
             </div>
             
             <div class="mt-10 text-center">
