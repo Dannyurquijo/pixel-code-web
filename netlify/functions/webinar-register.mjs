@@ -22,6 +22,7 @@ const cleanText = (value, maxLength) => typeof value === 'string'
 const originAllowed = (request) => {
   const origin = request.headers.get('origin');
   if (!origin) return true;
+  try { if (new URL(request.url).origin === origin) return true; } catch (_) { /* Continue with explicit allowlist. */ }
   const allowed = new Set(['https://dupixelcode.com', 'https://www.dupixelcode.com']);
   [process.env.URL, process.env.DEPLOY_PRIME_URL].filter(Boolean).forEach((value) => {
     try { allowed.add(new URL(value).origin); } catch (_) { /* Ignore malformed platform URLs. */ }

@@ -58,11 +58,13 @@ const validateRequest = (event) => {
 
   if (event.headers && Object.keys(event.headers).length) {
     const origin = header(event.headers, 'origin');
+    let sameRequestOrigin = false;
+    try { sameRequestOrigin = Boolean(event.request_url) && new URL(event.request_url).origin === origin; } catch (_) { sameRequestOrigin = false; }
     const requestHost = (header(event.headers, 'host') || '').split(':')[0].toLowerCase();
     const localRequest = ['localhost', '127.0.0.1', '::1'].includes(requestHost);
     let localOrigin = false;
     try { localOrigin = ['localhost', '127.0.0.1', '::1'].includes(new URL(origin).hostname); } catch (_) { localOrigin = false; }
-    if (!origin || (!allowedOrigins().has(origin) && !(localRequest && localOrigin))) {
+    if (!origin || (!sameRequestOrigin && !allowedOrigins().has(origin) && !(localRequest && localOrigin))) {
       return jsonResponse(403, { reply: 'Origen no permitido.' });
     }
   }

@@ -30,3 +30,10 @@ test('Manual autentica Make y minimiza el payload', async () => {
     if (previousKey === undefined) delete process.env.MAKE_CONTACT_API_KEY; else process.env.MAKE_CONTACT_API_KEY = previousKey;
   }
 });
+
+test('Manual permite mismo origen y rechaza un origen externo', async () => {
+  const { _test } = await import('../netlify/functions/manual-register.mjs');
+  const url = 'https://deploy-preview-1--moonlit-lamington-b718a2.netlify.app/api/manual-register';
+  assert.equal(_test.originAllowed(new Request(url, { headers: { Origin: 'https://deploy-preview-1--moonlit-lamington-b718a2.netlify.app' } })), true);
+  assert.equal(_test.originAllowed(new Request(url, { headers: { Origin: 'https://attacker.example' } })), false);
+});

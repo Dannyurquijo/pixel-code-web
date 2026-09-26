@@ -71,3 +71,9 @@ test('Endpoint de webinar rechaza origen externo y acepta entrega válida', asyn
     if (previousKey === undefined) delete process.env.MAKE_WEBINAR_API_KEY; else process.env.MAKE_WEBINAR_API_KEY = previousKey;
   }
 });
+
+test('Webinar permite el mismo origen de un Deploy Preview', async () => {
+  const { _test } = await import('../netlify/functions/webinar-register.mjs');
+  const request = new Request('https://deploy-preview-1--moonlit-lamington-b718a2.netlify.app/api/webinar-register', { headers: { Origin: 'https://deploy-preview-1--moonlit-lamington-b718a2.netlify.app' } });
+  assert.equal(_test.originAllowed(request), true);
+});

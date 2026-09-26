@@ -111,7 +111,7 @@ El peso local fue 371 KiB frente a 250–254 KiB de producción. No se declara m
 
 ## Tests ejecutados
 
-- `node --test --test-isolation=none ...`: **36/36 pasan**.
+- `node --test --test-isolation=none ...`: **40/40 pasan**.
 - TypeScript `tsc`: **pasa**.
 - Vite production build: **pasa**, 220 módulos transformados.
 - `pnpm audit --prod --audit-level low`: **0 vulnerabilidades conocidas**.
@@ -120,6 +120,7 @@ El peso local fue 371 KiB frente a 250–254 KiB de producción. No se declara m
 - Deploy Preview de Netlify `6ab72882f8cdc90008ed61a0`: build, headers y redirects **pasan**; portada y páginas de privacidad, términos, cookies, manuales y cursos responden `200`.
 - `/api/manual-register` en preview rechaza un payload vacío con `400` antes de intentar una entrega downstream.
 - QA visual local: banner visible en primer acceso, preferencia persistente entre páginas, control para reabrirla, aviso integral renderizado y **0 errores o warnings de consola** en la revisión.
+- La primera prueba E2E detectó que el entorno de preview no aportaba `DEPLOY_PRIME_URL` a la Function y el propio origen era rechazado. Se corrigió con comparación estricta contra el origen de la URL solicitada y se añadieron regresiones para Pixie, webinar, contacto, manuales y Business Scan; orígenes externos continúan rechazados.
 
 ## Dependencias modificadas
 
@@ -165,7 +166,7 @@ Ninguna. Se evitó introducir paquetes y no se realizaron actualizaciones mayore
 | SEO | 73 | 84 | metadata, noindex y sitemap; páginas heredadas aún incompletas |
 | Accesibilidad | 78 | 89 | Lighthouse 100, labels, nombre accesible, zoom y targets; falta prueba AT completa |
 | CRO | 62 | 79 | formularios reparados localmente y consentimiento claro; falta validación real de Make |
-| Calidad de código | 70 | 84 | 36 tests, build/typecheck, sink XSS eliminado y controles legales compartidos |
+| Calidad de código | 70 | 84 | 40 tests, build/typecheck, sink XSS eliminado y controles legales compartidos |
 | Arquitectura | 72 | 82 | frontera navegador/Functions/Make y secretos server-side |
 | Mantenibilidad | 61 | 70 | documentación y tests; deuda Tailwind inline persiste |
 | Observabilidad | 38 | 48 | IDs de evento y logs sin PII; falta plataforma de errores |
@@ -182,4 +183,4 @@ Ninguna. Se evitó introducir paquetes y no se realizaron actualizaciones mayore
 | UX/UI | intro larga y errores débiles | intro 0.76 s, feedback y control de datos | código + Lighthouse |
 | Mobile | zoom bloqueado y widget ancho | zoom habilitado y launcher compacto | revisión responsive |
 | CRO | formularios rotos | endpoints y estados funcionales localmente | tests de integración |
-| Code Quality | 23 tests | 36 tests, build/typecheck/audit limpios | salida de herramientas |
+| Code Quality | 23 tests | 40 tests, build/typecheck/audit limpios | salida de herramientas |

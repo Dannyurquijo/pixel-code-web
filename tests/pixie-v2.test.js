@@ -241,10 +241,12 @@ test('Seguridad: rechaza cuerpos grandes, orígenes externos y tipos incorrectos
   const wrongOrigin = _test.validateRequest({ httpMethod: 'POST', headers: { host: 'dupixelcode.com', origin: 'https://attacker.example', 'content-type': 'application/json' }, body: '{}' });
   const wrongType = _test.validateRequest({ httpMethod: 'POST', headers: { host: 'dupixelcode.com', origin: 'https://dupixelcode.com', 'content-type': 'text/plain' }, body: '{}' });
   const missingOrigin = _test.validateRequest({ httpMethod: 'POST', headers: { host: 'dupixelcode.com', 'content-type': 'application/json' }, body: '{}' });
+  const previewOrigin = _test.validateRequest({ httpMethod: 'POST', request_url: 'https://deploy-preview-1--moonlit-lamington-b718a2.netlify.app/api/chat', headers: { host: 'deploy-preview-1--moonlit-lamington-b718a2.netlify.app', origin: 'https://deploy-preview-1--moonlit-lamington-b718a2.netlify.app', 'content-type': 'application/json' }, body: '{}' });
   assert.equal(oversized.statusCode, 413);
   assert.equal(wrongOrigin.statusCode, 403);
   assert.equal(wrongType.statusCode, 415);
   assert.equal(missingOrigin.statusCode, 403);
+  assert.equal(previewOrigin, null);
   if (previousContext === undefined) delete process.env.CONTEXT; else process.env.CONTEXT = previousContext;
 });
 
