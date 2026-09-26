@@ -27,7 +27,9 @@ Estado: cambios implementados y verificados localmente; producción no modificad
 - Pixie exige `MAKE_PIXIE_API_KEY` para notificar y ya no reutiliza `GEMINI_API_KEY` para firmar estado.
 - Sin `PIXIE_STATE_SECRET`, Pixie sigue respondiendo pero descarta estado cliente no confiable y no emite token firmado.
 - Se incorporaron IDs de evento para trazabilidad e idempotencia downstream.
-- Se verificó Make de forma read-only: Pixie activo/sano; Webinar inactivo/sano; ambos webhooks actuales sin autenticación. No se alteraron escenarios activos ni secretos de producción.
+- Se desactivó el Pixie heredado y se activó `DUPC — Web Intake Seguro (Pixie, Contacto y Webinar)` con un único webhook autenticado, seis rutas filtradas y conexiones sanas a Google Sheets, Gmail y Telegram.
+- Las credenciales de Make se seleccionan como un par atómico. Webinar, contacto y manuales ignoran las variables antiguas para evitar combinar la URL de un escenario con la clave de otro.
+- Se verificaron cuatro ejecuciones sintéticas de extremo a extremo: Pixie, webinar, contacto y manual; todas terminaron correctamente con tres operaciones cada una.
 - Se documentó la rotación atómica en `MAKE_SECURITY_MIGRATION.md`.
 
 ### Privacidad
@@ -111,16 +113,17 @@ El peso local fue 371 KiB frente a 250–254 KiB de producción. No se declara m
 
 ## Tests ejecutados
 
-- `node --test --test-isolation=none ...`: **40/40 pasan**.
+- `node --test --test-isolation=none ...`: **42/42 pasan**.
 - TypeScript `tsc`: **pasa**.
 - Vite production build: **pasa**, 220 módulos transformados.
 - `pnpm audit --prod --audit-level low`: **0 vulnerabilidades conocidas**.
 - Escaneo local de referencias `href/src`: **0 rotas**.
 - Escaneo de placeholders/webhooks/secrets actuales: sin webhook Make ni placeholders confirmados en código ejecutable; los valores sintéticos de tests permanecen intencionalmente.
-- Deploy Preview de Netlify `6ab72882f8cdc90008ed61a0`: build, headers y redirects **pasan**; portada y páginas de privacidad, términos, cookies, manuales y cursos responden `200`.
+- Deploy Preview de Netlify `6ab73d0e4ef124000804777d`: build y reglas **pasan**; portada y páginas de privacidad, términos, cookies, manuales y cursos responden `200`.
 - `/api/manual-register` en preview rechaza un payload vacío con `400` antes de intentar una entrega downstream.
 - QA visual local: banner visible en primer acceso, preferencia persistente entre páginas, control para reabrirla, aviso integral renderizado y **0 errores o warnings de consola** en la revisión.
 - La primera prueba E2E detectó que el entorno de preview no aportaba `DEPLOY_PRIME_URL` a la Function y el propio origen era rechazado. Se corrigió con comparación estricta contra el origen de la URL solicitada y se añadieron regresiones para Pixie, webinar, contacto, manuales y Business Scan; orígenes externos continúan rechazados.
+- Una segunda prueba E2E detectó que variables antiguas podían mezclar una URL de contacto con la clave consolidada. Se sustituyeron por un único par atómico y la repetición devolvió `202` en webinar, contacto y manual; Pixie devolvió `200` con notificación enviada. Make registró cuatro ejecuciones `success`, sin ejecuciones incompletas.
 
 ## Dependencias modificadas
 
@@ -128,8 +131,8 @@ Ninguna. Se evitó introducir paquetes y no se realizaron actualizaciones mayore
 
 ## Problemas pendientes y riesgos residuales
 
-1. **P0 operativo:** ejecutar la prueba sintética final de Pixie, webinar y contacto en el deploy preview y confirmar una sola entrega en cada destino. Las variables secretas y los escenarios seguros ya están preparados para el preview; los escenarios nuevos permanecen inactivos hasta la prueba controlada.
-2. **P0 operativo:** después de la prueba, coordinar el corte a producción y la revocación de los webhooks heredados. No se debe activar ni retirar el flujo anterior a medias.
+1. **P0 operativo:** habilitar `MAKE_PIXIE_WEBHOOK_URL`, `MAKE_PIXIE_API_KEY` y `PIXIE_STATE_SECRET` en el contexto Production de Netlify antes de fusionar la rama.
+2. **P0 operativo:** fusionar la rama, verificar el deploy del dominio público y repetir smoke tests sin datos reales. El escenario heredado permanece inactivo como rollback; su webhook debe revocarse después del periodo de observación.
 3. **P2:** eliminar el runtime de Tailwind/Lucide en páginas heredadas y servir CSS/JS compilado localmente. La CSP de esas páginas aún requiere `unsafe-inline`.
 4. **P2:** reemplazar `du-logo-Cuadrado.png`; contiene AVIF bajo extensión PNG y pesa 129 KiB.
 5. **P2:** decidir explícitamente si Cloudflare Web Analytics se habilita con consentimiento/CSP o se desactiva; hoy el beacon inyectado puede quedar bloqueado.
@@ -140,16 +143,16 @@ Ninguna. Se evitó introducir paquetes y no se realizaron actualizaciones mayore
 
 ## Riesgos de implementación
 
-- Rotar un webhook sin cambiar primero las variables de staging puede perder notificaciones.
-- Activar el escenario de webinar sin una prueba sintética puede crear filas o correos duplicados.
+- Publicar sin extender el par consolidado al contexto Production dejaría las notificaciones no disponibles; el merge queda condicionado a esa verificación.
+- Repetir pruebas sintéticas de webinar crea filas y correos de prueba; deben identificarse y limpiarse conforme a la política operativa.
 - El cache largo sólo se aplica de forma inmutable a chunks con hash; assets no hasheados usan una semana y deben conservar query versionada.
 - El aviso de privacidad es una mejora técnica/documental y debe recibir revisión legal si el negocio requiere cumplimiento formal específico.
 
 ## Verificación posterior al despliegue
 
-1. Deploy preview con secretos nuevos.
-2. Prueba negativa sin API key y prueba positiva por cada endpoint.
-3. Confirmar una única ejecución en Make y destino correcto.
+1. Confirmar las tres variables secretas en el contexto Production.
+2. Fusionar y verificar el deploy público, headers y páginas legales.
+3. Repetir una prueba controlada por endpoint y confirmar una única ejecución en Make y el destino correcto.
 4. Lighthouse móvil/escritorio tres veces y reportar la mediana.
 5. Revisión de consola, red, CSP, status codes, cookies y headers.
 6. Navegación con teclado y lectores de pantalla en portada, formularios y Business Scan.
@@ -159,18 +162,18 @@ Ninguna. Se evitó introducir paquetes y no se realizaron actualizaciones mayore
 
 | Área | Antes | Después | Sustento |
 |---|---:|---:|---|
-| Seguridad | 58 | 82 | exposición eliminada del cliente, validación server-side, secretos separados; rotación Make pendiente |
+| Seguridad | 58 | 86 | exposición eliminada, proxy validado, par atómico secreto y webhook autenticado verificado; revocación heredada pendiente |
 | Performance | 77 | 85 | Lighthouse móvil; desktop 85 → 94 |
 | UX/UI | 76 | 83 | intro más corta, errores visibles, panel de privacidad reutilizable y control de chat |
 | Mobile | 72 | 84 | zoom, launcher compacto y targets ampliados |
 | SEO | 73 | 84 | metadata, noindex y sitemap; páginas heredadas aún incompletas |
 | Accesibilidad | 78 | 89 | Lighthouse 100, labels, nombre accesible, zoom y targets; falta prueba AT completa |
-| CRO | 62 | 79 | formularios reparados localmente y consentimiento claro; falta validación real de Make |
-| Calidad de código | 70 | 84 | 40 tests, build/typecheck, sink XSS eliminado y controles legales compartidos |
-| Arquitectura | 72 | 82 | frontera navegador/Functions/Make y secretos server-side |
+| CRO | 62 | 83 | formularios y destinos verificados en preview, consentimiento claro y estados de error visibles |
+| Calidad de código | 70 | 85 | 42 tests, build/typecheck, sink XSS eliminado y controles legales compartidos |
+| Arquitectura | 72 | 87 | frontera navegador/Functions/Make, credenciales atómicas y rutas consolidadas por evento |
 | Mantenibilidad | 61 | 70 | documentación y tests; deuda Tailwind inline persiste |
 | Observabilidad | 38 | 48 | IDs de evento y logs sin PII; falta plataforma de errores |
-| Preparación para producción | 57 | 74 | controles y pruebas listos; secretos/rotación y deploy preview pendientes |
+| Preparación para producción | 57 | 82 | preview y E2E verdes; falta extender secretos a Production, fusionar y verificar el dominio |
 
 ## Matriz final
 
@@ -182,5 +185,5 @@ Ninguna. Se evitó introducir paquetes y no se realizaron actualizaciones mayore
 | Accessibility | portada 100, fallos manuales | portada 100 + labels, zoom, targets y nombre accesible | Lighthouse + revisión estática |
 | UX/UI | intro larga y errores débiles | intro 0.76 s, feedback y control de datos | código + Lighthouse |
 | Mobile | zoom bloqueado y widget ancho | zoom habilitado y launcher compacto | revisión responsive |
-| CRO | formularios rotos | endpoints y estados funcionales localmente | tests de integración |
-| Code Quality | 23 tests | 40 tests, build/typecheck/audit limpios | salida de herramientas |
+| CRO | formularios rotos | endpoints y estados funcionales en Deploy Preview | pruebas E2E con Make |
+| Code Quality | 23 tests | 42 tests, build/typecheck/audit limpios | salida de herramientas |
