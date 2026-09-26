@@ -21,10 +21,10 @@ test('Webinar valida, normaliza y rechaza bot/campos inesperados', async () => {
 });
 
 test('Webinar autentica el envío server-to-server sin filtrar la clave al body', async () => {
-  const previousUrl = process.env.MAKE_WEBINAR_WEBHOOK_URL;
-  const previousKey = process.env.MAKE_WEBINAR_API_KEY;
-  process.env.MAKE_WEBINAR_WEBHOOK_URL = 'https://example.invalid/webinar';
-  process.env.MAKE_WEBINAR_API_KEY = 'test-api-key';
+  const previousUrl = process.env.MAKE_SITE_INTAKE_WEBHOOK_URL;
+  const previousKey = process.env.MAKE_SITE_INTAKE_API_KEY;
+  process.env.MAKE_SITE_INTAKE_WEBHOOK_URL = 'https://example.invalid/webinar';
+  process.env.MAKE_SITE_INTAKE_API_KEY = 'test-api-key';
   let captured;
   try {
     const { _test } = await import('../netlify/functions/webinar-register.mjs');
@@ -40,17 +40,17 @@ test('Webinar autentica el envío server-to-server sin filtrar la clave al body'
     assert.equal(JSON.parse(captured.options.body).event_id, 'webinar_test_event');
     assert.doesNotMatch(captured.options.body, /test-api-key/);
   } finally {
-    if (previousUrl === undefined) delete process.env.MAKE_WEBINAR_WEBHOOK_URL; else process.env.MAKE_WEBINAR_WEBHOOK_URL = previousUrl;
-    if (previousKey === undefined) delete process.env.MAKE_WEBINAR_API_KEY; else process.env.MAKE_WEBINAR_API_KEY = previousKey;
+    if (previousUrl === undefined) delete process.env.MAKE_SITE_INTAKE_WEBHOOK_URL; else process.env.MAKE_SITE_INTAKE_WEBHOOK_URL = previousUrl;
+    if (previousKey === undefined) delete process.env.MAKE_SITE_INTAKE_API_KEY; else process.env.MAKE_SITE_INTAKE_API_KEY = previousKey;
   }
 });
 
 test('Endpoint de webinar rechaza origen externo y acepta entrega válida', async () => {
-  const previousUrl = process.env.MAKE_WEBINAR_WEBHOOK_URL;
-  const previousKey = process.env.MAKE_WEBINAR_API_KEY;
+  const previousUrl = process.env.MAKE_SITE_INTAKE_WEBHOOK_URL;
+  const previousKey = process.env.MAKE_SITE_INTAKE_API_KEY;
   const previousFetch = global.fetch;
-  process.env.MAKE_WEBINAR_WEBHOOK_URL = 'https://example.invalid/webinar';
-  process.env.MAKE_WEBINAR_API_KEY = 'test-api-key';
+  process.env.MAKE_SITE_INTAKE_WEBHOOK_URL = 'https://example.invalid/webinar';
+  process.env.MAKE_SITE_INTAKE_API_KEY = 'test-api-key';
   global.fetch = async () => ({ ok: true, status: 200 });
   try {
     const { default: handler } = await import('../netlify/functions/webinar-register.mjs');
@@ -67,8 +67,8 @@ test('Endpoint de webinar rechaza origen externo y acepta entrega válida', asyn
     assert.equal(payload.accepted, true);
   } finally {
     global.fetch = previousFetch;
-    if (previousUrl === undefined) delete process.env.MAKE_WEBINAR_WEBHOOK_URL; else process.env.MAKE_WEBINAR_WEBHOOK_URL = previousUrl;
-    if (previousKey === undefined) delete process.env.MAKE_WEBINAR_API_KEY; else process.env.MAKE_WEBINAR_API_KEY = previousKey;
+    if (previousUrl === undefined) delete process.env.MAKE_SITE_INTAKE_WEBHOOK_URL; else process.env.MAKE_SITE_INTAKE_WEBHOOK_URL = previousUrl;
+    if (previousKey === undefined) delete process.env.MAKE_SITE_INTAKE_API_KEY; else process.env.MAKE_SITE_INTAKE_API_KEY = previousKey;
   }
 });
 
@@ -80,13 +80,13 @@ test('Webinar permite el mismo origen de un Deploy Preview', async () => {
 
 test('Webinar reutiliza las credenciales del flujo consolidado cuando no hay sobrescritura', async () => {
   const previous = {
-    webinarUrl: process.env.MAKE_WEBINAR_WEBHOOK_URL,
-    webinarKey: process.env.MAKE_WEBINAR_API_KEY,
+    webinarUrl: process.env.MAKE_SITE_INTAKE_WEBHOOK_URL,
+    webinarKey: process.env.MAKE_SITE_INTAKE_API_KEY,
     pixieUrl: process.env.MAKE_PIXIE_WEBHOOK_URL,
     pixieKey: process.env.MAKE_PIXIE_API_KEY
   };
-  delete process.env.MAKE_WEBINAR_WEBHOOK_URL;
-  delete process.env.MAKE_WEBINAR_API_KEY;
+  delete process.env.MAKE_SITE_INTAKE_WEBHOOK_URL;
+  delete process.env.MAKE_SITE_INTAKE_API_KEY;
   process.env.MAKE_PIXIE_WEBHOOK_URL = 'https://example.invalid/consolidated';
   process.env.MAKE_PIXIE_API_KEY = 'consolidated-test-key';
   try {
@@ -101,8 +101,8 @@ test('Webinar reutiliza las credenciales del flujo consolidado cuando no hay sob
     assert.equal(captured.options.headers['x-make-apikey'], 'consolidated-test-key');
   } finally {
     const restore = (name, value) => value === undefined ? delete process.env[name] : process.env[name] = value;
-    restore('MAKE_WEBINAR_WEBHOOK_URL', previous.webinarUrl);
-    restore('MAKE_WEBINAR_API_KEY', previous.webinarKey);
+    restore('MAKE_SITE_INTAKE_WEBHOOK_URL', previous.webinarUrl);
+    restore('MAKE_SITE_INTAKE_API_KEY', previous.webinarKey);
     restore('MAKE_PIXIE_WEBHOOK_URL', previous.pixieUrl);
     restore('MAKE_PIXIE_API_KEY', previous.pixieKey);
   }

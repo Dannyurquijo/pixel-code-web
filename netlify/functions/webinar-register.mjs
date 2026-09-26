@@ -67,8 +67,8 @@ const validateRegistration = (value) => {
 };
 
 const sendToMake = async ({ input, eventId, fetchImpl = global.fetch }) => {
-  const url = process.env.MAKE_WEBINAR_WEBHOOK_URL || process.env.MAKE_PIXIE_WEBHOOK_URL;
-  const apiKey = process.env.MAKE_WEBINAR_API_KEY || process.env.MAKE_PIXIE_API_KEY;
+  const url = process.env.MAKE_SITE_INTAKE_WEBHOOK_URL || process.env.MAKE_PIXIE_WEBHOOK_URL;
+  const apiKey = process.env.MAKE_SITE_INTAKE_API_KEY || process.env.MAKE_PIXIE_API_KEY;
   if (!url || !apiKey) throw new Error('integration_unavailable');
 
   const controller = new AbortController();

@@ -24,7 +24,7 @@ Configurar únicamente como secretos del entorno de staging/preview, nunca en Gi
 - `MAKE_PIXIE_API_KEY`
 - `PIXIE_STATE_SECRET` con un valor aleatorio independiente de `GEMINI_API_KEY`
 
-`MAKE_WEBINAR_*` y `MAKE_CONTACT_*` quedan como sobrescrituras opcionales para una separación futura. Si no existen, los endpoints usan las credenciales del flujo consolidado `MAKE_PIXIE_*`.
+`MAKE_SITE_INTAKE_WEBHOOK_URL` y `MAKE_SITE_INTAKE_API_KEY` son un alias opcional y atómico para una futura rotación. Si no se definen, todos los endpoints usan las credenciales consolidadas `MAKE_PIXIE_*`. Las variables antiguas `MAKE_WEBINAR_*` y `MAKE_CONTACT_*` se ignoran para impedir que una URL y una clave de escenarios distintos se combinen accidentalmente.
 
 ## Secuencia sin interrupción
 

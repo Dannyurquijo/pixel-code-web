@@ -12,10 +12,10 @@ test('Manual valida esquema cerrado, consentimiento y honeypot', async () => {
 });
 
 test('Manual autentica Make y minimiza el payload', async () => {
-  const previousUrl = process.env.MAKE_CONTACT_WEBHOOK_URL;
-  const previousKey = process.env.MAKE_CONTACT_API_KEY;
-  process.env.MAKE_CONTACT_WEBHOOK_URL = 'https://example.invalid/contact';
-  process.env.MAKE_CONTACT_API_KEY = 'test-contact-key';
+  const previousUrl = process.env.MAKE_SITE_INTAKE_WEBHOOK_URL;
+  const previousKey = process.env.MAKE_SITE_INTAKE_API_KEY;
+  process.env.MAKE_SITE_INTAKE_WEBHOOK_URL = 'https://example.invalid/contact';
+  process.env.MAKE_SITE_INTAKE_API_KEY = 'test-contact-key';
   let captured;
   try {
     const { _test } = await import('../netlify/functions/manual-register.mjs');
@@ -26,8 +26,8 @@ test('Manual autentica Make y minimiza el payload', async () => {
     assert.equal(body.WhatsApp, '');
     assert.doesNotMatch(captured.options.body, /test-contact-key/);
   } finally {
-    if (previousUrl === undefined) delete process.env.MAKE_CONTACT_WEBHOOK_URL; else process.env.MAKE_CONTACT_WEBHOOK_URL = previousUrl;
-    if (previousKey === undefined) delete process.env.MAKE_CONTACT_API_KEY; else process.env.MAKE_CONTACT_API_KEY = previousKey;
+    if (previousUrl === undefined) delete process.env.MAKE_SITE_INTAKE_WEBHOOK_URL; else process.env.MAKE_SITE_INTAKE_WEBHOOK_URL = previousUrl;
+    if (previousKey === undefined) delete process.env.MAKE_SITE_INTAKE_API_KEY; else process.env.MAKE_SITE_INTAKE_API_KEY = previousKey;
   }
 });
 

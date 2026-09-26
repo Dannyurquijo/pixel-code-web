@@ -12,10 +12,10 @@ test('Contacto valida esquema cerrado, consentimiento y honeypot', async () => {
 });
 
 test('Contacto autentica Make sin incluir la clave en el payload', async () => {
-  const previousUrl = process.env.MAKE_CONTACT_WEBHOOK_URL;
-  const previousKey = process.env.MAKE_CONTACT_API_KEY;
-  process.env.MAKE_CONTACT_WEBHOOK_URL = 'https://example.invalid/contact';
-  process.env.MAKE_CONTACT_API_KEY = 'test-contact-key';
+  const previousUrl = process.env.MAKE_SITE_INTAKE_WEBHOOK_URL;
+  const previousKey = process.env.MAKE_SITE_INTAKE_API_KEY;
+  process.env.MAKE_SITE_INTAKE_WEBHOOK_URL = 'https://example.invalid/contact';
+  process.env.MAKE_SITE_INTAKE_API_KEY = 'test-contact-key';
   let captured;
   try {
     const { _test } = await import('../netlify/functions/contact-register.mjs');
@@ -24,8 +24,8 @@ test('Contacto autentica Make sin incluir la clave en el payload', async () => {
     assert.equal(JSON.parse(captured.options.body).event, 'project_inquiry');
     assert.doesNotMatch(captured.options.body, /test-contact-key/);
   } finally {
-    if (previousUrl === undefined) delete process.env.MAKE_CONTACT_WEBHOOK_URL; else process.env.MAKE_CONTACT_WEBHOOK_URL = previousUrl;
-    if (previousKey === undefined) delete process.env.MAKE_CONTACT_API_KEY; else process.env.MAKE_CONTACT_API_KEY = previousKey;
+    if (previousUrl === undefined) delete process.env.MAKE_SITE_INTAKE_WEBHOOK_URL; else process.env.MAKE_SITE_INTAKE_WEBHOOK_URL = previousUrl;
+    if (previousKey === undefined) delete process.env.MAKE_SITE_INTAKE_API_KEY; else process.env.MAKE_SITE_INTAKE_API_KEY = previousKey;
   }
 });
 
@@ -38,13 +38,13 @@ test('Contacto permite mismo origen y rechaza un origen externo', async () => {
 
 test('Contacto reutiliza las credenciales del flujo consolidado cuando no hay sobrescritura', async () => {
   const previous = {
-    contactUrl: process.env.MAKE_CONTACT_WEBHOOK_URL,
-    contactKey: process.env.MAKE_CONTACT_API_KEY,
+    contactUrl: process.env.MAKE_SITE_INTAKE_WEBHOOK_URL,
+    contactKey: process.env.MAKE_SITE_INTAKE_API_KEY,
     pixieUrl: process.env.MAKE_PIXIE_WEBHOOK_URL,
     pixieKey: process.env.MAKE_PIXIE_API_KEY
   };
-  delete process.env.MAKE_CONTACT_WEBHOOK_URL;
-  delete process.env.MAKE_CONTACT_API_KEY;
+  delete process.env.MAKE_SITE_INTAKE_WEBHOOK_URL;
+  delete process.env.MAKE_SITE_INTAKE_API_KEY;
   process.env.MAKE_PIXIE_WEBHOOK_URL = 'https://example.invalid/consolidated';
   process.env.MAKE_PIXIE_API_KEY = 'consolidated-test-key';
   try {
@@ -55,8 +55,8 @@ test('Contacto reutiliza las credenciales del flujo consolidado cuando no hay so
     assert.equal(captured.options.headers['x-make-apikey'], 'consolidated-test-key');
   } finally {
     const restore = (name, value) => value === undefined ? delete process.env[name] : process.env[name] = value;
-    restore('MAKE_CONTACT_WEBHOOK_URL', previous.contactUrl);
-    restore('MAKE_CONTACT_API_KEY', previous.contactKey);
+    restore('MAKE_SITE_INTAKE_WEBHOOK_URL', previous.contactUrl);
+    restore('MAKE_SITE_INTAKE_API_KEY', previous.contactKey);
     restore('MAKE_PIXIE_WEBHOOK_URL', previous.pixieUrl);
     restore('MAKE_PIXIE_API_KEY', previous.pixieKey);
   }
