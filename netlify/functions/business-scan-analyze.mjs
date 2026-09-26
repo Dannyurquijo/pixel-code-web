@@ -15,6 +15,7 @@ const response = (status, body) => new Response(JSON.stringify(body), { status, 
 const originAllowed = (request) => {
   const origin = request.headers.get('origin');
   if (!origin) return true;
+  try { if (new URL(request.url).origin === origin) return true; } catch (_) { /* Continue with explicit allowlist. */ }
   const allowed = new Set(['https://dupixelcode.com', 'https://www.dupixelcode.com']);
   [process.env.URL, process.env.DEPLOY_PRIME_URL].filter(Boolean).forEach((value) => allowed.add(value));
   return allowed.has(origin) || /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin);

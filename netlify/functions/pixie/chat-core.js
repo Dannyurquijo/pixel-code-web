@@ -58,11 +58,13 @@ const validateRequest = (event) => {
 
   if (event.headers && Object.keys(event.headers).length) {
     const origin = header(event.headers, 'origin');
+    let sameRequestOrigin = false;
+    try { sameRequestOrigin = Boolean(event.request_url) && new URL(event.request_url).origin === origin; } catch (_) { sameRequestOrigin = false; }
     const requestHost = (header(event.headers, 'host') || '').split(':')[0].toLowerCase();
     const localRequest = ['localhost', '127.0.0.1', '::1'].includes(requestHost);
     let localOrigin = false;
     try { localOrigin = ['localhost', '127.0.0.1', '::1'].includes(new URL(origin).hostname); } catch (_) { localOrigin = false; }
-    if (!origin || (!allowedOrigins().has(origin) && !(localRequest && localOrigin))) {
+    if (!origin || (!sameRequestOrigin && !allowedOrigins().has(origin) && !(localRequest && localOrigin))) {
       return jsonResponse(403, { reply: 'Origen no permitido.' });
     }
   }
@@ -156,8 +158,8 @@ exports.handler = async (event) => {
       ? receivedConversation.slice(0, -1)
       : receivedConversation;
     const receivedNotification = normalizeNotification(body.notification_state);
-    const stateSecret = process.env.PIXIE_STATE_SECRET || apiKey;
-    const stateIsTrusted = verifyState({
+    const stateSecret = process.env.PIXIE_STATE_SECRET;
+    const stateIsTrusted = Boolean(stateSecret) && verifyState({
       token: body.state_token,
       secret: stateSecret,
       sessionId,
@@ -214,6 +216,7 @@ exports.handler = async (event) => {
       console.info('[PIXIE] Lead detected', { session_id: sessionId, event: commercialEvent, score: lead.lead_score, timestamp });
       const webhookResult = await sendMakeWebhook({
         url: process.env.MAKE_PIXIE_WEBHOOK_URL || process.env.MAKE_WEBHOOK_URL,
+        apiKey: process.env.MAKE_PIXIE_API_KEY,
         payload,
         timeoutMs: Math.max(1000, Number(process.env.PIXIE_WEBHOOK_TIMEOUT_MS || 5000))
       });
@@ -234,12 +237,12 @@ exports.handler = async (event) => {
       session_id: sessionId,
       lead_detected: lead.lead_detected,
       notification,
-      state_token: signState({
+      state_token: stateSecret ? signState({
         secret: stateSecret,
         sessionId,
         conversation: completeConversation,
         notification
-      })
+      }) : null
     };
     const debugAllowed = process.env.PIXIE_DEBUG_PAYLOAD === 'true' && process.env.CONTEXT !== 'production';
     if (debugAllowed && body.debug === true) responseBody.debug_payload = payload;

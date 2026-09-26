@@ -22,6 +22,7 @@ export default async function handler(request) {
   const result = await chatCore.handler({
     httpMethod: request.method,
     path: new URL(request.url).pathname,
+    request_url: request.url,
     headers: Object.fromEntries(request.headers.entries()),
     body
   });

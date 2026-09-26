@@ -30,3 +30,4 @@
 .comparison-desktop tbody td:last-child::before{color:#0a0804;background:var(--gold-light)}
 .comparison-footer{background:linear-gradient(90deg,#090909,rgba(23,19,11,.65))}
 @media(max-width:820px){.comparison-mobile article div:last-child{border-top-color:rgba(197,160,89,.24);background:rgba(197,160,89,.05)}.comparison-mobile article div:last-child small{color:var(--gold-light)}}
+.range-field input{min-height:44px;background-clip:content-box;padding:19px 0}

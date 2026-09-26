@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://formsubmit.co; img-src 'self' data: https://placehold.co px.ads.linkedin.com https://images.unsplash.com;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self'; img-src 'self' data: https://placehold.co https://images.unsplash.com;">
     
     <title>Registro de Proyecto | Pixel & Code</title>
+    <meta name="description" content="Cuéntanos sobre tu proyecto de desarrollo web, automatización o inteligencia artificial y recibe orientación de DU Pixel Code.">
+    <link rel="canonical" href="https://dupixelcode.com/landing.html">
     <link rel="icon" type="image/png" href="du-logo.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
@@ -94,14 +96,14 @@
             pointer-events: none;
         }
     </style>
-</head>
+<link rel="stylesheet" href="/assets/css/site-consent.css"><script src="/assets/js/site-consent.js"></script></head>
 <body class="font-sans antialiased min-h-screen flex flex-col relative overflow-x-hidden selection:bg-gold selection:text-black">
     
     <canvas id="particle-canvas"></canvas>
 
     <nav class="fixed top-4 md:top-8 left-1/2 -translate-x-1/2 w-[92%] md:w-[85%] max-w-4xl z-50 glass-panel rounded-full px-4 sm:px-6 py-3 flex justify-between items-center transition-all duration-500 shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
         <div class="flex items-center gap-3 cursor-pointer group" onclick="window.location.href='index.html'">
-            <img src="pixel&code-logo-landing.png" alt="DU Logo" class="h-10 w-10 sm:h-12 sm:w-12 object-cover rounded-full border border-white/10 group-hover:border-gold transition-colors duration-500" onerror="this.src='https://placehold.co/100x100/111/C5A059?text=DU'">
+            <img src="pixel&pode-logo-landing.png" alt="DU Logo" class="h-10 w-10 sm:h-12 sm:w-12 object-cover rounded-full border border-white/10 group-hover:border-gold transition-colors duration-500" onerror="this.src='https://placehold.co/100x100/111/C5A059?text=DU'">
             <div class="flex flex-col hidden sm:flex">
                 <span class="text-white font-bold tracking-[0.1em] text-[11px] uppercase leading-none group-hover:text-gold transition-colors duration-300">Pixel & Code</span>
             </div>
@@ -120,37 +122,33 @@
                 <p class="text-gold font-bold text-[10px] md:text-xs uppercase tracking-[0.3em] relative z-10">Arquitectura Digital & Academia</p>
             </div>
 
-            <form action="https://formsubmit.co/TU_HASH_AQUI" method="POST" class="p-8 md:p-12 space-y-6 md:space-y-8">
-                
-                <input type="hidden" name="_subject" value="🎯 Nuevo Lead - Proyecto Pixel & Code">
-                <input type="hidden" name="_captcha" value="false">
-                <input type="hidden" name="_template" value="table">
+            <form id="project-form" action="/api/contact-register" method="POST" class="p-8 md:p-12 space-y-6 md:space-y-8">
                 
                 <div class="grid md:grid-cols-2 gap-6 md:gap-8">
                     <div class="space-y-2.5">
-                        <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-2">Nombre Completo</label>
-                        <input type="text" name="Nombre" required class="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-sm text-white placeholder-gray-600 transition-all" placeholder="Ej. Ing. Rubén Rivera">
+                        <label for="project-name" class="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-2">Nombre Completo</label>
+                        <input id="project-name" type="text" name="name" maxlength="100" autocomplete="name" required class="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-sm text-white placeholder-gray-600 transition-all" placeholder="Ej. Ing. Rubén Rivera">
                     </div>
                     <div class="space-y-2.5">
-                        <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-2">Empresa / Proyecto</label>
-                        <input type="text" name="Empresa" required class="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-sm text-white placeholder-gray-600 transition-all" placeholder="Nombre de tu marca">
+                        <label for="project-company" class="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-2">Empresa / Proyecto</label>
+                        <input id="project-company" type="text" name="company" maxlength="120" autocomplete="organization" required class="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-sm text-white placeholder-gray-600 transition-all" placeholder="Nombre de tu marca">
                     </div>
                 </div>
 
                 <div class="grid md:grid-cols-2 gap-6 md:gap-8">
                     <div class="space-y-2.5">
-                        <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-2">Correo Electrónico</label>
-                        <input type="email" name="Email" required class="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-sm text-white placeholder-gray-600 transition-all" placeholder="tu@correo.com">
+                        <label for="project-email" class="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-2">Correo Electrónico</label>
+                        <input id="project-email" type="email" name="email" maxlength="160" autocomplete="email" required class="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-sm text-white placeholder-gray-600 transition-all" placeholder="tu@correo.com">
                     </div>
                     <div class="space-y-2.5">
-                        <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-2">WhatsApp</label>
-                        <input type="tel" name="WhatsApp" required class="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-sm text-white placeholder-gray-600 transition-all" placeholder="A 10 dígitos">
+                        <label for="project-phone" class="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-2">WhatsApp</label>
+                        <input id="project-phone" type="tel" name="phone" maxlength="24" inputmode="tel" autocomplete="tel" required class="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-sm text-white placeholder-gray-600 transition-all" placeholder="A 10 dígitos">
                     </div>
                 </div>
 
                 <div class="space-y-2.5">
-                    <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-2">Servicio o Curso de Interés</label>
-                    <select name="Servicio_Interes" id="plan-select" class="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-sm text-white transition-all cursor-pointer appearance-none">
+                    <label for="plan-select" class="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-2">Servicio o Curso de Interés</label>
+                    <select name="service" id="plan-select" class="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-sm text-white transition-all cursor-pointer appearance-none">
                         <option value="Asesoría General">No estoy seguro, necesito asesoría</option>
                         
                         <optgroup label="Servicios Web & IA">
@@ -169,22 +167,24 @@
                 </div>
 
                 <div class="space-y-2.5">
-                    <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-2">Cuéntanos sobre tu proyecto</label>
-                    <textarea name="Mensaje" rows="4" required class="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-sm text-white placeholder-gray-600 transition-all resize-none" placeholder="¿Qué objetivos quieres lograr con tu ecosistema web, automatización o qué esperas aprender en el curso?"></textarea>
+                    <label for="project-message" class="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-2">Cuéntanos sobre tu proyecto</label>
+                    <textarea id="project-message" name="message" maxlength="1200" rows="4" required class="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-sm text-white placeholder-gray-600 transition-all resize-none" placeholder="¿Qué objetivos quieres lograr con tu ecosistema web, automatización o qué esperas aprender en el curso?"></textarea>
                 </div>
 
                 <div class="flex items-start gap-3 mt-4 mb-2">
-                    <input type="checkbox" id="aviso_privacidad_terminos" required class="mt-1 bg-white/5 border-white/10 rounded cursor-pointer accent-gold w-4 h-4 flex-shrink-0">
+                    <input type="checkbox" id="aviso_privacidad_terminos" name="consent" required class="mt-1 bg-white/5 border-white/10 rounded cursor-pointer accent-gold w-4 h-4 flex-shrink-0">
                     <label for="aviso_privacidad_terminos" class="text-xs text-gray-400 font-light leading-snug">
                         He leído y acepto el <button type="button" onclick="openPrivacyModal()" class="text-gold font-bold underline decoration-gold/30 underline-offset-2 hover:text-white transition-colors">Aviso de Privacidad Integral</button> y los <button type="button" onclick="openTermsModal()" class="text-gold font-bold underline decoration-gold/30 underline-offset-2 hover:text-white transition-colors">Términos y Condiciones</button>.
                     </label>
                 </div>
 
+                <div class="absolute -left-[10000px]" aria-hidden="true"><label for="project-website">Sitio web</label><input id="project-website" type="text" name="website" tabindex="-1" autocomplete="off"></div>
+                <p id="project-form-status" role="alert" aria-live="assertive" class="text-sm text-red-300 min-h-5"></p>
                 <button type="submit" class="btn-shine w-full bg-white text-black font-black px-8 py-5 rounded-xl uppercase text-xs tracking-[0.2em] shadow-[0_0_30px_rgba(255,255,255,0.15)] hover:bg-gold hover:shadow-gold/20 hover:scale-[1.02] transition-all flex justify-center items-center gap-3 mt-8">
                     Enviar Solicitud <i data-lucide="arrow-right" class="w-4 h-4"></i>
                 </button>
                 
-                <p class="text-center text-[9px] text-gray-500 mt-6 uppercase tracking-widest">Tus datos están encriptados y protegidos bajo nuestras políticas vigentes.</p>
+                <p class="text-center text-[9px] text-gray-500 mt-6 uppercase tracking-widest">La solicitud viaja cifrada y se usa conforme al aviso de privacidad.</p>
             </form>
         </div>
     </main>
@@ -192,7 +192,7 @@
     <footer class="bg-black/60 backdrop-blur-md py-16 px-6 border-t border-white/10 text-gray-500 text-sm mt-auto relative z-10 w-full">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
             <div class="flex items-center gap-4">
-                <img src="pixel&code-logo-landing.png" alt="Logo" class="w-8 h-8 rounded-full grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all" onerror="this.src='https://placehold.co/100x100/111/C5A059?text=DU'">
+                <img src="pixel&pode-logo-landing.png" alt="Logo" class="w-8 h-8 rounded-full grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all" onerror="this.src='https://placehold.co/100x100/111/C5A059?text=DU'">
                 <span class="tracking-[0.2em] text-[10px] uppercase font-bold text-gray-400">© 2026 DU Pixel & Code</span>
             </div>
             
@@ -344,5 +344,6 @@
 
     <script src="privacy.js"></script>
     <script src="terms.js"></script>
+    <script src="assets/js/contact-registration.js"></script>
 </body>
 </html>
