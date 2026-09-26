@@ -117,6 +117,9 @@ El peso local fue 371 KiB frente a 250–254 KiB de producción. No se declara m
 - `pnpm audit --prod --audit-level low`: **0 vulnerabilidades conocidas**.
 - Escaneo local de referencias `href/src`: **0 rotas**.
 - Escaneo de placeholders/webhooks/secrets actuales: sin webhook Make ni placeholders confirmados en código ejecutable; los valores sintéticos de tests permanecen intencionalmente.
+- Deploy Preview de Netlify `6ab72882f8cdc90008ed61a0`: build, headers y redirects **pasan**; portada y páginas de privacidad, términos, cookies, manuales y cursos responden `200`.
+- `/api/manual-register` en preview rechaza un payload vacío con `400` antes de intentar una entrega downstream.
+- QA visual local: banner visible en primer acceso, preferencia persistente entre páginas, control para reabrirla, aviso integral renderizado y **0 errores o warnings de consola** en la revisión.
 
 ## Dependencias modificadas
 
