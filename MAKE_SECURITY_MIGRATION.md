@@ -1,10 +1,11 @@
 # Migración segura de Make
 
-Estado verificado el 24 de septiembre de 2026:
+Estado actualizado el 25 de septiembre de 2026:
 
-- `Pixie`: activo, conexiones de Gmail y Telegram sanas, webhook sin autenticación.
-- `Webinnars`: inactivo, conexiones de Google Sheets y Gmail sanas, webhook sin autenticación.
-- No se encontró un escenario específico para el formulario general de contacto.
+- Los escenarios heredados se conservaron sin cambios durante la preparación.
+- Se crearon escenarios seguros separados para `Pixie`, `Webinars` y `Contact`, con autenticación por API key; permanecen inactivos hasta la prueba sintética controlada.
+- Las siete variables requeridas se configuraron como secretos sólo en el Deploy Preview de Netlify.
+- El endpoint `/api/manual-register` reutiliza el canal autenticado de contacto con el evento `manual_download` y un payload minimizado.
 - Las URLs de webhook no se documentan porque funcionan como secretos.
 
 ## Objetivo
@@ -32,7 +33,7 @@ Configurar únicamente como secretos del entorno de staging/preview, nunca en Gi
 1. Duplicar cada escenario que esté activo y mantener el duplicado desactivado.
 2. Crear un webhook nuevo con autenticación por API key; no reutilizar la URL expuesta históricamente.
 3. Conservar en el payload los nombres actualmente consumidos por Make. Los endpoints implementados mantienen `Nombre`, `Email`, `Telefono`, `Empresa`, `Servicio_Interes`, `Mensaje` y los campos de evento correspondientes.
-4. Para contacto general, crear un escenario separado o una ruta explícita cuyo evento sea `project_inquiry`; no mezclarlo silenciosamente con el webinar.
+4. Para contacto general y manuales, usar el escenario separado de contacto con eventos explícitos `project_inquiry` y `manual_download`; no mezclarlos silenciosamente con el webinar.
 5. Configurar las variables anteriores en un deploy preview de Netlify.
 6. Enviar datos sintéticos, verificar una sola fila/correo/notificación y confirmar que un request sin `x-make-apikey` sea rechazado.
 7. Activar el escenario nuevo; publicar el código sólo después de esa verificación.
@@ -56,4 +57,3 @@ Configurar únicamente como secretos del entorno de staging/preview, nunca en Gi
 - Timeout de entrega.
 - Idempotency/event ID en headers y payload.
 - API key sólo en `x-make-apikey`, nunca en el body.
-

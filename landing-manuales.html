@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://placehold.co https://images.unsplash.com; connect-src 'self' https://formsubmit.co;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://placehold.co https://images.unsplash.com; connect-src 'self';">
     <meta name="description" content="Recursos, manuales y materiales prácticos de automatización e inteligencia artificial de DU Pixel Code.">
     <link rel="canonical" href="https://dupixelcode.com/landing-manuales.html">
     
@@ -85,7 +85,7 @@
             outline: none;
         }
     </style>
-</head>
+<link rel="stylesheet" href="/assets/css/site-consent.css"><script src="/assets/js/site-consent.js"></script></head>
 <body class="font-sans antialiased min-h-screen flex flex-col relative selection:bg-gold selection:text-black">
 
     <div id="shader-canvas-container">
@@ -182,24 +182,26 @@
             <p class="text-[10px] text-gold uppercase tracking-widest font-bold mb-8 border-b border-white/5 pb-4" id="manual-title">Nombre del Manual</p>
             
             <form id="lead-form" class="space-y-5">
-                <input type="hidden" name="Manual_Solicitado" id="manual-input" value="">
+                <input type="hidden" name="manual" id="manual-input" value="">
                 
                 <div class="space-y-2">
-                    <label class="text-[9px] font-bold text-gray-400 uppercase tracking-widest ml-2">Nombre Completo</label>
-                    <input type="text" name="Nombre" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white placeholder-gray-600 transition-all" placeholder="Ej. Juan Pérez">
+                    <label for="manual-name" class="text-[9px] font-bold text-gray-400 uppercase tracking-widest ml-2">Nombre Completo</label>
+                    <input id="manual-name" type="text" name="name" maxlength="100" autocomplete="name" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white placeholder-gray-600 transition-all" placeholder="Ej. Juan Pérez">
                 </div>
                 
                 <div class="space-y-2">
-                    <label class="text-[9px] font-bold text-gray-400 uppercase tracking-widest ml-2">Correo Corporativo</label>
-                    <input type="email" name="Email" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white placeholder-gray-600 transition-all" placeholder="juan@empresa.com">
+                    <label for="manual-email" class="text-[9px] font-bold text-gray-400 uppercase tracking-widest ml-2">Correo Corporativo</label>
+                    <input id="manual-email" type="email" name="email" maxlength="160" autocomplete="email" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white placeholder-gray-600 transition-all" placeholder="juan@empresa.com">
                 </div>
                 
                 <div class="flex items-start gap-3 mt-4 mb-2">
-                    <input type="checkbox" id="legal_manuales" required class="mt-1 bg-white/5 border-white/10 rounded cursor-pointer accent-gold w-4 h-4 flex-shrink-0">
+                    <input type="checkbox" id="legal_manuales" name="consent" required class="mt-1 bg-white/5 border-white/10 rounded cursor-pointer accent-gold w-4 h-4 flex-shrink-0">
                     <label for="legal_manuales" class="text-[10px] text-gray-400 font-light leading-snug">
                         Acepto el <button type="button" onclick="openPrivacyModal()" class="text-gold font-bold underline">Aviso de Privacidad</button> y los <button type="button" onclick="openTermsModal()" class="text-gold font-bold underline">Términos</button>.
                     </label>
                 </div>
+                <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" hidden>
+                <p id="manual-form-status" role="status" aria-live="polite" class="min-h-4 text-[10px] text-gray-300"></p>
                 
                 <button type="submit" class="w-full bg-white text-black font-black px-6 py-4 rounded-xl uppercase text-[10px] tracking-widest hover:bg-gold transition-all mt-4 shadow-[0_0_20px_rgba(255,255,255,0.1)]">
                     Descargar PDF
@@ -311,26 +313,31 @@
             setTimeout(() => { modal.classList.add('hidden'); modal.classList.remove('flex'); }, 300);
         }
 
-        // --- ENVÍO DIRECTO A CORREO (FormSubmit AJAX) ---
+        // --- REGISTRO SEGURO EN EL MISMO DOMINIO ---
         document.getElementById('lead-form').addEventListener('submit', async function(e) {
             e.preventDefault(); 
             const btn = this.querySelector('button[type="submit"]');
+            const status = document.getElementById('manual-form-status');
             btn.innerText = 'Procesando...';
+            btn.disabled = true;
+            status.textContent = '';
 
             const formData = {
-                _subject: "📚 Nuevo Lead - Descarga de Manual: " + document.getElementById('manual-input').value,
-                Nombre: this.Nombre.value,
-                Email: this.Email.value,
-                Manual_Solicitado: document.getElementById('manual-input').value
+                name: this.elements.name.value,
+                email: this.elements.email.value,
+                manual: document.getElementById('manual-input').value,
+                consent: this.elements.consent.checked,
+                website: this.elements.website.value
             };
 
             try {
-                await fetch("https://formsubmit.co/ajax/info@dupixelcode.com", {
+                const response = await fetch('/api/manual-register', {
                     method: "POST",
                     headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                     body: JSON.stringify(formData)
                 });
-            } catch (err) { console.error(err); }
+                if (!response.ok) status.textContent = 'La descarga continuará; no pudimos registrar tu solicitud.';
+            } catch (err) { status.textContent = 'La descarga continuará; no pudimos registrar tu solicitud.'; }
 
             // Lógica de descarga local
             let fileName = '';
@@ -347,6 +354,7 @@
             document.body.removeChild(a);
 
             btn.innerText = 'Descargar PDF';
+            btn.disabled = false;
             this.reset();
             closeDownloadModal();
         });

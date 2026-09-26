@@ -1,6 +1,6 @@
 # Final Audit Report
 
-Fecha de reauditoría: 24 de septiembre de 2026  
+Fecha de reauditoría: 25 de septiembre de 2026
 Rama: `audit/security-performance-improvements`  
 Estado: cambios implementados y verificados localmente; producción no modificada.
 
@@ -32,10 +32,16 @@ Estado: cambios implementados y verificados localmente; producción no modificad
 
 ### Privacidad
 
-- Nuevo aviso integral enlazable en `/privacidad.html`.
+- Nuevo aviso integral enlazable en `/privacidad.html`, con responsable, domicilio, categorías de datos, finalidades, proveedores, IA, conservación y ejercicio de derechos ARCO.
 - Business Scan muestra el enlace antes del consentimiento.
 - Pixie limita el historial local a 40 mensajes, depura conversaciones de más de 30 días y ofrece “Eliminar conversación”.
 - Se retiró logging cliente por mensaje.
+- Se añadieron `/terminos.html` y `/cookies.html`, enlazados entre sí y desde el control persistente de privacidad.
+- Todas las entradas públicas cargan un panel de consentimiento común: aparece sólo cuando no existe una decisión guardada y puede reabrirse después.
+- El sitio declara que actualmente no activa cookies publicitarias ni analítica opcional propia; el almacenamiento esencial se documenta por nombre y finalidad.
+- Se añadió un velo de carga global limitado a una vez por sesión de navegador, con salida automática y soporte para `prefers-reduced-motion`.
+- El formulario heredado de cursos dejó de enviar datos a FormSubmit y ahora usa `/api/contact-register`, consentimiento explícito, honeypot y estados accesibles.
+- La descarga de manuales dejó de enviar datos directamente a FormSubmit; usa `/api/manual-register`, reutiliza el canal autenticado de contacto y conserva la descarga si la notificación falla.
 
 ### Performance y experiencia
 
@@ -61,6 +67,7 @@ Estado: cambios implementados y verificados localmente; producción no modificad
 
 - `netlify/functions/webinar-register.mjs`
 - `netlify/functions/contact-register.mjs`
+- `netlify/functions/manual-register.mjs`
 - `netlify/functions/pixie/chat-core.js`
 - `netlify/functions/pixie/make-webhook.js`
 - `assets/js/webinar-registration.js`
@@ -68,7 +75,8 @@ Estado: cambios implementados y verificados localmente; producción no modificad
 - `assets/js/pixie/conversation-store.js`
 - `assets/js/home.js`, `assets/js/intro.js`, `assets/js/demo-suplementos.js`
 - `assets/css/premium-home.css`, `assets/css/conversion-modules.css`
-- `webinarlanding.html`, `landing.html`, `index.html`, `privacidad.html`
+- `assets/css/site-consent.css`, `assets/css/legal.css`, `assets/js/site-consent.js`
+- `webinarlanding.html`, `cursolanding.html`, `landing.html`, `index.html`, `privacidad.html`, `terminos.html`, `cookies.html`
 - `business-scan-src/src/BusinessScan.tsx`
 - `netlify.toml`, `.env.example`, `sitemap.xml`
 - pruebas de Pixie, webinar y contacto.
@@ -103,7 +111,7 @@ El peso local fue 371 KiB frente a 250–254 KiB de producción. No se declara m
 
 ## Tests ejecutados
 
-- `node --test --test-isolation=none ...`: **29/29 pasan**.
+- `node --test --test-isolation=none ...`: **36/36 pasan**.
 - TypeScript `tsc`: **pasa**.
 - Vite production build: **pasa**, 220 módulos transformados.
 - `pnpm audit --prod --audit-level low`: **0 vulnerabilidades conocidas**.
@@ -116,13 +124,15 @@ Ninguna. Se evitó introducir paquetes y no se realizaron actualizaciones mayore
 
 ## Problemas pendientes y riesgos residuales
 
-1. **P0 operativo:** rotar los webhooks de Make y configurar API keys/variables en un deploy preview. El código nuevo no debe publicarse antes de este paso porque los formularios fallarán de forma segura si faltan secretos.
-2. **P1:** validar el flujo real de una inscripción, un contacto y una alerta Pixie con datos sintéticos; confirmar rechazo sin API key y ausencia de duplicados.
+1. **P0 operativo:** ejecutar la prueba sintética final de Pixie, webinar y contacto en el deploy preview y confirmar una sola entrega en cada destino. Las variables secretas y los escenarios seguros ya están preparados para el preview; los escenarios nuevos permanecen inactivos hasta la prueba controlada.
+2. **P0 operativo:** después de la prueba, coordinar el corte a producción y la revocación de los webhooks heredados. No se debe activar ni retirar el flujo anterior a medias.
 3. **P2:** eliminar el runtime de Tailwind/Lucide en páginas heredadas y servir CSS/JS compilado localmente. La CSP de esas páginas aún requiere `unsafe-inline`.
 4. **P2:** reemplazar `du-logo-Cuadrado.png`; contiene AVIF bajo extensión PNG y pesa 129 KiB.
 5. **P2:** decidir explícitamente si Cloudflare Web Analytics se habilita con consentimiento/CSP o se desactiva; hoy el beacon inyectado puede quedar bloqueado.
 6. **P2:** añadir monitorización de errores y pruebas E2E. `dataLayer` no equivale a observabilidad.
 7. **P3:** unificar páginas Tailwind heredadas con la arquitectura de assets del sitio principal.
+8. **P1 legal/operativo:** obtener revisión profesional del aviso y los términos, confirmar razón o régimen fiscal y RFC que deban mostrarse en contratación electrónica, y documentar plazos reales de conservación por sistema. No se inventaron esos datos.
+9. **P2 privacidad:** si se añade una herramienta de analítica o publicidad, incrementar la versión del consentimiento, identificar proveedor y finalidades y volver a solicitar una decisión antes de cargarla.
 
 ## Riesgos de implementación
 
@@ -147,12 +157,12 @@ Ninguna. Se evitó introducir paquetes y no se realizaron actualizaciones mayore
 |---|---:|---:|---|
 | Seguridad | 58 | 82 | exposición eliminada del cliente, validación server-side, secretos separados; rotación Make pendiente |
 | Performance | 77 | 85 | Lighthouse móvil; desktop 85 → 94 |
-| UX/UI | 76 | 82 | intro más corta, errores visibles, privacidad y control de chat |
+| UX/UI | 76 | 83 | intro más corta, errores visibles, panel de privacidad reutilizable y control de chat |
 | Mobile | 72 | 84 | zoom, launcher compacto y targets ampliados |
 | SEO | 73 | 84 | metadata, noindex y sitemap; páginas heredadas aún incompletas |
 | Accesibilidad | 78 | 89 | Lighthouse 100, labels, nombre accesible, zoom y targets; falta prueba AT completa |
-| CRO | 62 | 78 | formularios reparados localmente y consentimiento claro; falta validación real de Make |
-| Calidad de código | 70 | 83 | 29 tests, build/typecheck, sink XSS eliminado |
+| CRO | 62 | 79 | formularios reparados localmente y consentimiento claro; falta validación real de Make |
+| Calidad de código | 70 | 84 | 36 tests, build/typecheck, sink XSS eliminado y controles legales compartidos |
 | Arquitectura | 72 | 82 | frontera navegador/Functions/Make y secretos server-side |
 | Mantenibilidad | 61 | 70 | documentación y tests; deuda Tailwind inline persiste |
 | Observabilidad | 38 | 48 | IDs de evento y logs sin PII; falta plataforma de errores |
@@ -169,5 +179,4 @@ Ninguna. Se evitó introducir paquetes y no se realizaron actualizaciones mayore
 | UX/UI | intro larga y errores débiles | intro 0.76 s, feedback y control de datos | código + Lighthouse |
 | Mobile | zoom bloqueado y widget ancho | zoom habilitado y launcher compacto | revisión responsive |
 | CRO | formularios rotos | endpoints y estados funcionales localmente | tests de integración |
-| Code Quality | 23 tests | 29 tests, build/typecheck/audit limpios | salida de herramientas |
-
+| Code Quality | 23 tests | 36 tests, build/typecheck/audit limpios | salida de herramientas |

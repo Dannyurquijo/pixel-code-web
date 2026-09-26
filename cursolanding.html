@@ -80,7 +80,7 @@
             outline: none;
         }
     </style>
-</head>
+<link rel="stylesheet" href="/assets/css/site-consent.css"><script src="/assets/js/site-consent.js"></script></head>
 <body class="font-sans antialiased selection:bg-gold selection:text-black">
 
     <!-- Navbar Minimalista -->
@@ -212,44 +212,40 @@
                 <p class="text-sm text-gray-400">Cupo limitado para garantizar atención personalizada. Completa el registro y nos pondremos en contacto contigo.</p>
             </div>
 
-            <!-- 
-                USO DE FORMSUBMIT: 
-                Este form envía los datos gratis a tu correo sin usar backend.
-                La primera vez que alguien lo envíe, te llegará un correo a info@dupixelcode.com pidiendo confirmar la dirección. ¡Acéptalo y listo!
-            -->
-            <form action="https://formsubmit.co/info@dupixelcode.com" method="POST" class="space-y-6">
-                <!-- Configuraciones Ocultas de Formsubmit -->
-                <input type="hidden" name="_subject" value="🚀 Nuevo Lead: Registro Masterclass IA">
-                <!-- <input type="hidden" name="_next" value="https://dupixelcode.com/gracias"> (Puedes crear una pág. de gracias o borrar esto) -->
-                <input type="hidden" name="_captcha" value="false">
-                <input type="hidden" name="_template" value="table">
+            <!-- El envío pasa por la función segura del mismo dominio y después por Make. -->
+            <form id="project-form" action="/api/contact-register" method="POST" class="space-y-6">
+                <input type="hidden" name="service" value="Masterclass IA">
 
                 <div class="grid md:grid-cols-2 gap-6">
                     <div class="space-y-2">
-                        <label class="text-[10px] uppercase font-bold text-gray-400 tracking-widest ml-2">Nombre Completo</label>
-                        <input type="text" name="Nombre" required class="w-full bg-surface border border-white/10 rounded-xl px-5 py-4 text-sm text-white placeholder-gray-600 transition-all focus:border-gold" placeholder="Ing. Juan Pérez">
+                        <label for="course-name" class="text-[10px] uppercase font-bold text-gray-400 tracking-widest ml-2">Nombre Completo</label>
+                        <input id="course-name" type="text" name="name" maxlength="100" autocomplete="name" required class="w-full bg-surface border border-white/10 rounded-xl px-5 py-4 text-sm text-white placeholder-gray-600 transition-all focus:border-gold" placeholder="Ing. Juan Pérez">
                     </div>
                     <div class="space-y-2">
-                        <label class="text-[10px] uppercase font-bold text-gray-400 tracking-widest ml-2">Empresa / Proyecto</label>
-                        <input type="text" name="Empresa" required class="w-full bg-surface border border-white/10 rounded-xl px-5 py-4 text-sm text-white placeholder-gray-600 transition-all focus:border-gold" placeholder="Ej. Manufacturas Industriales SA">
+                        <label for="course-company" class="text-[10px] uppercase font-bold text-gray-400 tracking-widest ml-2">Empresa / Proyecto</label>
+                        <input id="course-company" type="text" name="company" maxlength="120" autocomplete="organization" required class="w-full bg-surface border border-white/10 rounded-xl px-5 py-4 text-sm text-white placeholder-gray-600 transition-all focus:border-gold" placeholder="Ej. Manufacturas Industriales SA">
                     </div>
                 </div>
 
                 <div class="grid md:grid-cols-2 gap-6">
                     <div class="space-y-2">
-                        <label class="text-[10px] uppercase font-bold text-gray-400 tracking-widest ml-2">WhatsApp</label>
-                        <input type="tel" name="Telefono" required class="w-full bg-surface border border-white/10 rounded-xl px-5 py-4 text-sm text-white placeholder-gray-600 transition-all focus:border-gold" placeholder="+52 442 000 0000">
+                        <label for="course-phone" class="text-[10px] uppercase font-bold text-gray-400 tracking-widest ml-2">WhatsApp</label>
+                        <input id="course-phone" type="tel" name="phone" maxlength="24" autocomplete="tel" required class="w-full bg-surface border border-white/10 rounded-xl px-5 py-4 text-sm text-white placeholder-gray-600 transition-all focus:border-gold" placeholder="+52 442 000 0000">
                     </div>
                     <div class="space-y-2">
-                        <label class="text-[10px] uppercase font-bold text-gray-400 tracking-widest ml-2">Correo Electrónico</label>
-                        <input type="email" name="Email" required class="w-full bg-surface border border-white/10 rounded-xl px-5 py-4 text-sm text-white placeholder-gray-600 transition-all focus:border-gold" placeholder="juan@empresa.com">
+                        <label for="course-email" class="text-[10px] uppercase font-bold text-gray-400 tracking-widest ml-2">Correo Electrónico</label>
+                        <input id="course-email" type="email" name="email" maxlength="160" autocomplete="email" required class="w-full bg-surface border border-white/10 rounded-xl px-5 py-4 text-sm text-white placeholder-gray-600 transition-all focus:border-gold" placeholder="juan@empresa.com">
                     </div>
                 </div>
 
                 <div class="space-y-2">
-                    <label class="text-[10px] uppercase font-bold text-gray-400 tracking-widest ml-2">¿Cuál es tu principal reto digital hoy?</label>
-                    <textarea name="Mensaje" rows="3" class="w-full bg-surface border border-white/10 rounded-xl px-5 py-4 text-sm text-white placeholder-gray-600 transition-all focus:border-gold resize-none" placeholder="Ej. Pierdo clientes por no contestar rápido..."></textarea>
+                    <label for="course-message" class="text-[10px] uppercase font-bold text-gray-400 tracking-widest ml-2">¿Cuál es tu principal reto digital hoy?</label>
+                    <textarea id="course-message" name="message" minlength="10" maxlength="1200" rows="3" required class="w-full bg-surface border border-white/10 rounded-xl px-5 py-4 text-sm text-white placeholder-gray-600 transition-all focus:border-gold resize-none" placeholder="Ej. Pierdo clientes por no contestar rápido..."></textarea>
                 </div>
+
+                <div class="flex items-start gap-3 bg-surface/50 p-4 rounded-xl border border-white/5"><input id="course-consent" type="checkbox" name="consent" required class="mt-1 w-5 h-5 accent-gold"><label for="course-consent" class="text-xs text-gray-400">Acepto que DU Pixel Code trate mis datos para responder esta solicitud y dar seguimiento a la Masterclass. Consulté el <a href="/privacidad.html" class="text-gold underline">Aviso de Privacidad</a> y los <a href="/terminos.html" class="text-gold underline">Términos</a>.</label></div>
+                <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" hidden>
+                <p id="project-form-status" role="alert" aria-live="assertive" class="text-sm text-red-300 min-h-5"></p>
 
                 <button type="submit" class="btn-shine w-full gold-gradient text-black font-black uppercase tracking-widest text-sm py-5 rounded-xl shadow-lg hover:shadow-gold/20 transition-all mt-4">
                     Enviar Solicitud de Ingreso ✉️
@@ -282,5 +278,6 @@
         window.addEventListener("scroll", reveal);
         reveal(); // Llamada inicial
     </script>
+    <script src="/assets/js/contact-registration.js" defer></script>
 </body>
 </html>

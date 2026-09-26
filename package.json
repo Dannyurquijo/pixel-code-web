@@ -5,7 +5,7 @@
   "scripts": {
     "build": "vite build --config business-scan-src/vite.config.mjs",
     "typecheck": "tsc -p business-scan-src/tsconfig.json",
-    "test": "node --test --test-isolation=none tests/pixie-v2.test.js tests/business-scan.test.js tests/webinar-registration.test.js tests/contact-registration.test.js",
+    "test": "node --test --test-isolation=none tests/pixie-v2.test.js tests/business-scan.test.js tests/webinar-registration.test.js tests/contact-registration.test.js tests/manual-registration.test.js tests/legal-consent.test.js",
     "test:pixie": "node tests/pixie-v2.test.js"
   },
   "dependencies": {
