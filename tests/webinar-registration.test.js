@@ -77,3 +77,33 @@ test('Webinar permite el mismo origen de un Deploy Preview', async () => {
   const request = new Request('https://deploy-preview-1--moonlit-lamington-b718a2.netlify.app/api/webinar-register', { headers: { Origin: 'https://deploy-preview-1--moonlit-lamington-b718a2.netlify.app' } });
   assert.equal(_test.originAllowed(request), true);
 });
+
+test('Webinar reutiliza las credenciales del flujo consolidado cuando no hay sobrescritura', async () => {
+  const previous = {
+    webinarUrl: process.env.MAKE_WEBINAR_WEBHOOK_URL,
+    webinarKey: process.env.MAKE_WEBINAR_API_KEY,
+    pixieUrl: process.env.MAKE_PIXIE_WEBHOOK_URL,
+    pixieKey: process.env.MAKE_PIXIE_API_KEY
+  };
+  delete process.env.MAKE_WEBINAR_WEBHOOK_URL;
+  delete process.env.MAKE_WEBINAR_API_KEY;
+  process.env.MAKE_PIXIE_WEBHOOK_URL = 'https://example.invalid/consolidated';
+  process.env.MAKE_PIXIE_API_KEY = 'consolidated-test-key';
+  try {
+    const { _test } = await import('../netlify/functions/webinar-register.mjs');
+    let captured;
+    await _test.sendToMake({
+      input: _test.validateRegistration(validRegistration).input,
+      eventId: 'webinar_consolidated_test',
+      fetchImpl: async (url, options) => { captured = { url, options }; return { ok: true }; }
+    });
+    assert.equal(captured.url, 'https://example.invalid/consolidated');
+    assert.equal(captured.options.headers['x-make-apikey'], 'consolidated-test-key');
+  } finally {
+    const restore = (name, value) => value === undefined ? delete process.env[name] : process.env[name] = value;
+    restore('MAKE_WEBINAR_WEBHOOK_URL', previous.webinarUrl);
+    restore('MAKE_WEBINAR_API_KEY', previous.webinarKey);
+    restore('MAKE_PIXIE_WEBHOOK_URL', previous.pixieUrl);
+    restore('MAKE_PIXIE_API_KEY', previous.pixieKey);
+  }
+});

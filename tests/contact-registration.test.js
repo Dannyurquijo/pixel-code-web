@@ -35,3 +35,29 @@ test('Contacto permite mismo origen y rechaza un origen externo', async () => {
   assert.equal(_test.originAllowed(new Request(url, { headers: { Origin: 'https://deploy-preview-1--moonlit-lamington-b718a2.netlify.app' } })), true);
   assert.equal(_test.originAllowed(new Request(url, { headers: { Origin: 'https://attacker.example' } })), false);
 });
+
+test('Contacto reutiliza las credenciales del flujo consolidado cuando no hay sobrescritura', async () => {
+  const previous = {
+    contactUrl: process.env.MAKE_CONTACT_WEBHOOK_URL,
+    contactKey: process.env.MAKE_CONTACT_API_KEY,
+    pixieUrl: process.env.MAKE_PIXIE_WEBHOOK_URL,
+    pixieKey: process.env.MAKE_PIXIE_API_KEY
+  };
+  delete process.env.MAKE_CONTACT_WEBHOOK_URL;
+  delete process.env.MAKE_CONTACT_API_KEY;
+  process.env.MAKE_PIXIE_WEBHOOK_URL = 'https://example.invalid/consolidated';
+  process.env.MAKE_PIXIE_API_KEY = 'consolidated-test-key';
+  try {
+    const { _test } = await import('../netlify/functions/contact-register.mjs');
+    let captured;
+    await _test.sendToMake({ input: _test.validate(valid).input, eventId: 'contact_consolidated_test', fetchImpl: async (url, options) => { captured = { url, options }; return { ok: true }; } });
+    assert.equal(captured.url, 'https://example.invalid/consolidated');
+    assert.equal(captured.options.headers['x-make-apikey'], 'consolidated-test-key');
+  } finally {
+    const restore = (name, value) => value === undefined ? delete process.env[name] : process.env[name] = value;
+    restore('MAKE_CONTACT_WEBHOOK_URL', previous.contactUrl);
+    restore('MAKE_CONTACT_API_KEY', previous.contactKey);
+    restore('MAKE_PIXIE_WEBHOOK_URL', previous.pixieUrl);
+    restore('MAKE_PIXIE_API_KEY', previous.pixieKey);
+  }
+});

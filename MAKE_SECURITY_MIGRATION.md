@@ -2,9 +2,9 @@
 
 Estado actualizado el 25 de septiembre de 2026:
 
-- Los escenarios heredados se conservaron sin cambios durante la preparación.
-- Se crearon escenarios seguros separados para `Pixie`, `Webinars` y `Contact`, con autenticación por API key; permanecen inactivos hasta la prueba sintética controlada.
-- Las siete variables requeridas se configuraron como secretos sólo en el Deploy Preview de Netlify.
+- El escenario heredado de Pixie quedó desactivado, con su configuración e historial conservados para rollback.
+- `Pixie`, `Webinars`, `Contact` y las descargas de manuales se consolidaron en `DUPC — Web Intake Seguro (Pixie, Contacto y Webinar)`, con autenticación por API key y rutas filtradas por evento.
+- El escenario consolidado está activo junto con el agente de marketing; esta arquitectura respeta el límite de dos escenarios activos de la cuenta.
 - El endpoint `/api/manual-register` reutiliza el canal autenticado de contacto con el evento `manual_download` y un payload minimizado.
 - Las URLs de webhook no se documentan porque funcionan como secretos.
 
@@ -22,18 +22,16 @@ Configurar únicamente como secretos del entorno de staging/preview, nunca en Gi
 
 - `MAKE_PIXIE_WEBHOOK_URL`
 - `MAKE_PIXIE_API_KEY`
-- `MAKE_WEBINAR_WEBHOOK_URL`
-- `MAKE_WEBINAR_API_KEY`
-- `MAKE_CONTACT_WEBHOOK_URL`
-- `MAKE_CONTACT_API_KEY`
 - `PIXIE_STATE_SECRET` con un valor aleatorio independiente de `GEMINI_API_KEY`
+
+`MAKE_WEBINAR_*` y `MAKE_CONTACT_*` quedan como sobrescrituras opcionales para una separación futura. Si no existen, los endpoints usan las credenciales del flujo consolidado `MAKE_PIXIE_*`.
 
 ## Secuencia sin interrupción
 
-1. Duplicar cada escenario que esté activo y mantener el duplicado desactivado.
-2. Crear un webhook nuevo con autenticación por API key; no reutilizar la URL expuesta históricamente.
+1. Mantener el escenario heredado inactivo durante la operación normal y conservarlo sólo para rollback controlado.
+2. Usar el webhook consolidado con autenticación por API key; no reutilizar la URL expuesta históricamente.
 3. Conservar en el payload los nombres actualmente consumidos por Make. Los endpoints implementados mantienen `Nombre`, `Email`, `Telefono`, `Empresa`, `Servicio_Interes`, `Mensaje` y los campos de evento correspondientes.
-4. Para contacto general y manuales, usar el escenario separado de contacto con eventos explícitos `project_inquiry` y `manual_download`; no mezclarlos silenciosamente con el webinar.
+4. Separar las rutas dentro del escenario mediante eventos explícitos: `webinar_registration`, `project_inquiry`, `manual_download` y los eventos comerciales de Pixie.
 5. Configurar las variables anteriores en un deploy preview de Netlify.
 6. Enviar datos sintéticos, verificar una sola fila/correo/notificación y confirmar que un request sin `x-make-apikey` sea rechazado.
 7. Activar el escenario nuevo; publicar el código sólo después de esa verificación.
