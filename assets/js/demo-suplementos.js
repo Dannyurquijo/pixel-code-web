@@ -106,7 +106,9 @@
     checkoutForm.hidden = true;
     if (checkoutResult instanceof HTMLElement) {
       checkoutResult.hidden = false;
-      checkoutResult.innerHTML = `<strong>Orden demo preparada.</strong><br>${name}, este flujo conectaría inventario, pago, confirmación y seguimiento. No se cobró ni transmitió información.`;
+      const title = document.createElement('strong');
+      title.textContent = 'Orden demo preparada.';
+      checkoutResult.replaceChildren(title, document.createElement('br'), document.createTextNode(`${name}, este flujo conectaría inventario, pago, confirmación y seguimiento. No se cobró ni transmitió información.`));
     }
     cart.clear();
     renderCart();

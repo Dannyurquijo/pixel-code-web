@@ -15,6 +15,7 @@
 
   const updatePageState = () => {
     header?.classList.toggle('is-scrolled', scrollY > 24);
+    document.body.classList.toggle('has-scrolled', scrollY > 40);
     const available = document.documentElement.scrollHeight - innerHeight;
     if (progress) progress.style.transform = `scaleX(${available > 0 ? Math.min(scrollY / available, 1) : 0})`;
   };
@@ -118,6 +119,7 @@
     const launcher = pixieWidget.querySelector('[data-pixie-launcher]');
     const panel = pixieWidget.querySelector('[data-pixie-panel]');
     const closeButton = pixieWidget.querySelector('[data-pixie-close]');
+    const clearButton = pixieWidget.querySelector('[data-pixie-clear]');
     const form = pixieWidget.querySelector('[data-pixie-form]');
     const input = pixieWidget.querySelector('[data-pixie-input]');
     const messages = pixieWidget.querySelector('[data-pixie-messages]');
@@ -169,6 +171,12 @@
     launcher?.addEventListener('pointerenter', () => { if (!waiting) pixieWidget.classList.add('is-waving'); });
     launcher?.addEventListener('pointerleave', () => pixieWidget.classList.remove('is-waving'));
     closeButton?.addEventListener('click', () => setPixieOpen(false));
+    clearButton?.addEventListener('click', () => {
+      conversationStore?.clear();
+      renderConversation();
+      clearButton.textContent = 'Conversación eliminada';
+      window.setTimeout(() => { clearButton.textContent = 'Eliminar conversación'; }, 1800);
+    });
     input?.addEventListener('input', () => pixieWidget.classList.toggle('is-listening', Boolean(input.value.trim()) && !waiting));
     window.setTimeout(() => { if (launcher?.getAttribute('aria-expanded') !== 'true') react('is-waving', 1400); }, 1800);
     addEventListener('keydown', (event) => {

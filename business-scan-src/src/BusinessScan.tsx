@@ -7,7 +7,7 @@ import { visibleLevel } from "./scoring";
 
 const WEBSITE = "https://dupixelcode.com";
 const CONTACT_URL = "https://api.whatsapp.com/send/?phone=524423479755&text=Hola%20DU%20Pixel%20Code%2C%20quiero%20dar%20seguimiento%20a%20mi%20Business%20Scan.&type=phone_number&app_absent=0";
-const PRIVACY_URL = "";
+const PRIVACY_URL = "/privacidad.html";
 
 type Stage = "intro" | "company" | "goals" | "operations" | "digital" | "context" | "contact" | "loading" | "result";
 

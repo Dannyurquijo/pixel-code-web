@@ -83,3 +83,12 @@ test('Endpoint entrega diagnóstico por reglas cuando Gemini y Supabase no está
     if (previousSupabaseKey === undefined) delete process.env.SUPABASE_SERVICE_ROLE_KEY; else process.env.SUPABASE_SERVICE_ROLE_KEY = previousSupabaseKey;
   }
 });
+
+test('Business Scan acepta el mismo origen del Deploy Preview', async () => {
+  const { default: handler } = await import('../netlify/functions/business-scan-analyze.mjs');
+  const origin = 'https://deploy-preview-1--moonlit-lamington-b718a2.netlify.app';
+  const result = await handler(new Request(`${origin}/api/business-scan`, {
+    method: 'POST', headers: { 'Content-Type': 'application/json', Origin: origin }, body: '{}'
+  }));
+  assert.equal(result.status, 400);
+});

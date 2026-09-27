@@ -4,7 +4,24 @@
   if (root) root.PixieConversationStore = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this, () => {
   const KEY_PREFIX = 'du:pixie:conversation:v2:';
+  const RETENTION_MS = 30 * 24 * 60 * 60 * 1000;
+  const MAX_STORED_MESSAGES = 40;
   const memoryFallback = new Map();
+
+  const purgeExpired = (storage, now = Date.now()) => {
+    if (!storage || typeof storage.length !== 'number') return;
+    const expired = [];
+    for (let index = 0; index < storage.length; index += 1) {
+      const candidate = storage.key(index);
+      if (!candidate?.startsWith(KEY_PREFIX)) continue;
+      try {
+        const value = JSON.parse(storage.getItem(candidate) || 'null');
+        const updatedAt = Date.parse(value?.updated_at || value?.created_at || '');
+        if (!Number.isFinite(updatedAt) || now - updatedAt > RETENTION_MS) expired.push(candidate);
+      } catch (_) { expired.push(candidate); }
+    }
+    expired.forEach((candidate) => storage.removeItem(candidate));
+  };
 
   const redactSensitive = (value) => value
     .replace(/\b(sk-[A-Za-z0-9_-]{12,}|gh[pousr]_[A-Za-z0-9_]{12,}|AIza[A-Za-z0-9_-]{20,}|xox[baprs]-[A-Za-z0-9-]{12,})\b/g, '[DATO SENSIBLE REDACTADO]')
@@ -21,6 +38,7 @@
   };
 
   const create = ({ storage, session, greeting }) => {
+    try { purgeExpired(storage); } catch (_) { /* Storage can be blocked. */ }
     const key = `${KEY_PREFIX}${session.session_id}`;
     const initialTimestamp = session.created_at || new Date().toISOString();
     const initial = {
@@ -36,7 +54,7 @@
       let value = null;
       try { value = JSON.parse(storage?.getItem?.(key) || 'null'); } catch (_) { value = null; }
       if (!value) value = memoryFallback.get(key) || initial;
-      const messages = Array.isArray(value.messages) ? value.messages.map(sanitizeMessage).filter(Boolean) : [];
+      const messages = Array.isArray(value.messages) ? value.messages.map(sanitizeMessage).filter(Boolean).slice(-MAX_STORED_MESSAGES) : [];
       return { ...initial, ...value, session_id: session.session_id, messages };
     };
 
@@ -54,10 +72,9 @@
         const clean = sanitizeMessage(message);
         if (!clean) return load();
         const conversation = load();
-        conversation.messages.push(clean);
+        conversation.messages = [...conversation.messages, clean].slice(-MAX_STORED_MESSAGES);
         conversation.updated_at = clean.timestamp;
         save(conversation);
-        console.info('[PIXIE] Message stored', { session_id: session.session_id, role: clean.role, timestamp: clean.timestamp });
         return conversation;
       },
       updateNotification(notification) {
@@ -77,5 +94,5 @@
     };
   };
 
-  return { KEY_PREFIX, create, sanitizeMessage, redactSensitive };
+  return { KEY_PREFIX, RETENTION_MS, MAX_STORED_MESSAGES, create, sanitizeMessage, redactSensitive, purgeExpired };
 });
