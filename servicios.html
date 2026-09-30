@@ -90,6 +90,155 @@
     <section class="services-cta reveal" id="contacto"><p class="eyebrow"><span></span> Diagnóstico completo de negocio</p><h2>Identifica el primer sistema que <em>vale la pena construir.</em></h2><p>Revisamos tu captación, atención, procesos, herramientas y datos para convertir la fricción actual en una ruta de implementación priorizada.</p><a class="button button--primary" data-track="diagnostic_cta" data-track-location="services-final" href="/diagnostico/">Solicitar diagnóstico <span aria-hidden="true">&#8599;</span></a></section>
   </main>
   <footer class="site-footer"><a class="brand" href="index.html"><img src="du-logo-Cuadrado.png" width="42" height="42" alt=""><span><strong>DU Pixel Code</strong><small>Intelligent infrastructure</small></span></a><p>© <span data-year></span> DU Pixel Code. Querétaro, México.</p><div><a href="mailto:info@dupixelcode.com">Email</a><a href="https://www.linkedin.com/company/du-pixel-code" target="_blank" rel="noopener noreferrer">LinkedIn</a><button type="button" onclick="openPrivacyModal()">Privacidad</button></div></footer>
-  <script src="assets/js/ambient-network.js" defer></script><script src="assets/js/pixie/session-manager.js" defer></script><script src="assets/js/pixie/conversation-store.js" defer></script><script src="assets/js/pixie-widget.js?v=20260921a" defer></script><script src="assets/js/sql-demo-modal.js?v=20260929a" defer></script><script src="assets/js/home.js?v=20260921f" defer></script><script src="privacy.js" defer></script>
+  <!-- Modal SQL Demo Wasm -->
+  <div id="sql-demo-modal" class="sql-modal-backdrop" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="sql-modal-title">
+    <div class="sql-modal-window" role="document">
+      <header class="sql-modal-header">
+        <div class="sql-modal-title-wrap">
+          <span class="sql-modal-badge"><i></i> SQL Wasm Demo</span>
+          <h2 id="sql-modal-title" class="sql-modal-title">Integraciones SQL &amp; Anal&iacute;tica BI 360&deg;</h2>
+        </div>
+        <div class="sql-modal-controls">
+          <button class="sql-modal-btn sql-modal-btn--fullscreen" type="button" data-sql-fullscreen title="Pantalla completa" aria-label="Pantalla completa">&#x2922;</button>
+          <button class="sql-modal-btn sql-modal-btn--close" type="button" data-sql-close title="Cerrar demostraci&oacute;n" aria-label="Cerrar demostraci&oacute;n">&#x2715;</button>
+        </div>
+      </header>
+
+      <div class="sql-notice-bar">
+        <div class="sql-notice-content">
+          <span class="sql-notice-tag">CLAVE DE PRUEBA: 123456789</span>
+          <p class="sql-notice-copy">Demostraci&oacute;n en vivo: ingresa la clave de prueba <strong>123456789</strong> para interactuar con la base de datos SQL.</p>
+        </div>
+        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+          <button class="sql-copy-btn" type="button" data-sql-copy-key>Copiar clave</button>
+          <button class="sql-copy-btn" type="button" data-open-sql-quote style="background: rgba(255, 215, 0, 0.15); color: #ffd700; border-color: rgba(255, 215, 0, 0.4);">&#128172; Cotizar Integraci&oacute;n SQL</button>
+        </div>
+      </div>
+
+      <div class="sql-modal-body">
+        <div class="sql-iframe-loader" data-sql-loader>
+          <div class="sql-spinner"></div>
+          <span class="sql-loader-text">Inicializando Motor SQLite WebAssembly&hellip;</span>
+        </div>
+        <iframe 
+          class="sql-demo-iframe" 
+          data-sql-iframe 
+          title="Sistema de Evaluaci&oacute;n 360&deg; - Motor SQL WebAssembly"
+          sandbox="allow-scripts allow-same-origin allow-forms allow-downloads"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allow="fullscreen; clipboard-write"
+        ></iframe>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/ambient-network.js" defer></script>
+  <script src="assets/js/pixie/session-manager.js" defer></script>
+  <script src="assets/js/pixie/conversation-store.js" defer></script>
+  <script src="assets/js/pixie-widget.js?v=20260921a" defer></script>
+  <script src="assets/js/home.js?v=20260921f" defer></script>
+  <script src="privacy.js" defer></script>
+
+  <script>
+  (() => {
+    const DEMO_URL = 'https://dupixelcode.github.io/evaluacion-360/';
+    const modal = document.getElementById('sql-demo-modal');
+    if (!modal) return;
+
+    const modalWindow = modal.querySelector('.sql-modal-window');
+    const iframe = modal.querySelector('[data-sql-iframe]');
+    const loader = modal.querySelector('[data-sql-loader]');
+    const closeBtn = modal.querySelector('[data-sql-close]');
+    const fullscreenBtn = modal.querySelector('[data-sql-fullscreen]');
+    const copyKeyBtn = modal.querySelector('[data-sql-copy-key]');
+    let isFullscreen = false;
+
+    function openModal() {
+      if (iframe && (!iframe.src || iframe.src === 'about:blank' || iframe.src.indexOf('evaluacion-360') === -1)) {
+        if (loader) loader.classList.remove('is-hidden');
+        iframe.src = DEMO_URL;
+      }
+      modal.classList.add('is-active');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      setTimeout(() => { if (closeBtn) closeBtn.focus(); }, 100);
+    }
+
+    function closeModal() {
+      modal.classList.remove('is-active');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      if (isFullscreen) toggleFullscreen();
+    }
+
+    function toggleFullscreen() {
+      if (!modalWindow) return;
+      isFullscreen = !isFullscreen;
+      modalWindow.classList.toggle('is-fullscreen', isFullscreen);
+      if (fullscreenBtn) fullscreenBtn.textContent = isFullscreen ? '\uD83D\uDDD7' : '\u2922';
+    }
+
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    if (fullscreenBtn) fullscreenBtn.addEventListener('click', toggleFullscreen);
+    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && modal.classList.contains('is-active')) closeModal(); });
+
+    if (copyKeyBtn) {
+      copyKeyBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText('123456789').then(() => {
+          const orig = copyKeyBtn.textContent;
+          copyKeyBtn.textContent = '\u00A1Copiado!';
+          copyKeyBtn.style.background = 'rgba(16, 185, 129, 0.25)';
+          copyKeyBtn.style.color = '#10b981';
+          setTimeout(() => {
+            copyKeyBtn.textContent = orig;
+            copyKeyBtn.style.background = '';
+            copyKeyBtn.style.color = '';
+          }, 2000);
+        }).catch(() => {});
+      });
+    }
+
+    if (iframe) {
+      iframe.addEventListener('load', () => {
+        if (loader) loader.classList.add('is-hidden');
+      });
+    }
+
+    document.addEventListener('click', (e) => {
+      const demoTrigger = e.target.closest('[data-open-sql-demo], .btn-sql-demo');
+      if (demoTrigger) {
+        e.preventDefault();
+        openModal();
+        return;
+      }
+      const quoteTrigger = e.target.closest('[data-open-sql-quote], .btn-sql-quote');
+      if (quoteTrigger) {
+        e.preventDefault();
+        closeModal();
+        const promptText = "Hola Pixie, me interesa cotizar una integraci\u00F3n de bases de datos SQL & Anal\u00EDtica BI 360\u00B0 para mi empresa. \u00BFQu\u00E9 datos de contacto y detalles de mi proyecto necesitas?";
+        if (typeof window.openPixieWithPrompt === 'function') {
+          window.openPixieWithPrompt(promptText, true);
+        } else if (window.PixieV2 && typeof window.PixieV2.openWithPrompt === 'function') {
+          window.PixieV2.openWithPrompt(promptText, true);
+        }
+      }
+    });
+
+    window.DUPixelSQLDemo = {
+      open: openModal,
+      close: closeModal
+    };
+
+    try {
+      const p = new URLSearchParams(window.location.search);
+      const d = p.get('demo');
+      const h = window.location.hash.toLowerCase();
+      if (d === 'sql' || d === 'sql-360' || d === 'evaluacion-360' || h === '#demo-sql' || h === '#sql-demo') {
+        setTimeout(openModal, 400);
+      }
+    } catch (_) {}
+  })();
+  </script>
 </body>
 </html>
