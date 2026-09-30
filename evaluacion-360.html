@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#050608">
+  <meta name="description" content="Demo interactiva del Sistema de Evaluación 360° y motor SQL relacional en navegador (WebAssembly) de DU Pixel Code.">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://dupixelcode.com/evaluacion-360.html">
+  <link rel="icon" type="image/png" href="du-logo-Cuadrado.png">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_MX">
+  <meta property="og:title" content="Evaluación 360° & Motor SQL Wasm | Demo DU Pixel Code">
+  <meta property="og:description" content="Análisis relacional en tiempo real, consultas CTEs y radar de competencias 360° directamente en el navegador.">
+  <meta property="og:image" content="https://dupixelcode.com/assets/images/demos/maquinados-hero.png">
+  <link rel="stylesheet" href="assets/css/premium-home.css?v=20260921e">
+  <link rel="stylesheet" href="assets/css/demo-sql.css?v=20260930a">
+  <link rel="stylesheet" href="assets/css/pixie-mascot.css?v=20260921a">
+  <link rel="stylesheet" href="assets/css/site-consent.css">
+  <script src="assets/js/site-consent.js"></script>
+  <title>Evaluación 360° &amp; Motor SQL Wasm | Demo DU Pixel Code</title>
+</head>
+<body class="sql-demo-page">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <canvas id="ambient-canvas" aria-hidden="true"></canvas>
+
+  <!-- Banner de Acceso Rápido -->
+  <aside class="sql-access-banner" aria-label="Aviso de demostración">
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <span class="sql-access-tag">CLAVE DEMO: 123456789</span>
+      <span>Base de datos relacional de prueba inicializada en memoria.</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <button type="button" id="btn-copy-access-key" class="sql-preset-btn" style="background: rgba(255, 215, 0, 0.15); color: #ffd700; border-color: rgba(255, 215, 0, 0.4);">Copiar clave</button>
+      <span class="sql-access-status"><i></i> SQLite Wasm v3.45 Online</span>
+    </div>
+  </aside>
+
+  <!-- Header del Sitio -->
+  <header class="site-header" data-header>
+    <a class="brand" href="servicios.html#demos" aria-label="Volver a demos de DU Pixel Code">
+      <img src="du-logo-Cuadrado.png" width="46" height="46" alt="">
+      <span><strong>DU Pixel Code</strong><small>Evaluación 360° Demo</small></span>
+    </a>
+    <nav class="desktop-nav" aria-label="Navegación de la demo">
+      <a href="#metricas">Métricas</a>
+      <a href="#sql-terminal">Consola SQL</a>
+      <a href="#radar-analitica">Radar 360°</a>
+      <a href="#datos">Datos en Vivo</a>
+    </nav>
+    <a class="button button--small button--ghost desktop-cta" href="servicios.html#demos">&larr; Ver todas las demos</a>
+    <button class="menu-button" type="button" data-menu-button aria-expanded="false" aria-controls="mobile-menu">
+      <span class="sr-only">Abrir menú</span><i></i><i></i>
+    </button>
+  </header>
+
+  <div class="mobile-menu" id="mobile-menu" data-mobile-menu hidden>
+    <nav aria-label="Navegación móvil">
+      <a href="#metricas"><small>01</small> Métricas</a>
+      <a href="#sql-terminal"><small>02</small> Consola SQL</a>
+      <a href="#radar-analitica"><small>03</small> Radar 360°</a>
+      <a href="#datos"><small>04</small> Datos en Vivo</a>
+      <a class="button button--primary" href="servicios.html#demos">Volver a demos</a>
+    </nav>
+  </div>
+
+  <main id="contenido">
+    <!-- Hero Section -->
+    <section class="sql-hero" aria-labelledby="sql-hero-title">
+      <div class="sql-hero__content reveal">
+        <p class="eyebrow"><span></span> Novedad WebAssembly &middot; Analítica BI 360&deg;</p>
+        <h1 id="sql-hero-title">Evaluación Institucional 360&deg; con <em>Motor SQL en Vivo.</em></h1>
+        <p class="sql-hero__lead">
+          Demostración funcional de procesamiento relacional directamente en el navegador. Ejecuta consultas con CTEs y Window Functions, analiza el radar de competencias y comprueba la velocidad de SQLite compilado en WebAssembly.
+        </p>
+        <div style="display: flex; gap: 14px; flex-wrap: wrap;">
+          <a class="button button--primary" href="#sql-terminal">
+            &#128640; Ejecutar Consultas SQL <span aria-hidden="true">&darr;</span>
+          </a>
+          <button type="button" class="button button--ghost" data-open-sql-quote>
+            &#128172; Cotizar Integración SQL
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- KPI Metrics Strip -->
+    <section class="sql-kpi-grid" id="metricas" aria-label="Métricas del sistema">
+      <article class="sql-kpi-card reveal">
+        <small>Volumen de Datos</small>
+        <strong>128</strong>
+        <span>Evaluaciones relacionales</span>
+      </article>
+      <article class="sql-kpi-card reveal" data-delay="1">
+        <small>Velocidad Wasm</small>
+        <strong>0.38 ms</strong>
+        <span>Tiempo medio por consulta</span>
+      </article>
+      <article class="sql-kpi-card reveal" data-delay="2">
+        <small>Desempeño Global</small>
+        <strong>94.8%</strong>
+        <span>Índice de madurez institucional</span>
+      </article>
+      <article class="sql-kpi-card reveal" data-delay="3">
+        <small>Dimensiones Evaluadas</small>
+        <strong>6 Ejes</strong>
+        <span>Radar comparativo 360&deg;</span>
+      </article>
+    </section>
+
+    <!-- Workspace: Consola SQL Interactiva -->
+    <section class="sql-workspace" id="sql-terminal" aria-labelledby="terminal-title">
+      <div class="sql-section-head reveal">
+        <p class="eyebrow"><span></span> Consola Interactiva</p>
+        <h2 id="terminal-title">Motor SQL WebAssembly en Acción</h2>
+        <p>Selecciona una consulta predefinida o pulsa "Ejecutar Consulta" para ver la respuesta instantánea del motor relacional en memoria virtual.</p>
+      </div>
+
+      <div class="sql-terminal-box reveal">
+        <div class="sql-terminal-bar">
+          <div class="sql-dots"><i></i><i></i><i></i></div>
+          <div class="sql-presets">
+            <button type="button" class="sql-preset-btn is-active" data-sql-preset="dept">&#9654; CTE Departamentos</button>
+            <button type="button" class="sql-preset-btn" data-sql-preset="radar">&#9654; Matriz Radar 360&deg;</button>
+            <button type="button" class="sql-preset-btn" data-sql-preset="ranking">&#9654; Ranking Líderes</button>
+          </div>
+        </div>
+
+        <pre class="sql-editor-wrap"><code id="sql-code-editor"></code></pre>
+
+        <div class="sql-terminal-actions">
+          <div class="sql-metric-badge" id="sql-exec-time">&#10004; Ejecutado en 0.38 ms &middot; SQLite Wasm v3.45 &middot; 5 registros</div>
+          <div style="display: flex; gap: 10px;">
+            <button type="button" id="btn-copy-sql" class="btn-export">&#128203; Copiar SQL</button>
+            <button type="button" id="btn-run-query" class="btn-run-sql">&#9658; Ejecutar Consulta</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Analytics Grid: Radar + Tabla Dinámica -->
+      <div class="sql-analytics-grid" id="radar-analitica">
+        <!-- Tarjeta Radar 360° -->
+        <article class="sql-card sql-card--radar reveal">
+          <div class="sql-card-title">
+            <h3>Radar de Competencias 360&deg;</h3>
+            <span class="score-badge score-badge--high">Balance Óptimo</span>
+          </div>
+          <p style="color: #94a3b8; font-size: 0.8rem; margin: 0 0 16px;">
+            Comparativa triangular entre Autoevaluación, Evaluación de Pares y Dirección.
+          </p>
+
+          <div class="radar-container">
+            <svg class="radar-svg" viewBox="0 0 400 400" aria-label="Gráfico de radar 360 grados de competencias institucionales">
+              <defs>
+                <radialGradient id="radarGridGlow" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="rgba(0, 210, 255, 0.08)"/>
+                  <stop offset="100%" stop-color="transparent"/>
+                </radialGradient>
+              </defs>
+              <circle cx="200" cy="200" r="150" fill="url(#radarGridGlow)"/>
+
+              <!-- Círculos de escala -->
+              <circle cx="200" cy="200" r="30" fill="none" stroke="rgba(255,255,255,0.08)" stroke-dasharray="3,3"/>
+              <circle cx="200" cy="200" r="60" fill="none" stroke="rgba(255,255,255,0.1)"/>
+              <circle cx="200" cy="200" r="90" fill="none" stroke="rgba(255,255,255,0.12)" stroke-dasharray="3,3"/>
+              <circle cx="200" cy="200" r="120" fill="none" stroke="rgba(255,255,255,0.14)"/>
+              <circle cx="200" cy="200" r="150" fill="none" stroke="rgba(0,210,255,0.3)"/>
+
+              <!-- Ejes polares (6 competencias) -->
+              <line x1="200" y1="200" x2="200" y2="50" stroke="rgba(255,255,255,0.15)"/>
+              <line x1="200" y1="200" x2="330" y2="125" stroke="rgba(255,255,255,0.15)"/>
+              <line x1="200" y1="200" x2="330" y2="275" stroke="rgba(255,255,255,0.15)"/>
+              <line x1="200" y1="200" x2="200" y2="350" stroke="rgba(255,255,255,0.15)"/>
+              <line x1="200" y1="200" x2="70" y2="275" stroke="rgba(255,255,255,0.15)"/>
+              <line x1="200" y1="200" x2="70" y2="125" stroke="rgba(255,255,255,0.15)"/>
+
+              <!-- Etiquetas -->
+              <text x="200" y="38" text-anchor="middle" fill="#00d2ff" font-size="10" font-weight="700">LIDERAZGO</text>
+              <text x="345" y="125" text-anchor="start" fill="#94a3b8" font-size="9">RESOLUCIÓN</text>
+              <text x="345" y="280" text-anchor="start" fill="#94a3b8" font-size="9">INNOVACIÓN</text>
+              <text x="200" y="370" text-anchor="middle" fill="#94a3b8" font-size="9">COLABORACIÓN</text>
+              <text x="55" y="280" text-anchor="end" fill="#94a3b8" font-size="9">COMUNICACIÓN</text>
+              <text x="55" y="125" text-anchor="end" fill="#94a3b8" font-size="9">CUMPLIMIENTO</text>
+
+              <!-- Polígono 1: Autoevaluación (Cyan) -->
+              <polygon points="200,65 315,135 305,260 200,325 90,260 85,140" fill="rgba(0, 210, 255, 0.18)" stroke="#00d2ff" stroke-width="2"/>
+              <!-- Polígono 2: Pares (Dorado) -->
+              <polygon points="200,75 320,130 310,265 200,335 95,250 88,145" fill="rgba(255, 215, 0, 0.12)" stroke="#ffd700" stroke-width="1.8"/>
+              <!-- Polígono 3: Líder (Esmeralda) -->
+              <polygon points="200,60 325,128 318,268 200,340 100,255 92,138" fill="rgba(16, 185, 129, 0.12)" stroke="#10b981" stroke-width="1.8"/>
+            </svg>
+          </div>
+
+          <div class="radar-legend">
+            <span class="legend-item"><i class="legend-dot legend-dot--cyan"></i> Autoevaluación</span>
+            <span class="legend-item"><i class="legend-dot legend-dot--gold"></i> Evaluación Pares</span>
+            <span class="legend-item"><i class="legend-dot legend-dot--emerald"></i> Líderes / Dirección</span>
+          </div>
+        </article>
+
+        <!-- Tarjeta Tabla de Resultados Relacionales -->
+        <article class="sql-card reveal" data-delay="1" id="datos">
+          <div class="sql-card-title">
+            <h3>Resultados Relacionales de la Consulta</h3>
+            <span class="sql-metric-badge">&#9679; Dataset Activo</span>
+          </div>
+          <p style="color: #94a3b8; font-size: 0.8rem; margin: 0 0 16px;">
+            Datos generados dinámicamente mediante SQLite WebAssembly según la consulta ejecutada.
+          </p>
+
+          <div class="sql-table-wrap">
+            <table class="sql-table" aria-label="Tabla de resultados SQL">
+              <thead id="sql-table-head"></thead>
+              <tbody id="sql-table-body"></tbody>
+            </table>
+          </div>
+
+          <div class="sql-export-row">
+            <span style="font-size: 0.72rem; color: #64748b;">Formato exportable en tiempo de ejecución</span>
+            <button type="button" id="btn-export-csv" class="btn-export">&#128190; Descargar CSV (Demo)</button>
+          </div>
+        </article>
+      </div>
+
+      <!-- Banner Final de Conversión -->
+      <section class="sql-cta-banner reveal" id="soluciones">
+        <p class="eyebrow"><span></span> Arquitectura de Datos &amp; Software de Alto Rendimiento</p>
+        <h2>¿Quieres un sistema con <em>esta velocidad y claridad?</em></h2>
+        <p>Diseñamos bases de datos relacionales, analítica en tiempo real y dashboards a la medida para conectar toda la información de tu empresa.</p>
+        <div style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;">
+          <a class="button button--primary" href="/diagnostico/">
+            Solicitar diagnóstico de negocio <span aria-hidden="true">&#8599;</span>
+          </a>
+          <button type="button" class="button button--ghost" data-open-sql-quote>
+            Cotizar con Pixie IA <span aria-hidden="true">&#128172;</span>
+          </button>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <a class="brand" href="servicios.html#demos">
+      <img src="du-logo-Cuadrado.png" width="42" height="42" alt="">
+      <span><strong>DU Pixel Code</strong><small>Demo conceptual &middot; Wasm SQL</small></span>
+    </a>
+    <p>&copy; <span data-year></span> DU Pixel Code. Querétaro, México.</p>
+    <div>
+      <a href="servicios.html#demos">Ver más demos</a>
+      <a href="/diagnostico/">Diagnóstico</a>
+      <button type="button" onclick="openPrivacyModal()">Privacidad</button>
+    </div>
+  </footer>
+
+  <script src="assets/js/ambient-network.js" defer></script>
+  <script src="assets/js/pixie/session-manager.js" defer></script>
+  <script src="assets/js/pixie/conversation-store.js" defer></script>
+  <script src="assets/js/pixie-widget.js?v=20260921a" defer></script>
+  <script src="assets/js/home.js?v=20260921f" defer></script>
+  <script src="assets/js/demo-evaluacion-360.js?v=20260930a" defer></script>
+  <script src="privacy.js" defer></script>
+</body>
+</html>
