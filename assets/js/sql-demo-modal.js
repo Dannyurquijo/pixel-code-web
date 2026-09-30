@@ -170,15 +170,33 @@
     }
   };
 
+  // Check URL parameters or hash to auto-open modal on page load
+  const checkAutoOpen = () => {
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const demoParam = urlParams.get('demo');
+      const hash = window.location.hash.toLowerCase();
+      
+      if (demoParam === 'sql' || demoParam === 'sql-360' || demoParam === 'evaluacion-360' || hash === '#demo-sql' || hash === '#sql-demo') {
+        setTimeout(() => openModal(), 400);
+      }
+    } catch (_) {}
+  };
+
   // Expose API globally
   window.DUPixelSQLDemo = {
     open: openModal,
     close: closeModal
   };
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initModal);
-  } else {
+  const handleInit = () => {
     initModal();
+    checkAutoOpen();
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', handleInit);
+  } else {
+    handleInit();
   }
 })();
