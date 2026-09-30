@@ -247,9 +247,36 @@
       }
     });
 
+    const sendMessageToPixie = (text) => {
+      if (!input || !form) return;
+      input.value = text;
+      pixieWidget.classList.add('is-listening');
+      if (typeof form.requestSubmit === 'function') {
+        form.requestSubmit();
+      } else {
+        form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+      }
+    };
+
+    const openWithPrompt = (promptText, autoSubmit = true) => {
+      setPixieOpen(true);
+      if (promptText) {
+        if (autoSubmit) {
+          setTimeout(() => sendMessageToPixie(promptText), 150);
+        } else {
+          input.value = promptText;
+          pixieWidget.classList.add('is-listening');
+          input.focus();
+        }
+      }
+    };
+
+    window.openPixieWithPrompt = openWithPrompt;
+
     window.PixieV2 = {
       getSession: () => ({ ...pixieSession }),
       getConversation: () => conversationStore?.get() || null,
+      openWithPrompt,
       startNewSession: () => {
         conversationStore?.clear();
         pixieSession = window.PixieSession?.reset(storage);
