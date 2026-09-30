@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Evaluación 360° Escolar | DU Pixel Code</title>
+  
+  <!-- Tipografías Oficiales DU Pixel Code -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@700;800;900&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Estilos CSS DU Pixel Code (Dark Luxury Cybernetic) -->
+  <link rel="stylesheet" href="css/styles.css">
+
+  <!-- CDN Dependencias WebAssembly & JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+
+  <!-- ============================================================
+       1. LOGIN GATE OVERLAY (PANTALLA DE ACCESO DE ALTA SEGURIDAD)
+       ============================================================ -->
+  <div class="login-overlay" id="loginOverlay">
+    <div class="login-card">
+      <div class="brand-badge">DU PIXEL CODE</div>
+      <h1 class="login-title">SECURITY GATEWAY</h1>
+      <p class="login-subtitle">Sistema de Evaluación 360° de Maestros y Personal</p>
+      
+      <form id="loginForm">
+        <div class="input-group">
+          <label class="input-label" for="loginPassword">Contraseña de Acceso</label>
+          <div class="password-wrapper">
+            <input type="password" id="loginPassword" class="input-field" placeholder="••••••••••••" required autocomplete="current-password">
+            <span class="toggle-pwd" id="togglePwd">👁️</span>
+          </div>
+        </div>
+        
+        <button type="submit" class="btn-cyber">INGRESAR AL SYSTEMA</button>
+        <div style="margin-top: 14px; font-size: 0.78rem; color: #94a3b8; text-align: center;">
+          Clave demo: <strong style="color: #ffd700; cursor: pointer; text-decoration: underline;" onclick="document.getElementById('loginPassword').value = '123456789*';">123456789* (clic para llenar)</strong>
+        </div>
+        <div class="error-msg" id="loginErrorMsg"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       2. TOP NAVBAR & HEADER
+       ============================================================ -->
+  <header class="header-nav">
+    <div class="nav-brand" style="display: flex; align-items: center; gap: 16px;">
+      <div class="nav-brand-logo">DU PIXEL CODE <span>360°</span></div>
+      <a href="../servicios.html#demos" style="color: #00d2ff; text-decoration: none; font-size: 0.78rem; font-weight: 700; border: 1px solid rgba(0,210,255,0.4); padding: 6px 14px; border-radius: 8px; background: rgba(0,210,255,0.08); display: inline-flex; align-items: center; gap: 6px;">&larr; Volver a DU Pixel Code</a>
+    </div>
+    
+    <div class="nav-user-area">
+      <div class="session-indicator">
+        <span class="status-dot"></span>
+        <span>Sesión En Memoria Activa</span>
+      </div>
+      <button class="btn-logout" id="btnLogout">Cerrar Sesión</button>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       3. NAVEGACIÓN POR PESTAÑAS (TABS)
+       ============================================================ -->
+  <nav class="tabs-container">
+    <button class="tab-btn active" data-tab="tabIndividual">👤 Reporte 360° Individual</button>
+    <button class="tab-btn" data-tab="tabInstitutional">🏛️ Analítica Institucional y Rankings</button>
+    <button class="tab-btn" data-tab="tabConsole">💻 Consola / Editor SQL Interactivo</button>
+    <button class="tab-btn" data-tab="tabUpload">📁 Carga de Datos (.CSV / .DB)</button>
+  </nav>
+
+  <!-- ============================================================
+       4. CONTENIDO PRINCIPAL (SPA WRAPPER)
+       ============================================================ -->
+  <main class="main-wrapper">
+
+    <!-- PESTAÑA 1: REPORTE 360° INDIVIDUAL -->
+    <section class="tab-content active" id="tabIndividual">
+      
+      <!-- Panel de Control y Filtros -->
+      <div class="control-panel">
+        <div class="filter-item">
+          <label class="metric-title" for="filterRole">Rol</label>
+          <select id="filterRole" class="select-cyber">
+            <option value="ALL">Todos los Roles</option>
+            <option value="Maestro">Maestro</option>
+            <option value="Administrativo">Administrativo</option>
+            <option value="Directivo">Directivo</option>
+          </select>
+        </div>
+
+        <div class="filter-item">
+          <label class="metric-title" for="filterDept">Departamento</label>
+          <select id="filterDept" class="select-cyber">
+            <option value="ALL">Todos los Departamentos</option>
+          </select>
+        </div>
+
+        <div class="filter-item" style="flex: 2;">
+          <label class="metric-title" for="selectUser">Seleccionar Colaborador</label>
+          <select id="selectUser" class="select-cyber">
+            <!-- Cargado dinámicamente -->
+          </select>
+        </div>
+
+        <div style="display: flex; gap: 0.5rem; align-self: flex-end;">
+          <button class="btn-action" id="btnExportPdf">📄 PDF</button>
+          <button class="btn-action" id="btnExportCsv" style="background: linear-gradient(135deg, var(--gold-neon), #F59E0B);">📁 CSV</button>
+        </div>
+      </div>
+
+      <!-- Tarjeta de Información de Usuario -->
+      <div class="cyber-card" style="margin-bottom: 2rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <h2 id="userInfoName" style="font-family: var(--font-heading); font-size: 1.6rem; color: var(--cyan-neon);">Cargando colaborador...</h2>
+            <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 0.2rem;">
+              <span class="badge-role" id="userInfoRole">-</span> &nbsp;|&nbsp; 
+              Departamento: <strong id="userInfoDept" style="color: #FFF;">-</strong>
+            </p>
+          </div>
+          <div style="text-align: right;">
+            <div style="font-size: 0.8rem; color: var(--text-muted);">FECHA INGRESO INSTITUCIÓN</div>
+            <div id="userInfoDate" style="font-weight: bold; color: var(--gold-neon);">-</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Métricas KPI -->
+      <div class="grid-cards">
+        <div class="cyber-card">
+          <div class="metric-title">Promedio Externo 360°</div>
+          <div class="metric-value cyan" id="kpiExt">0.00</div>
+        </div>
+        <div class="cyber-card">
+          <div class="metric-title">Autoevaluación</div>
+          <div class="metric-value green" id="kpiAuto">0.00</div>
+        </div>
+        <div class="cyber-card">
+          <div class="metric-title">Evaluación Jefe</div>
+          <div class="metric-value" id="kpiJefe">0.00</div>
+        </div>
+        <div class="cyber-card">
+          <div class="metric-title">Evaluación Pares</div>
+          <div class="metric-value" id="kpiPar">0.00</div>
+        </div>
+        <div class="cyber-card">
+          <div class="metric-title">Subordinados</div>
+          <div class="metric-value gold" id="kpiSub">0.00</div>
+        </div>
+      </div>
+
+      <!-- Gráficos Principales -->
+      <div class="charts-grid">
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3 class="chart-title">🕸️ Gráfico de Radar por Competencia</h3>
+            <p class="chart-subtitle">Comparativa entre Autoevaluación y Promedio 360° Externo</p>
+          </div>
+          <div class="chart-canvas-wrapper">
+            <canvas id="radarCanvas"></canvas>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3 class="chart-title">📊 Barras Comparativas por Evaluador</h3>
+            <p class="chart-subtitle">Puntuación desglosada por relación jerárquica</p>
+          </div>
+          <div class="chart-canvas-wrapper">
+            <canvas id="barCanvas"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Matriz de Brechas (Gap Analysis) -->
+      <div class="cyber-card" style="margin-bottom: 2rem;">
+        <h3 class="chart-title" style="margin-bottom: 0.4rem;">🔍 Matriz de Análisis de Brechas de Autopercepción</h3>
+        <p class="chart-subtitle" style="margin-bottom: 1.2rem;">Diferencia calculada entre Autoevaluación vs Evaluación Externa 360°</p>
+
+        <div class="table-responsive">
+          <table class="cyber-table">
+            <thead>
+              <tr>
+                <th>Competencia</th>
+                <th>Nota Autoevaluación</th>
+                <th>Nota 360° Externo</th>
+                <th>Brecha</th>
+                <th>Diagnóstico de Alineación</th>
+              </tr>
+            </thead>
+            <tbody id="gapTableBody">
+              <!-- Cargado dinámicamente -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Comentarios Cualitativos -->
+      <div class="cyber-card">
+        <h3 class="chart-title" style="margin-bottom: 0.4rem;">💬 Retroalimentación Directa y Comentarios</h3>
+        <p class="chart-subtitle">Comentarios cualitativos por tipo de evaluador</p>
+
+        <div class="comments-container" id="commentsContainer">
+          <!-- Cargado dinámicamente -->
+        </div>
+      </div>
+
+    </section>
+
+    <!-- PESTAÑA 2: ANALÍTICA INSTITUCIONAL -->
+    <section class="tab-content" id="tabInstitutional">
+      
+      <div class="grid-cards" style="margin-bottom: 2rem;">
+        <div class="cyber-card">
+          <div class="metric-title">Total Colaboradores</div>
+          <div class="metric-value cyan" id="instTotalUsers">0</div>
+        </div>
+        <div class="cyber-card">
+          <div class="metric-title">Evaluaciones Registradas</div>
+          <div class="metric-value gold" id="instTotalEvals">0</div>
+        </div>
+        <div class="cyber-card">
+          <div class="metric-title">Promedio Global Institucional</div>
+          <div class="metric-value green" id="instGlobalAvg">0.00</div>
+        </div>
+      </div>
+
+      <div class="cyber-card" style="margin-bottom: 2rem;">
+        <h3 class="chart-title" style="margin-bottom: 0.4rem;">🏆 Ranking de Desempeño por Departamento</h3>
+        <p class="chart-subtitle" style="margin-bottom: 1.2rem;">Calculado con SQL en tiempo real usando funciones de ventana <code>RANK() OVER</code></p>
+
+        <div class="table-responsive">
+          <table class="cyber-table">
+            <thead>
+              <tr>
+                <th>Departamento</th>
+                <th>Lugar Depto</th>
+                <th>Colaborador</th>
+                <th>Rol</th>
+                <th>Promedio 360° Externo</th>
+                <th>Promedio General</th>
+              </tr>
+            </thead>
+            <tbody id="rankingTableBody">
+              <!-- Cargado dinámicamente -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3 class="chart-title">🌐 Desempeño Global por Competencia</h3>
+          <p class="chart-subtitle">Promedio de toda la institución educativa</p>
+        </div>
+        <div class="chart-canvas-wrapper">
+          <canvas id="instChartCanvas"></canvas>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- PESTAÑA 3: EDITOR / CONSOLA SQL INTERACTIVO -->
+    <section class="tab-content" id="tabConsole">
+      <div class="cyber-card" style="margin-bottom: 2rem;">
+        <h3 class="chart-title" style="margin-bottom: 0.4rem;">💻 Editor de Consultas SQL (SQLite WebAssembly)</h3>
+        <p class="chart-subtitle" style="margin-bottom: 1.2rem;">Ejecuta consultas SQL reales directamente contra la base de datos relacional del navegador</p>
+
+        <div class="sql-presets">
+          <button class="btn-preset" id="btnSqlPreset1">📌 Top 10 Promedios Generales</button>
+          <button class="btn-preset" id="btnSqlPreset2">📌 Desglose 360° por Relación</button>
+          <button class="btn-preset" id="btnSqlPreset3">📌 Ranking por Departamento</button>
+        </div>
+
+        <div class="sql-editor-wrapper">
+          <textarea id="sqlTextarea" class="sql-textarea" spellcheck="false">SELECT u.nombre, u.rol, u.departamento, ROUND(AVG(e.calificacion), 2) AS promedio_general
+FROM usuarios u
+JOIN evaluaciones_360 e ON u.id = e.evaluado_id
+GROUP BY u.id
+ORDER BY promedio_general DESC
+LIMIT 10;</textarea>
+        </div>
+
+        <button class="btn-action" id="btnRunSql">▶ EJECUTAR SQL</button>
+      </div>
+
+      <div class="cyber-card">
+        <h3 class="chart-title" style="margin-bottom: 1rem;">📊 Resultados de la Consulta SQL</h3>
+        <div id="sqlResultContainer">
+          <div style="color: var(--text-muted);">Haz clic en "EJECUTAR SQL" para ver los resultados.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PESTAÑA 4: CARGA DE DATOS PERSONALIZADOS -->
+    <section class="tab-content" id="tabUpload">
+      <div class="cyber-card">
+        <h3 class="chart-title" style="margin-bottom: 0.4rem;">📁 Cargar Base de Datos o CSV Personalizado</h3>
+        <p class="chart-subtitle" style="margin-bottom: 1.5rem;">Arrastra y suelta un archivo <code>.csv</code> o <code>.db</code> (SQLite) para reiniciar y analizar nuevos datos al instante</p>
+
+        <div class="dropzone" id="dropzone">
+          <div class="dropzone-icon">📥</div>
+          <h4 style="color: var(--cyan-neon); font-family: var(--font-heading); margin-bottom: 0.4rem;">Arrastra tu archivo CSV o SQLite aquí</h4>
+          <p style="color: var(--text-muted); font-size: 0.85rem;">O haz clic para explorar en tu equipo</p>
+          <input type="file" id="fileInput" accept=".csv,.db,.sqlite" style="display: none;">
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Scripts del Sistema -->
+  <script src="js/auth.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

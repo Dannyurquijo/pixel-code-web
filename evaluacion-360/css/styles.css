@@ -1,0 +1,633 @@
+/* ============================================================
+   DU PIXEL CODE - DESIGN SYSTEM & VISUAL IDENTITY
+   Dark-Mode Luxury | Luminous Geometry | Cybernetic Elegance
+   ============================================================ */
+
+:root {
+  --bg-primary: #0A0A0A;
+  --bg-secondary: #0F172A;
+  --bg-card: rgba(15, 23, 42, 0.75);
+  --bg-card-hover: rgba(30, 41, 59, 0.85);
+  
+  --text-main: #FFFFFF;
+  --text-muted: #94A3B8;
+  --text-dim: #64748B;
+  
+  --cyan-neon: #00D2FF;
+  --cyan-glow: rgba(0, 210, 255, 0.35);
+  --gold-neon: #FFD700;
+  --gold-glow: rgba(255, 215, 0, 0.35);
+  --green-accent: #10B981;
+  --red-accent: #EF4444;
+  --purple-neon: #A855F7;
+  
+  --border-glow: 1px solid rgba(0, 210, 255, 0.25);
+  --border-card: 1px solid rgba(255, 255, 255, 0.08);
+  --glass-blur: blur(16px);
+  
+  --font-brand: 'Montserrat', sans-serif;
+  --font-heading: 'Poppins', sans-serif;
+  --font-body: 'Lato', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-image: 
+    radial-gradient(circle at 15% 15%, rgba(0, 210, 255, 0.07) 0%, transparent 40%),
+    radial-gradient(circle at 85% 85%, rgba(255, 215, 0, 0.05) 0%, transparent 40%),
+    linear-gradient(to bottom, #0A0A0A, #050505);
+}
+
+/* ============================================================
+   1. LOGIN GATE SCREEN
+   ============================================================ */
+.login-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(5, 5, 5, 0.92);
+  backdrop-filter: var(--glass-blur);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.login-card {
+  background: var(--bg-card);
+  border: var(--border-glow);
+  box-shadow: 0 0 40px var(--cyan-glow), inset 0 0 15px rgba(0, 210, 255, 0.1);
+  border-radius: 20px;
+  padding: 3rem 2.5rem;
+  width: 100%;
+  max-width: 440px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, var(--cyan-neon), var(--gold-neon), var(--cyan-neon));
+}
+
+.brand-badge {
+  font-family: var(--font-brand);
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 3px;
+  color: var(--gold-neon);
+  text-transform: uppercase;
+  margin-bottom: 0.8rem;
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border: 1px solid var(--gold-glow);
+  border-radius: 20px;
+  background: rgba(255, 215, 0, 0.05);
+}
+
+.login-title {
+  font-family: var(--font-heading);
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, #FFFFFF, var(--cyan-neon));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.login-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+}
+
+.input-group {
+  position: relative;
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.input-label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0.5rem;
+}
+
+.password-wrapper {
+  position: relative;
+}
+
+.input-field {
+  width: 100%;
+  padding: 0.9rem 2.8rem 0.9rem 1.2rem;
+  background: rgba(10, 10, 10, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  color: var(--text-main);
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: var(--cyan-neon);
+  box-shadow: 0 0 15px var(--cyan-glow);
+}
+
+.toggle-pwd {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  user-select: none;
+}
+
+.toggle-pwd:hover {
+  color: var(--cyan-neon);
+}
+
+.btn-cyber {
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(135deg, #00B4DB, #00D2FF);
+  border: none;
+  border-radius: 12px;
+  color: #000;
+  font-family: var(--font-brand);
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 0 20px var(--cyan-glow);
+  transition: all 0.3s ease;
+}
+
+.btn-cyber:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px var(--cyan-neon);
+}
+
+.error-msg {
+  color: var(--red-accent);
+  font-size: 0.85rem;
+  margin-top: 1rem;
+  display: none;
+  font-weight: 700;
+  animation: shake 0.4s ease;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-8px); }
+  40%, 80% { transform: translateX(8px); }
+}
+
+/* ============================================================
+   2. NAVBAR & HEADER
+   ============================================================ */
+.header-nav {
+  background: rgba(10, 10, 10, 0.85);
+  backdrop-filter: var(--glass-blur);
+  border-bottom: var(--border-card);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  padding: 0.8rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.nav-brand-logo {
+  font-family: var(--font-brand);
+  font-weight: 900;
+  font-size: 1.3rem;
+  letter-spacing: 1px;
+  color: var(--text-main);
+}
+
+.nav-brand-logo span {
+  color: var(--cyan-neon);
+}
+
+.nav-user-area {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.session-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--green-accent);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--green-accent);
+}
+
+.btn-logout {
+  background: transparent;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: var(--red-accent);
+  padding: 0.4rem 0.9rem;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-logout:hover {
+  background: rgba(239, 68, 68, 0.15);
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
+}
+
+/* ============================================================
+   3. TAB NAVIGATION BAR
+   ============================================================ */
+.tabs-container {
+  display: flex;
+  gap: 0.5rem;
+  padding: 1rem 2rem 0 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(15, 23, 42, 0.3);
+  overflow-x: auto;
+}
+
+.tab-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.8rem 1.4rem;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.tab-btn:hover {
+  color: var(--text-main);
+}
+
+.tab-btn.active {
+  color: var(--cyan-neon);
+  border-bottom-color: var(--cyan-neon);
+  background: rgba(0, 210, 255, 0.05);
+  border-radius: 8px 8px 0 0;
+}
+
+/* ============================================================
+   4. LAYOUT & CONTAINERS
+   ============================================================ */
+.main-wrapper {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.tab-content {
+  display: none;
+  animation: fadeIn 0.4s ease;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   5. CARDS & GRID LAYOUT
+   ============================================================ */
+.grid-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.cyber-card {
+  background: var(--bg-card);
+  border: var(--border-card);
+  border-radius: 14px;
+  padding: 1.5rem;
+  backdrop-filter: var(--glass-blur);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.cyber-card:hover {
+  border-color: rgba(0, 210, 255, 0.4);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.metric-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0.5rem;
+}
+
+.metric-value {
+  font-family: var(--font-heading);
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.metric-value.cyan { color: var(--cyan-neon); }
+.metric-value.gold { color: var(--gold-neon); }
+.metric-value.green { color: var(--green-accent); }
+
+/* ============================================================
+   6. FILTERS & CONTROL PANEL
+   ============================================================ */
+.control-panel {
+  background: var(--bg-card);
+  border: var(--border-card);
+  border-radius: 14px;
+  padding: 1.2rem 1.8rem;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.filter-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  flex: 1;
+  min-width: 200px;
+}
+
+.select-cyber {
+  background: rgba(10, 10, 10, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  color: var(--text-main);
+  padding: 0.7rem 1rem;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.select-cyber:focus {
+  border-color: var(--cyan-neon);
+  box-shadow: 0 0 10px var(--cyan-glow);
+}
+
+/* ============================================================
+   7. CHARTS CONTAINER
+   ============================================================ */
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+  .charts-grid { grid-template-columns: 1fr; }
+}
+
+.chart-card {
+  background: var(--bg-card);
+  border: var(--border-card);
+  border-radius: 16px;
+  padding: 1.5rem;
+  height: 420px;
+  position: relative;
+}
+
+.chart-header {
+  margin-bottom: 1rem;
+}
+
+.chart-title {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.chart-subtitle {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.chart-canvas-wrapper {
+  position: relative;
+  height: 330px;
+  width: 100%;
+}
+
+/* ============================================================
+   8. TABLES (CYBERNETIC STYLE)
+   ============================================================ */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  margin-bottom: 2rem;
+  border-radius: 12px;
+  border: var(--border-card);
+}
+
+.cyber-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+.cyber-table th {
+  background: rgba(15, 23, 42, 0.95);
+  color: var(--cyan-neon);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 1rem;
+  border-bottom: 2px solid rgba(0, 210, 255, 0.2);
+}
+
+.cyber-table td {
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: var(--text-main);
+}
+
+.cyber-table tbody tr:hover {
+  background: rgba(0, 210, 255, 0.04);
+}
+
+/* ============================================================
+   9. SQL CONSOLE & DATA IMPORT ZONES
+   ============================================================ */
+.sql-editor-wrapper {
+  background: rgba(5, 5, 5, 0.95);
+  border: 1px solid rgba(0, 210, 255, 0.3);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.sql-textarea {
+  width: 100%;
+  height: 140px;
+  background: transparent;
+  border: none;
+  color: #00FFCC;
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 0.95rem;
+  outline: none;
+  resize: vertical;
+}
+
+.sql-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 1.2rem;
+}
+
+.btn-preset {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--text-muted);
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-preset:hover {
+  border-color: var(--cyan-neon);
+  color: var(--cyan-neon);
+}
+
+.btn-action {
+  background: linear-gradient(135deg, var(--cyan-neon), #00A3FF);
+  color: #000;
+  border: none;
+  padding: 0.6rem 1.4rem;
+  border-radius: 8px;
+  font-family: var(--font-brand);
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  box-shadow: 0 0 15px var(--cyan-glow);
+  transition: all 0.3s ease;
+}
+
+.btn-action:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px var(--cyan-neon);
+}
+
+.dropzone {
+  border: 2px dashed rgba(0, 210, 255, 0.4);
+  border-radius: 16px;
+  padding: 3rem 2rem;
+  text-align: center;
+  background: rgba(0, 210, 255, 0.02);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 2rem;
+}
+
+.dropzone:hover {
+  border-color: var(--cyan-neon);
+  background: rgba(0, 210, 255, 0.06);
+}
+
+.dropzone-icon {
+  font-size: 2.5rem;
+  color: var(--cyan-neon);
+  margin-bottom: 1rem;
+}
+
+/* ============================================================
+   10. FEEDBACK COMMENTS & ACCORDIONS
+   ============================================================ */
+.comments-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.2rem;
+  margin-top: 1.5rem;
+}
+
+.comment-card {
+  background: var(--bg-card);
+  border-left: 4px solid var(--cyan-neon);
+  border-radius: 10px;
+  padding: 1rem 1.2rem;
+  font-size: 0.9rem;
+}
+
+.comment-card.jefe { border-left-color: var(--cyan-neon); }
+.comment-card.par { border-left-color: var(--purple-neon); }
+.comment-card.sub { border-left-color: var(--gold-neon); }
+.comment-card.auto { border-left-color: var(--green-accent); }
+
+.comment-meta {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-bottom: 0.4rem;
+  text-transform: uppercase;
+}
