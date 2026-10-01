@@ -102,25 +102,38 @@ const getQueretaroContext = (date = new Date()) => {
   return { time, afterHours: hour >= 20 || hour < 8 };
 };
 
-const requestLlm = async ({ apiKey, systemPrompt, contents, fetchImpl = global.fetch }) => {
+const requestLlm = async ({ apiKey, systemPrompt, contents, fetchImpl = global.fetch, sleepImpl = (ms) => new Promise(resolve => setTimeout(resolve, ms)) }) => {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), LLM_TIMEOUT_MS);
   try {
-    const response = await fetchImpl(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        systemInstruction: { parts: [{ text: systemPrompt }] },
-        contents,
-        generationConfig: { temperature: 0.4, maxOutputTokens: 700 }
-      }),
-      signal: controller.signal
-    });
-    const data = await response.json();
-    if (!response.ok || data.error) throw new Error('LLM request failed');
-    const reply = redactSensitive(cleanText(data.candidates?.[0]?.content?.parts?.[0]?.text, 4000) || '');
-    if (!reply) throw new Error('LLM returned an empty reply');
-    return reply;
+    for (let attempt = 0; attempt < 2; attempt += 1) {
+      const response = await fetchImpl('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
+        body: JSON.stringify({
+          systemInstruction: { parts: [{ text: systemPrompt }] },
+          contents,
+          generationConfig: { temperature: 0.4, maxOutputTokens: 700 }
+        }),
+        signal: controller.signal
+      });
+      if (!response.ok) {
+        if ([500, 502, 503, 504].includes(response.status) && attempt === 0) {
+          await response.body?.cancel();
+          await sleepImpl(600);
+          if (controller.signal.aborted) throw new Error('LLM timeout');
+          continue;
+        }
+        const error = new Error('LLM request failed');
+        error.providerStatus = response.status;
+        throw error;
+      }
+      const data = await response.json();
+      if (data.error) throw new Error('LLM request failed');
+      const reply = redactSensitive(cleanText(data.candidates?.[0]?.content?.parts?.[0]?.text, 4000) || '');
+      if (!reply) throw new Error('LLM returned an empty reply');
+      return reply;
+    }
   } finally {
     clearTimeout(timer);
   }
@@ -145,7 +158,8 @@ exports.handler = async (event) => {
       return jsonResponse(400, { reply: 'La solicitud no tiene una estructura válida.' });
     }
 
-    const userMessage = cleanText(body.message, 600);
+    const rawUserMessage = cleanText(body.message, 600);
+    const userMessage = rawUserMessage ? redactSensitive(rawUserMessage) : null;
     if (!userMessage) return jsonResponse(400, { reply: 'Escribe un mensaje para continuar.' });
 
     sessionId = validSessionId(body.session_id) ? body.session_id : fallbackSessionId();
@@ -177,12 +191,20 @@ exports.handler = async (event) => {
     );
     const previousNotification = stateIsTrusted ? receivedNotification : normalizeNotification(null);
     const { time, afterHours } = getQueretaroContext(now);
-    const reply = await requestLlm({
-      apiKey,
-      systemPrompt: buildSystemPrompt({ queretaroTime: time, afterHours }),
-      contents: toLlmContents(canonicalConversation, 20)
-    });
-    const completeConversation = [...canonicalConversation, { role: 'assistant', content: reply, timestamp: new Date().toISOString() }];
+    let modelAvailable = true;
+    let reply;
+    try {
+      reply = await requestLlm({
+        apiKey,
+        systemPrompt: buildSystemPrompt({ queretaroTime: time, afterHours }),
+        contents: toLlmContents(canonicalConversation, 40)
+      });
+    } catch (error) {
+      modelAvailable = false;
+      console.warn('[PIXIE] Model unavailable', { provider: 'gemini', status: error.providerStatus || null, reason: error.name === 'AbortError' ? 'timeout' : 'request_failed' });
+      reply = 'El servicio de IA no está disponible en este momento. Puedes dejar tu nombre, empresa, correo y lo que necesitas, o usar el formulario de contacto o WhatsApp. No compartas contraseñas ni datos financieros.';
+    }
+    const completeConversation = [...canonicalConversation, { role: 'assistant', content: reply, timestamp: new Date().toISOString() }].slice(-40);
 
     const lead = analyzeLead(completeConversation, { threshold: Number(process.env.PIXIE_LEAD_THRESHOLD || 30) });
     const commercialEvent = selectEvent(lead);
@@ -237,6 +259,8 @@ exports.handler = async (event) => {
       session_id: sessionId,
       lead_detected: lead.lead_detected,
       notification,
+      conversation: completeConversation,
+      model_available: modelAvailable,
       state_token: stateSecret ? signState({
         secret: stateSecret,
         sessionId,

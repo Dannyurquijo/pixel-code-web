@@ -192,7 +192,8 @@
       if (!text || waiting) return;
 
       const userTimestamp = new Date().toISOString();
-      const conversation = conversationStore?.append({ role: 'user', content: text, timestamp: userTimestamp });
+      const previousState = conversationStore?.get();
+      const conversation = conversationStore?.append({ role: 'user', content: text, timestamp: userTimestamp }, { pending: true });
       pixieSession = window.PixieSession?.touch(storage, pixieSession) || pixieSession;
       addMessage(text, 'user');
       input.value = '';
@@ -214,7 +215,6 @@
             session_id: pixieSession?.session_id,
             created_at: conversation?.created_at,
             conversation: conversation?.messages || [{ role: 'user', content: text, timestamp: userTimestamp }],
-            history: (conversation?.messages || []).slice(0, -1).slice(-20).map((message) => ({ role: message.role, text: message.content })),
             notification_state: conversation?.notification,
             state_token: conversation?.state_token,
             page_url: `${location.origin}${location.pathname}`,
@@ -227,13 +227,17 @@
         const reply = typeof data.reply === 'string' && data.reply.trim()
           ? data.reply.trim()
           : 'No pude generar una respuesta en este momento. Intenta nuevamente.';
-        conversationStore?.append({ role: 'assistant', content: reply, timestamp: new Date().toISOString() });
-        if (data.notification?.sent) conversationStore?.updateNotification(data.notification);
-        if (data.state_token) conversationStore?.updateStateToken(data.state_token);
+        if (Array.isArray(data.conversation)) conversationStore?.applyServerState(data);
+        else {
+          conversationStore?.append({ role: 'assistant', content: reply, timestamp: new Date().toISOString() });
+          if (data.notification) conversationStore?.updateNotification(data.notification);
+          if (data.state_token) conversationStore?.updateStateToken(data.state_token);
+        }
         addMessage(reply, 'bot');
         answered = true;
         if (data.debug_payload) console.info('[PIXIE] Debug payload', data.debug_payload);
       } catch (_) {
+        if (previousState) conversationStore?.applyServerState(previousState);
         addMessage('Mis circuitos están tardando más de lo normal. Intenta otra vez en un momento o solicita tu diagnóstico por WhatsApp.', 'bot');
         react('is-concerned', 1400);
       } finally {

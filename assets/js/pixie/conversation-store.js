@@ -68,11 +68,14 @@
 
     return {
       get: load,
-      append(message) {
+      append(message, { pending = false } = {}) {
         const clean = sanitizeMessage(message);
         if (!clean) return load();
         const conversation = load();
-        conversation.messages = [...conversation.messages, clean].slice(-MAX_STORED_MESSAGES);
+        // Pending input travels with the request; only a server response commits it.
+        conversation.messages = [...conversation.messages, clean];
+        if (pending) return conversation;
+        conversation.messages = conversation.messages.slice(-MAX_STORED_MESSAGES);
         conversation.updated_at = clean.timestamp;
         save(conversation);
         return conversation;
@@ -85,6 +88,14 @@
       updateStateToken(stateToken) {
         const conversation = load();
         conversation.state_token = typeof stateToken === 'string' ? stateToken : null;
+        return save(conversation);
+      },
+      applyServerState(value) {
+        const conversation = load();
+        conversation.messages = (value.conversation || value.messages || []).map(sanitizeMessage).filter(Boolean).slice(-MAX_STORED_MESSAGES);
+        conversation.notification = value.notification || conversation.notification;
+        conversation.state_token = typeof value.state_token === 'string' ? value.state_token : null;
+        conversation.updated_at = conversation.messages.at(-1)?.timestamp || conversation.updated_at;
         return save(conversation);
       },
       clear() {
