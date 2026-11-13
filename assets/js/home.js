@@ -238,7 +238,7 @@
         if (data.debug_payload) console.info('[PIXIE] Debug payload', data.debug_payload);
       } catch (_) {
         if (previousState) conversationStore?.applyServerState(previousState);
-        addMessage('Mis circuitos están tardando más de lo normal. Intenta otra vez en un momento o solicita tu diagnóstico por WhatsApp.', 'bot');
+        addMessage('Mis circuitos están tardando más de lo normal. Intenta otra vez en un momento o déjanos tu mensaje en la página de contacto (dupixelcode.com/landing.html).', 'bot');
         react('is-concerned', 1400);
       } finally {
         waiting = false;
