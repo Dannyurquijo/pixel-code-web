@@ -1,0 +1,2305 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dossier Técnico Ejecutivo | Ing. José Daniel Urquijo Beltrán</title>
+  
+  <!-- Directivas estrictas de Ciberseguridad & Anti-Scraping -->
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet">
+  <meta name="referrer" content="no-referrer">
+  <meta name="author" content="DU Pixel Code">
+  
+  <!-- Tipografías Oficiales DU Pixel Code -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Poppins:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #050505;
+      --bg-surface: #0a0a0f;
+      --bg-card: #0d121f;
+      --bg-card-hover: #12192c;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-cyan: rgba(0, 210, 255, 0.3);
+      --border-gold: rgba(197, 160, 89, 0.35);
+      
+      --cyan: #00d2ff;
+      --cyan-glow: rgba(0, 210, 255, 0.35);
+      --gold: #c5a059;
+      --gold-light: #ffd700;
+      --emerald: #10b981;
+      --rose: #f43f5e;
+      
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      
+      --font-display: 'Montserrat', sans-serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+      --font-mono: 'Courier New', Courier, monospace;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg-dark);
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Fondo reticular cibernético sutil */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: 
+        radial-gradient(circle at 85% 15%, rgba(0, 210, 255, 0.05) 0%, transparent 45%),
+        radial-gradient(circle at 15% 85%, rgba(197, 160, 89, 0.04) 0%, transparent 45%),
+        linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ===================================================
+       SECURITY PASSKEY GATE MODAL (Confidencialidad)
+       =================================================== */
+    #securityGate {
+      position: fixed;
+      inset: 0;
+      background: rgba(5, 5, 8, 0.96);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      z-index: 999999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      transition: opacity 0.4s ease, visibility 0.4s ease;
+    }
+
+    #securityGate.unlocked {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .gate-card {
+      width: 100%;
+      max-width: 520px;
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.95), rgba(10, 10, 15, 0.98));
+      border: 1px solid var(--border-cyan);
+      box-shadow: 0 0 50px rgba(0, 210, 255, 0.15), 0 25px 50px -12px rgba(0, 0, 0, 0.9);
+      border-radius: 16px;
+      padding: 40px 36px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .gate-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--cyan), var(--emerald));
+    }
+
+    .gate-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      background: rgba(0, 210, 255, 0.08);
+      border: 1px solid var(--border-cyan);
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: var(--cyan);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .gate-badge span.pulse-dot {
+      width: 8px;
+      height: 8px;
+      background-color: var(--cyan);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--cyan);
+      animation: pulseDot 2s infinite;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    .gate-title {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: var(--text-main);
+      margin-bottom: 10px;
+    }
+
+    .gate-desc {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      margin-bottom: 26px;
+      line-height: 1.55;
+    }
+
+    .gate-input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .gate-input-group label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+
+    .gate-input-wrap {
+      position: relative;
+    }
+
+    .gate-input {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 14px 16px;
+      color: #fff;
+      font-size: 15px;
+      font-family: var(--font-mono);
+      letter-spacing: 1.5px;
+      outline: none;
+      transition: all 0.25s ease;
+    }
+
+    .gate-input:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 15px rgba(0, 210, 255, 0.25);
+    }
+
+    .gate-input.error {
+      border-color: var(--rose);
+      box-shadow: 0 0 15px rgba(244, 63, 94, 0.3);
+      animation: shake 0.4s ease;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-8px); }
+      40%, 80% { transform: translateX(8px); }
+    }
+
+    .gate-btn-unlock {
+      width: 100%;
+      background: linear-gradient(135deg, var(--gold) 0%, #e2be75 100%);
+      color: #050505;
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 14px 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 25px -5px rgba(197, 160, 89, 0.4);
+    }
+
+    .gate-btn-unlock:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px -4px rgba(197, 160, 89, 0.6);
+      filter: brightness(1.08);
+    }
+
+    .gate-footer-hint {
+      font-size: 11.5px;
+      color: var(--text-dim);
+      margin-top: 18px;
+    }
+
+    .gate-footer-hint a {
+      color: var(--cyan);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .gate-footer-hint a:hover {
+      text-decoration: underline;
+    }
+
+    /* ===================================================
+       TOP EXECUTIVE CONTROL BAR
+       =================================================== */
+    .executive-topbar {
+      border-bottom: 1px solid var(--border-subtle);
+      background: rgba(10, 10, 15, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 14px 0;
+    }
+
+    .topbar-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand-id {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brand-logo-gem {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, rgba(0, 210, 255, 0.15), rgba(197, 160, 89, 0.2));
+      border: 1px solid var(--border-cyan);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--cyan);
+      font-weight: 900;
+      font-size: 14px;
+      font-family: var(--font-display);
+    }
+
+    .brand-text-col {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-text-main {
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      color: var(--text-main);
+    }
+
+    .brand-text-sub {
+      font-size: 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-action-pill {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+
+    .btn-action-pill:hover {
+      background: rgba(0, 210, 255, 0.08);
+      border-color: var(--cyan);
+      color: var(--cyan);
+    }
+
+    .btn-action-pill.gold {
+      background: rgba(197, 160, 89, 0.1);
+      border-color: var(--border-gold);
+      color: var(--gold-light);
+    }
+
+    .btn-action-pill.gold:hover {
+      background: rgba(197, 160, 89, 0.2);
+      border-color: var(--gold-light);
+    }
+
+    /* Toast Notification */
+    #toastNotification {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #0f172a;
+      border: 1px solid var(--cyan);
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 210, 255, 0.25);
+      z-index: 9999;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+    }
+
+    #toastNotification.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* ===================================================
+       HERO PROFILE SECTION (Autoridad & Fotografía)
+       =================================================== */
+    .profile-hero {
+      padding: 60px 0 40px;
+    }
+
+    .profile-hero-card {
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.6) 0%, rgba(10, 10, 15, 0.85) 100%);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 48px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    }
+
+    .profile-hero-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--cyan), var(--gold), transparent 80%);
+    }
+
+    .profile-grid {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+
+    /* Contenedor Fotografía */
+    .photo-wrapper {
+      position: relative;
+      width: 250px;
+      height: 250px;
+      margin: 0 auto;
+    }
+
+    .photo-glow-ring {
+      position: absolute;
+      inset: -8px;
+      border-radius: 50%;
+      background: conic-gradient(from 180deg at 50% 50%, var(--cyan), var(--gold), var(--emerald), var(--cyan));
+      filter: blur(8px);
+      opacity: 0.6;
+      animation: rotateGlow 12s linear infinite;
+    }
+
+    @keyframes rotateGlow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .photo-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid rgba(255, 255, 255, 0.15);
+      background: #0d121f;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8);
+    }
+
+    .photo-inner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+
+    .photo-inner:hover img {
+      transform: scale(1.05);
+    }
+
+    .status-pill {
+      position: absolute;
+      bottom: -6px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #0a0f1d;
+      border: 1px solid var(--emerald);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      padding: 4px 14px;
+      border-radius: 999px;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+      z-index: 2;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background-color: var(--emerald);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--emerald);
+      animation: pulseDot 2s infinite;
+    }
+
+    /* Datos del Perfil */
+    .profile-info {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .profile-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--cyan);
+    }
+
+    .profile-eyebrow .badge-tier {
+      background: rgba(197, 160, 89, 0.12);
+      border: 1px solid var(--border-gold);
+      color: var(--gold-light);
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+    }
+
+    .profile-name {
+      font-family: var(--font-display);
+      font-size: 34px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      line-height: 1.15;
+      color: #fff;
+    }
+
+    .profile-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--cyan);
+      letter-spacing: 0.2px;
+    }
+
+    .profile-lead {
+      font-size: 14.5px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-top: 6px;
+    }
+
+    .profile-lead strong {
+      color: #fff;
+    }
+
+    /* Mini tags rápidos de contacto / ubicación */
+    .profile-meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 14px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .meta-tag {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12.5px;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-subtle);
+      padding: 6px 12px;
+      border-radius: 6px;
+    }
+
+    .meta-tag svg {
+      width: 14px;
+      height: 14px;
+      color: var(--gold);
+    }
+
+    .meta-tag a {
+      color: var(--cyan);
+      text-decoration: none;
+    }
+
+    .meta-tag a:hover {
+      text-decoration: underline;
+    }
+
+    /* ===================================================
+       METRICS KPI STRIP (Impacto Cuantificable)
+       =================================================== */
+    .kpi-strip {
+      padding: 0 0 50px;
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    .kpi-card {
+      background: rgba(13, 18, 31, 0.7);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 24px 20px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .kpi-card:hover {
+      border-color: var(--border-cyan);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px -5px rgba(0, 210, 255, 0.15);
+    }
+
+    .kpi-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 20%;
+      right: 20%;
+      height: 2px;
+      background: var(--cyan);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .kpi-card:hover::after {
+      opacity: 1;
+    }
+
+    .kpi-value {
+      font-family: var(--font-display);
+      font-size: 32px;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: -1px;
+      margin-bottom: 4px;
+    }
+
+    .kpi-value span.accent {
+      color: var(--cyan);
+    }
+
+    .kpi-value span.gold {
+      color: var(--gold);
+    }
+
+    .kpi-label {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.3px;
+    }
+
+    .kpi-sub {
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-top: 4px;
+    }
+
+    /* ===================================================
+       SECTIONS & FILTER INTERACTIVITY
+       =================================================== */
+    .section-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 28px;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 16px;
+    }
+
+    .section-title-wrap h2 {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-title-wrap h2::before {
+      content: '';
+      width: 10px;
+      height: 10px;
+      background: var(--cyan);
+      border-radius: 2px;
+      box-shadow: 0 0 10px var(--cyan);
+    }
+
+    .section-title-wrap p {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Filtros Interactivos */
+    .filter-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .filter-pill {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .filter-pill:hover {
+      background: rgba(0, 210, 255, 0.08);
+      color: #fff;
+      border-color: rgba(0, 210, 255, 0.3);
+    }
+
+    .filter-pill.active {
+      background: rgba(0, 210, 255, 0.15);
+      border-color: var(--cyan);
+      color: var(--cyan);
+      box-shadow: 0 0 12px rgba(0, 210, 255, 0.2);
+    }
+
+    /* ===================================================
+       TIMELINE & EXPERIENCIA PROFESIONAL
+       =================================================== */
+    .timeline-stream {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      padding-bottom: 60px;
+    }
+
+    .timeline-card {
+      background: linear-gradient(180deg, rgba(13, 18, 31, 0.9) 0%, rgba(10, 10, 15, 0.95) 100%);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 32px 36px;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .timeline-card:hover {
+      border-color: var(--border-cyan);
+      box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 210, 255, 0.08);
+    }
+
+    .timeline-card.featured {
+      border-color: var(--border-gold);
+      background: linear-gradient(180deg, rgba(20, 24, 38, 0.95) 0%, rgba(12, 14, 22, 0.98) 100%);
+    }
+
+    .timeline-card.featured::before {
+      content: 'PROYECTO INDUSTRIAL DE ALTO IMPACTO';
+      position: absolute;
+      top: -10px;
+      right: 28px;
+      background: linear-gradient(90deg, var(--gold), #e0be73);
+      color: #050505;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      padding: 3px 12px;
+      border-radius: 999px;
+    }
+
+    .timeline-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .timeline-role-col {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .timeline-role {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.3px;
+    }
+
+    .timeline-company {
+      font-size: 14.5px;
+      font-weight: 600;
+      color: var(--cyan);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .timeline-company span.entity-shield {
+      background: rgba(0, 210, 255, 0.1);
+      border: 1px solid var(--border-cyan);
+      font-size: 10.5px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      color: #fff;
+    }
+
+    .timeline-date-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+    }
+
+    .timeline-date-badge.current {
+      background: rgba(16, 185, 129, 0.1);
+      border-color: rgba(16, 185, 129, 0.3);
+      color: var(--emerald);
+    }
+
+    .timeline-body {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    .project-highlights-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 16px;
+      margin: 20px 0 16px;
+    }
+
+    .highlight-subbox {
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid var(--border-subtle);
+      border-left: 3px solid var(--cyan);
+      border-radius: 8px;
+      padding: 14px 18px;
+    }
+
+    .highlight-subbox.gold-accent {
+      border-left-color: var(--gold);
+    }
+
+    .highlight-subbox.emerald-accent {
+      border-left-color: var(--emerald);
+    }
+
+    .highlight-subbox h4 {
+      font-family: var(--font-display);
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .highlight-subbox h4 span.tag-mini {
+      font-size: 10px;
+      color: var(--cyan);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      font-weight: 600;
+    }
+
+    .highlight-subbox p {
+      font-size: 12.8px;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    .highlight-metrics {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+      padding-top: 6px;
+      border-top: 1px dashed rgba(255, 255, 255, 0.08);
+      font-size: 11.5px;
+      color: var(--text-dim);
+    }
+
+    .highlight-metrics strong {
+      color: var(--gold-light);
+    }
+
+    .tags-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .tech-tag {
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text-muted);
+      font-size: 11.5px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .tech-tag:hover {
+      border-color: var(--cyan);
+      color: #fff;
+    }
+
+    .tech-tag.highlight {
+      background: rgba(0, 210, 255, 0.08);
+      border-color: rgba(0, 210, 255, 0.25);
+      color: var(--cyan);
+    }
+
+    /* ===================================================
+       DUAL SKILLS MATRIX (OT + IT)
+       =================================================== */
+    .skills-section {
+      padding-bottom: 60px;
+    }
+
+    .skills-matrix-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+    }
+
+    .skill-category-card {
+      background: rgba(13, 18, 31, 0.7);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 32px;
+      position: relative;
+    }
+
+    .skill-category-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--cyan);
+      border-radius: 16px 16px 0 0;
+    }
+
+    .skill-category-card.it-card::before {
+      background: var(--gold);
+    }
+
+    .skill-cat-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .skill-cat-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: rgba(0, 210, 255, 0.1);
+      border: 1px solid var(--border-cyan);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--cyan);
+    }
+
+    .it-card .skill-cat-icon {
+      background: rgba(197, 160, 89, 0.1);
+      border-color: var(--border-gold);
+      color: var(--gold);
+    }
+
+    .skill-cat-title {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .skill-cat-sub {
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+
+    .skill-list-items {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .skill-item-bar {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .skill-label-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .skill-label-row span.score {
+      font-size: 12px;
+      color: var(--cyan);
+      font-family: var(--font-mono);
+    }
+
+    .it-card .skill-label-row span.score {
+      color: var(--gold-light);
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--cyan), #38bdf8);
+      border-radius: 999px;
+      transition: width 1s ease-in-out;
+    }
+
+    .it-card .progress-fill {
+      background: linear-gradient(90deg, var(--gold), #fde047);
+    }
+
+    /* ===================================================
+       EDUCATION & CERTIFICATIONS
+       =================================================== */
+    .edu-cert-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      padding-bottom: 60px;
+    }
+
+    .panel-card {
+      background: rgba(13, 18, 31, 0.7);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 32px;
+    }
+
+    .panel-header-title {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .panel-header-title svg {
+      width: 20px;
+      height: 20px;
+      color: var(--gold);
+    }
+
+    .cert-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .cert-item:last-child {
+      border-bottom: none;
+    }
+
+    .cert-bullet {
+      width: 8px;
+      height: 8px;
+      border-radius: 2px;
+      background: var(--cyan);
+      box-shadow: 0 0 6px var(--cyan);
+      margin-top: 6px;
+      flex-shrink: 0;
+    }
+
+    .cert-title {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .cert-sub {
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+
+    /* ===================================================
+       SECURE CONTACT & ENGAGEMENT GATEWAY
+       =================================================== */
+    .contact-gateway {
+      padding-bottom: 80px;
+    }
+
+    .contact-card {
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(10, 10, 15, 0.98) 100%);
+      border: 1px solid var(--border-cyan);
+      box-shadow: 0 0 40px rgba(0, 210, 255, 0.1);
+      border-radius: 20px;
+      padding: 44px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--cyan), var(--emerald));
+    }
+
+    .contact-title {
+      font-family: var(--font-display);
+      font-size: 26px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+
+    .contact-desc {
+      font-size: 14.5px;
+      color: var(--text-muted);
+      max-width: 650px;
+      margin: 0 auto 32px;
+      line-height: 1.6;
+    }
+
+    .contact-channels-grid {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+
+    .channel-box {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #fff;
+      transition: all 0.25s ease;
+    }
+
+    .channel-box:hover {
+      background: rgba(0, 210, 255, 0.08);
+      border-color: var(--cyan);
+      transform: translateY(-2px);
+    }
+
+    .channel-box svg {
+      width: 22px;
+      height: 22px;
+      color: var(--cyan);
+    }
+
+    .channel-box.gold svg {
+      color: var(--gold-light);
+    }
+
+    .channel-text-col {
+      text-align: left;
+    }
+
+    .channel-label {
+      font-size: 10.5px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+
+    .channel-val {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .legal-privacy-notice {
+      font-size: 11.5px;
+      color: var(--text-dim);
+      max-width: 700px;
+      margin: 0 auto;
+      line-height: 1.5;
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 20px;
+    }
+
+    /* ===================================================
+       PRINT STYLES (@media print)
+       =================================================== */
+    @media print {
+      body {
+        background: #fff !important;
+        color: #111 !important;
+        font-size: 11pt;
+      }
+
+      body::before,
+      .executive-topbar,
+      #securityGate,
+      .filter-pills,
+      .topbar-actions,
+      #toastNotification,
+      .contact-card::before,
+      .photo-glow-ring,
+      .status-pill {
+        display: none !important;
+      }
+
+      .container {
+        max-width: 100% !important;
+        padding: 0 !important;
+      }
+
+      .profile-hero {
+        padding: 0 0 20pt 0 !important;
+      }
+
+      .profile-hero-card {
+        background: #fff !important;
+        border: 1pt solid #ccc !important;
+        color: #111 !important;
+        padding: 15pt !important;
+        box-shadow: none !important;
+      }
+
+      .profile-grid {
+        grid-template-columns: 140pt 1fr !important;
+        gap: 15pt !important;
+      }
+
+      .photo-wrapper {
+        width: 130pt !important;
+        height: 130pt !important;
+      }
+
+      .profile-name {
+        color: #111 !important;
+        font-size: 20pt !important;
+      }
+
+      .profile-title {
+        color: #0369a1 !important;
+        font-size: 13pt !important;
+      }
+
+      .profile-lead,
+      .timeline-body,
+      .kpi-label {
+        color: #333 !important;
+      }
+
+      .kpi-card,
+      .timeline-card,
+      .skill-category-card,
+      .panel-card,
+      .highlight-subbox,
+      .contact-card {
+        background: #fff !important;
+        border: 1pt solid #ddd !important;
+        box-shadow: none !important;
+        color: #111 !important;
+        page-break-inside: avoid;
+      }
+
+      .kpi-value {
+        color: #111 !important;
+      }
+
+      .timeline-role,
+      .skill-cat-title,
+      .panel-header-title,
+      .contact-title {
+        color: #111 !important;
+      }
+
+      .timeline-company {
+        color: #0284c7 !important;
+      }
+
+      .tech-tag {
+        border: 1pt solid #aaa !important;
+        color: #222 !important;
+      }
+
+      .progress-track {
+        background: #eee !important;
+      }
+
+      .progress-fill {
+        background: #0284c7 !important;
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .profile-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .photo-wrapper {
+        margin: 0 auto;
+      }
+
+      .profile-meta-row {
+        justify-content: center;
+      }
+
+      .kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .skills-matrix-grid,
+      .edu-cert-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .profile-hero-card {
+        padding: 30px 20px;
+      }
+
+      .timeline-card {
+        padding: 24px 20px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .kpi-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar-actions .btn-text-hide {
+        display: none;
+      }
+
+      .contact-card {
+        padding: 30px 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===================================================
+       MODAL DE SEGURIDAD // CREDENCIAL DE ACCESO
+       =================================================== -->
+  <div id="securityGate">
+    <div class="gate-card">
+      <div class="gate-badge">
+        <span class="pulse-dot"></span>
+        EXPEDIENTE CONFIDENCIAL PROTEGIDO
+      </div>
+      
+      <h1 class="gate-title">PORTAL DE ACCESO PRIVADO</h1>
+      <p class="gate-desc">
+        Expediente Técnico y Trayectoria Profesional de <strong>Ing. José Daniel Urquijo Beltrán</strong>. Ingrese su token o clave de autorización para desbloquear y verificar las credenciales.
+      </p>
+
+      <div class="gate-input-group">
+        <label for="passkeyInput">Clave de Autorización / Passkey</label>
+        <div class="gate-input-wrap">
+          <input 
+            type="password" 
+            id="passkeyInput" 
+            class="gate-input" 
+            placeholder="••••••••••••••" 
+            autocomplete="off"
+            autofocus
+          >
+        </div>
+      </div>
+
+      <button id="btnUnlock" class="gate-btn-unlock" type="button">
+        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+        </svg>
+        Desbloquear Expediente
+      </button>
+
+      <p class="gate-footer-hint">
+        ¿No cuenta con token de autorización? <a href="/landing.html">Solicite acceso directo en el canal seguro</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- ===================================================
+       BARRA DE CONTROL SUPERIOR
+       =================================================== -->
+  <header class="executive-topbar">
+    <div class="container">
+      <div class="topbar-content">
+        <a href="/" class="brand-id" title="Ir al Portal Oficial DU Pixel Code">
+          <div class="brand-logo-gem">DU</div>
+          <div class="brand-text-col">
+            <span class="brand-text-main">DU PIXEL CODE</span>
+            <span class="brand-text-sub">Intelligent Infrastructure</span>
+          </div>
+        </a>
+
+        <div class="topbar-actions">
+          <button id="btnCopySecureLink" class="btn-action-pill gold" type="button" title="Copiar enlace autorizado con clave integrada">
+            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+            </svg>
+            <span class="btn-text-hide">Compartir Enlace</span> Seguro
+          </button>
+
+          <button id="btnPrintDossier" class="btn-action-pill" type="button" title="Imprimir o guardar como PDF ejecutivo">
+            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+            </svg>
+            <span class="btn-text-hide">Guardar</span> PDF
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===================================================
+       CONTENIDO PRINCIPAL DEL DOSSIER (Desbloqueado)
+       =================================================== -->
+  <main class="container">
+
+    <!-- PERFIL / HERO SECTION -->
+    <section class="profile-hero">
+      <div class="profile-hero-card">
+        <div class="profile-grid">
+          
+          <!-- Columna Fotografía con Anillo Neón -->
+          <div class="photo-wrapper">
+            <div class="photo-glow-ring"></div>
+            <div class="photo-inner">
+              <img 
+                src="assets/images/daniel-urquijo-perfil.png" 
+                alt="Ing. José Daniel Urquijo Beltrán"
+                loading="eager"
+              >
+            </div>
+            <div class="status-pill">
+              <span class="status-dot"></span>
+              EN SERVICIO ACTIVO // AUTORIDAD TÉCNICA
+            </div>
+          </div>
+
+          <!-- Columna Información -->
+          <div class="profile-info">
+            <div class="profile-eyebrow">
+              <span>INGENIERO EN MECATRÓNICA & ARQUITECTO DE SOLUCIONES</span>
+              <span class="badge-tier">HIGH-TICKET B2B</span>
+            </div>
+
+            <h1 class="profile-name">JOSÉ DANIEL URQUIJO BELTRÁN</h1>
+            
+            <div class="profile-title">
+              Lead Controls & Automation Systems Engineer | Software & AI Architect
+            </div>
+
+            <p class="profile-lead">
+              Ingeniero en Mecatrónica con <strong>más de 10 años de experiencia</strong> transformando entornos de manufactura de alta exigencia y diseñando infraestructura digital de misión crítica. Especialista en cerrar la brecha entre la <strong>automatización de planta (OT: PLCs Siemens/Allen-Bradley, robótica Fanuc/ABB, visión artificial Keyence)</strong> y la <strong>ingeniería de software moderna (IT: Python, arquitecturas IIoT, microservicios, bases de datos analíticas e Inteligencia Artificial aplicada)</strong>. Historial comprobado de dirección técnica en proyectos de capital por más de <strong>$3.8M USD</strong> y generación de eficiencias operativas y ahorros superiores a <strong>$200K USD</strong>.
+            </p>
+
+            <div class="profile-meta-row">
+              <div class="meta-tag">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path></svg>
+                Corregidora, Querétaro, México
+              </div>
+              <div class="meta-tag">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                <a href="mailto:durquijob@gmail.com">durquijob@gmail.com</a>
+              </div>
+              <div class="meta-tag">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                <a href="https://dupixelcode.com" target="_blank" rel="noopener">dupixelcode.com</a>
+              </div>
+              <div class="meta-tag">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                <a href="https://www.linkedin.com/in/josé-urquijo-beltrán-p" target="_blank" rel="noopener">LinkedIn Ejecutivo</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- METRICS STRIP -->
+    <section class="kpi-strip">
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-value">+10 <span class="accent">AÑOS</span></div>
+          <div class="kpi-label">Experiencia Industrial & OT/IT</div>
+          <div class="kpi-sub">Manufactura avanzada y software</div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-value">>$3.8M <span class="gold">USD</span></div>
+          <div class="kpi-label">Proyectos Liderados</div>
+          <div class="kpi-sub">Presupuesto y ejecución en piso</div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-value">+$200K <span class="accent">USD</span></div>
+          <div class="kpi-label">Ahorros Directos de Costos</div>
+          <div class="kpi-sub">Negociación técnica & optimización</div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-value">100<span class="gold">%</span></div>
+          <div class="kpi-label">Soberanía de Código</div>
+          <div class="kpi-sub">Cero rentas ni dependencias cautivas</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HISTORIAL DE EXPERIENCIA TÉCNICA -->
+    <section class="experience-section">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <h2>TRAYECTORIA & HITOS DE INGENIERÍA</h2>
+          <p>Proyectos industriales de alta escala, optimización de piso y arquitectura tecnológica.</p>
+        </div>
+
+        <div class="filter-pills" id="filterPills">
+          <button class="filter-pill active" data-filter="all">Todos los Hitos</button>
+          <button class="filter-pill" data-filter="ot">Control & Robótica (OT)</button>
+          <button class="filter-pill" data-filter="it">Software & IA (IT/IIoT)</button>
+          <button class="filter-pill" data-filter="pm">Gestión de Proyectos & ROI</button>
+        </div>
+      </div>
+
+      <div class="timeline-stream" id="timelineStream">
+
+        <!-- 01. Multinacional Automotriz Tier-1 (Nov 2024 - Presente) -->
+        <article class="timeline-card featured" data-category="ot it">
+          <div class="timeline-card-header">
+            <div class="timeline-role-col">
+              <h3 class="timeline-role">Lead Controls & Industrial Automation Systems Engineer</h3>
+              <div class="timeline-company">
+                Multinacional Automotriz Tier-1 (Estampado & Ensamble Metálico Estructural)
+                <span class="entity-shield">Sector Automotriz Global</span>
+              </div>
+            </div>
+            <div class="timeline-date-badge current">
+              <span class="status-dot"></span>
+              Noviembre 2024 - Presente
+            </div>
+          </div>
+
+          <div class="timeline-body">
+            Liderazgo de ingeniería en automatización, programación avanzada y soporte de sistemas de control en celdas robotizadas de alta cadencia para clientes OEM globales. Responsable directo de maximizar el OEE (Overall Equipment Effectiveness), optimizar el Takt Time y garantizar la confiabilidad operativa bajo los rigurosos estándares <strong>IATF 16949</strong>.
+          </div>
+
+          <div class="project-highlights-grid">
+            <!-- Digital CAPs & Cell Monitor -->
+            <div class="highlight-subbox">
+              <h4>
+                Digital CAPs & Cell Monitor (SCADA/IIoT)
+                <span class="tag-mini">Industria 4.0</span>
+              </h4>
+              <p>
+                Diseño e implementación de arquitectura de mantenimiento predictivo y telemetría en tiempo real. Extracción de variables críticas de PLCs mediante scripts en Python utilizando <strong>EtherNet/IP (Pylogix)</strong> hacia bases de datos analíticas, permitiendo anticipar anomalías y abatir el tiempo medio entre fallas (MTBF).
+              </p>
+              <div class="highlight-metrics">
+                <span>Protocolo: <strong>EtherNet/IP</strong></span>
+                <span>Impacto: <strong>Reducción de paros imprevistos</strong></span>
+              </div>
+            </div>
+
+            <!-- Optimización de Celdas Zona 3 -->
+            <div class="highlight-subbox gold-accent">
+              <h4>
+                Optimización de Celdas Robotizadas (Zona 3)
+                <span class="tag-mini">Mejora Continua</span>
+              </h4>
+              <p>
+                Auditoría técnica cinemática, reestructuración de trayectorias e interbloqueos lógicos en estaciones críticas de soldadura por puntos y arco (OP80R1, OP70R1/R2). Sincronización entre robots FANUC (Roboguide), ABB (RobotStudio) y PLCs Allen-Bradley ControlLogix / Siemens.
+              </p>
+              <div class="highlight-metrics">
+                <span>Hardware: <strong>FANUC / ABB / Allen-Bradley</strong></span>
+                <span>Resultado: <strong>Reducción directa de Cycle Time</strong></span>
+              </div>
+            </div>
+
+            <!-- Visión Poka-Yoke -->
+            <div class="highlight-subbox emerald-accent">
+              <h4>
+                Sistemas Poka-Yoke & Visión Artificial
+                <span class="tag-mini">Cero Defectos</span>
+              </h4>
+              <p>
+                Integración de inspección óptica automatizada <strong>Keyence & Cognex</strong> con alarmas interactivas en piso de planta, garantizando la trazabilidad geométrica y el aseguramiento del 100% de ensambles libres de no conformidades.
+              </p>
+              <div class="highlight-metrics">
+                <span>Tecnología: <strong>Keyence Vision</strong></span>
+                <span>Enfoque: <strong>Cero Defectos IATF</strong></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="tags-strip">
+            <span class="tech-tag highlight">PLCs Siemens TIA Portal</span>
+            <span class="tech-tag highlight">Allen-Bradley ControlLogix</span>
+            <span class="tech-tag highlight">Robots FANUC (Roboguide)</span>
+            <span class="tech-tag highlight">Robots ABB (RobotStudio)</span>
+            <span class="tech-tag">EtherNet/IP (Pylogix)</span>
+            <span class="tech-tag">Keyence Vision</span>
+            <span class="tech-tag">SCADA & IIoT</span>
+            <span class="tech-tag">Soldadura por Resistencia & Arco</span>
+            <span class="tech-tag">IATF 16949</span>
+          </div>
+        </article>
+
+        <!-- 02. DU Pixel Code (Lead Software & AI Architect) -->
+        <article class="timeline-card" data-category="it">
+          <div class="timeline-card-header">
+            <div class="timeline-role-col">
+              <h3 class="timeline-role">Lead Software & AI Architect / Co-Fundador</h3>
+              <div class="timeline-company">
+                DU Pixel Code
+                <span class="entity-shield">Intelligent Infrastructure & High-Performance Engineering</span>
+              </div>
+            </div>
+            <div class="timeline-date-badge current">
+              2024 - Presente
+            </div>
+          </div>
+
+          <div class="timeline-body">
+            Dirección arquitectónica de software empresarial, desarrollo web de alto rendimiento y pipelines de inteligencia artificial operativa para corporativos, plantas industriales y firmas en expansión.
+          </div>
+
+          <div class="project-highlights-grid">
+            <div class="highlight-subbox">
+              <h4>
+                Desarrollo Web de Alto Rendimiento
+                <span class="tag-mini">Ingeniería Web</span>
+              </h4>
+              <p>
+                Desarrollo de portales y aplicaciones de misión crítica con tiempos de carga inferiores a 1 segundo (&lt;1s), SEO técnico avanzado, cero dependencia de constructores lentos de plantillas y código 100% soberano del cliente.
+              </p>
+            </div>
+
+            <div class="highlight-subbox gold-accent">
+              <h4>
+                Motor SQL WebAssembly en Navegador
+                <span class="tag-mini">sql.js (WASM)</span>
+              </h4>
+              <p>
+                Implementación de SQLite embebido en WebAssembly para el módulo de <em>Evaluación 360°</em> y <em>Business Scan</em>, permitiendo ejecutar diagnósticos de cuellos de botella y simulación de ROI localmente en el navegador con estricta privacidad de datos.
+              </p>
+            </div>
+
+            <div class="highlight-subbox emerald-accent">
+              <h4>
+                Agentes Autónomos de IA & RAG
+                <span class="tag-mini">Pixie IA V2</span>
+              </h4>
+              <p>
+                Diseño de agentes de IA operativa entrenados con conocimiento privado (RAG), bases vectoriales y flujos de captura de leads calificados conectados a CRMs y canales de soporte técnico 24/7.
+              </p>
+            </div>
+          </div>
+
+          <div class="tags-strip">
+            <span class="tech-tag highlight">Next.js / React / HTML5</span>
+            <span class="tech-tag highlight">Python FastAPI</span>
+            <span class="tech-tag highlight">SQLite WebAssembly (sql.js)</span>
+            <span class="tech-tag">RAG & Vector DBs</span>
+            <span class="tech-tag">Automatización n8n</span>
+            <span class="tech-tag">Docker</span>
+            <span class="tech-tag">Ciberseguridad CSP / HSTS</span>
+          </div>
+        </article>
+
+        <!-- 03. IA Mexico (2022 - 2024 & 2018 - 2020) -->
+        <article class="timeline-card" data-category="ot pm">
+          <div class="timeline-card-header">
+            <div class="timeline-role-col">
+              <h3 class="timeline-role">Project & Programming Engineer</h3>
+              <div class="timeline-company">
+                IA Mexico
+                <span class="entity-shield">Automatización Industrial & Robótica</span>
+              </div>
+            </div>
+            <div class="timeline-date-badge">
+              2022 - 2024 & 2018 - 2020
+            </div>
+          </div>
+
+          <div class="timeline-body">
+            Liderazgo técnico en la concepción, programación y puesta en marcha de proyectos de automatización industrial de gran escala con inversiones acumuladas superiores a <strong>$3.8M USD</strong>.
+          </div>
+
+          <div class="project-highlights-grid">
+            <div class="highlight-subbox">
+              <h4>
+                Ejecución de Proyectos Capitales (>$3.8M USD)
+                <span class="tag-mini">Gestión de Proyectos</span>
+              </h4>
+              <p>
+                Dirección técnica de células automatizadas desde el diseño de ingeniería hasta la entrega formal al cliente, aplicando metodologías de mejora continua y control de hitos.
+              </p>
+            </div>
+
+            <div class="highlight-subbox gold-accent">
+              <h4>
+                Programación de Robótica FANUC & ABB
+                <span class="tag-mini">Robótica Avanzada</span>
+              </h4>
+              <p>
+                Especialista en relaciones técnicas con proveedores y clientes para la programación de trayectorias, comisionamiento en sitio e integración de sistemas de control PLC.
+              </p>
+            </div>
+          </div>
+
+          <div class="tags-strip">
+            <span class="tech-tag highlight">Robots FANUC</span>
+            <span class="tech-tag highlight">Robots ABB</span>
+            <span class="tech-tag">Integración PLC</span>
+            <span class="tech-tag">Comisionamiento en Sitio</span>
+            <span class="tech-tag">Gestión de Presupuestos Capitales</span>
+          </div>
+        </article>
+
+        <!-- 04. Draexlmaier Group (2020 - 2022) -->
+        <article class="timeline-card" data-category="pm ot">
+          <div class="timeline-card-header">
+            <div class="timeline-role-col">
+              <h3 class="timeline-role">Manufacture & Project Engineer</h3>
+              <div class="timeline-company">
+                Draexlmaier Group
+                <span class="entity-shield">Tier-1 Arneses & Sistemas Eléctricos Automotrices</span>
+              </div>
+            </div>
+            <div class="timeline-date-badge">
+              2020 - 2022
+            </div>
+          </div>
+
+          <div class="timeline-body">
+            Gestión integral de proyectos de automatización y procesos de manufactura automotriz desde la fase de diseño hasta la producción seriada.
+          </div>
+
+          <div class="project-highlights-grid">
+            <div class="highlight-subbox emerald-accent">
+              <h4>
+                Generación de Ahorros de $200K USD
+                <span class="tag-mini">Negociación & Capex</span>
+              </h4>
+              <p>
+                Administración de proyectos desde la estructura de Bill of Materials (BOMs) hasta la negociación técnica con proveedores, logrando optimizaciones que sumaron <strong>$200,000 USD en ahorros tangibles</strong>.
+              </p>
+            </div>
+
+            <div class="highlight-subbox">
+              <h4>
+                Optimización de Procesos de Manufactura
+                <span class="tag-mini">Lean Manufacturing</span>
+              </h4>
+              <p>
+                Coordinación de equipos multidisciplinarios para implementar mejoras continuas en estaciones de trabajo, reduciendo los tiempos de ciclo y asegurando la estabilidad de la producción.
+              </p>
+            </div>
+          </div>
+
+          <div class="tags-strip">
+            <span class="tech-tag highlight">Negociación Técnica</span>
+            <span class="tech-tag highlight">Generación de BOMs</span>
+            <span class="tech-tag">Ahorro de Costos ($200K USD)</span>
+            <span class="tech-tag">Lean Manufacturing</span>
+            <span class="tech-tag">Calidad Automotriz</span>
+          </div>
+        </article>
+
+        <!-- 05. Early Roles: MG Electrical, ALTEN, Bundy -->
+        <article class="timeline-card" data-category="ot">
+          <div class="timeline-card-header">
+            <div class="timeline-role-col">
+              <h3 class="timeline-role">Automation & Technical Engineering Roles</h3>
+              <div class="timeline-company">
+                MG Electrical, ALTEN, Bundy Refrigeration
+                <span class="entity-shield">Experiencia Técnica Consolidada</span>
+              </div>
+            </div>
+            <div class="timeline-date-badge">
+              Inicios de Trayectoria Profesional
+            </div>
+          </div>
+
+          <div class="timeline-body">
+            Supervisión técnica de la automatización, análisis de planos eléctricos y diagramas de flujo, así como programación de robots industriales FANUC y ABB en líneas de manufactura y refrigeración comercial.
+          </div>
+
+          <div class="tags-strip">
+            <span class="tech-tag">Robótica Industrial</span>
+            <span class="tech-tag">Análisis de Planos Eléctricos</span>
+            <span class="tech-tag">Diseño de Líneas de Producción</span>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- DUAL SKILLS MATRIX (OT + IT) -->
+    <section class="skills-section">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <h2>MATRIZ TÉCNICA HÍBRIDA (OT + IT)</h2>
+          <p>Dominio simultáneo de la automatización física de planta y el ecosistema de software moderno.</p>
+        </div>
+      </div>
+
+      <div class="skills-matrix-grid">
+        <!-- Control Industrial & Robótica (OT) -->
+        <div class="skill-category-card">
+          <div class="skill-cat-header">
+            <div class="skill-cat-icon">
+              <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path>
+              </svg>
+            </div>
+            <div>
+              <div class="skill-cat-title">Control Industrial & Robótica (OT)</div>
+              <div class="skill-cat-sub">Piso de Planta, Automatización & IATF 16949</div>
+            </div>
+          </div>
+
+          <div class="skill-list-items">
+            <div class="skill-item-bar">
+              <div class="skill-label-row">
+                <span>PLCs Siemens (TIA Portal / Step 7 / Ladder / ST)</span>
+                <span class="score">96%</span>
+              </div>
+              <div class="progress-track"><div class="progress-fill" style="width: 96%"></div></div>
+            </div>
+
+            <div class="skill-item-bar">
+              <div class="skill-label-row">
+                <span>Allen-Bradley / Rockwell (Studio 5000 / ControlLogix)</span>
+                <span class="score">94%</span>
+              </div>
+              <div class="progress-track"><div class="progress-fill" style="width: 94%"></div></div>
+            </div>
+
+            <div class="skill-item-bar">
+              <div class="skill-label-row">
+                <span>Robótica FANUC (Roboguide / HandlingTool / TP)</span>
+                <span class="score">95%</span>
+              </div>
+              <div class="progress-track"><div class="progress-fill" style="width: 95%"></div></div>
+            </div>
+
+            <div class="skill-item-bar">
+              <div class="skill-label-row">
+                <span>Robótica ABB (RobotStudio / RAPID)</span>
+                <span class="score">90%</span>
+              </div>
+              <div class="progress-track"><div class="progress-fill" style="width: 90%"></div></div>
+            </div>
+
+            <div class="skill-item-bar">
+              <div class="skill-label-row">
+                <span>Sistemas de Visión & Poka-Yoke (Keyence / Cognex)</span>
+                <span class="score">92%</span>
+              </div>
+              <div class="progress-track"><div class="progress-fill" style="width: 92%"></div></div>
+            </div>
+
+            <div class="skill-item-bar">
+              <div class="skill-label-row">
+                <span>Procesos de Soldadura (Resistencia & Arco / Normas Automotrices)</span>
+                <span class="score">88%</span>
+              </div>
+              <div class="progress-track"><div class="progress-fill" style="width: 88%"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Software, Datos & AI (IT / IIoT) -->
+        <div class="skill-category-card it-card">
+          <div class="skill-cat-header">
+            <div class="skill-cat-icon">
+              <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+              </svg>
+            </div>
+            <div>
+              <div class="skill-cat-title">Software, IIoT & AI (IT)</div>
+              <div class="skill-cat-sub">Infraestructura Digital & Modelado de Datos</div>
+            </div>
+          </div>
+
+          <div class="skill-list-items">
+            <div class="skill-item-bar">
+              <div class="skill-label-row">
+                <span>Python (FastAPI / Pylogix EtherNet/IP / Data Analysis)</span>
+                <span class="score">95%</span>
+              </div>
+              <div class="progress-track"><div class="progress-fill" style="width: 95%"></div></div>
+            </div>
+
+            <div class="skill-item-bar">
+              <div class="skill-label-row">
+                <span>Desarrollo Web de Alto Rendimiento (Next.js / React / HTML5)</span>
+                <span class="score">92%</span>
+              </div>
+              <div class="progress-track"><div class="progress-fill" style="width: 92%"></div></div>
+            </div>
+
+            <div class="skill-item-bar">
+              <div class="skill-label-row">
+                <span>Bases de Datos & WebAssembly (SQLite WASM / SQL / ChromaDB)</span>
+                <span class="score">90%</span>
+              </div>
+              <div class="progress-track"><div class="progress-fill" style="width: 90%"></div></div>
+            </div>
+
+            <div class="skill-item-bar">
+              <div class="skill-label-row">
+                <span>Agentes de IA Operativos & RAG (LLMs APIs / Embeddings)</span>
+                <span class="score">93%</span>
+              </div>
+              <div class="progress-track"><div class="progress-fill" style="width: 93%"></div></div>
+            </div>
+
+            <div class="skill-item-bar">
+              <div class="skill-label-row">
+                <span>Orquestación de Procesos & Contenedores (n8n / Docker)</span>
+                <span class="score">88%</span>
+              </div>
+              <div class="progress-track"><div class="progress-fill" style="width: 88%"></div></div>
+            </div>
+
+            <div class="skill-item-bar">
+              <div class="skill-label-row">
+                <span>Ciberseguridad Web & Redes Industriales (CSP / HSTS / TLS)</span>
+                <span class="score">90%</span>
+              </div>
+              <div class="progress-track"><div class="progress-fill" style="width: 90%"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FORMACIÓN Y CERTIFICACIONES -->
+    <section class="edu-cert-section">
+      <div class="edu-cert-grid">
+        
+        <!-- Educación -->
+        <div class="panel-card">
+          <div class="panel-header-title">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path></svg>
+            FORMACIÓN ACADÉMICA
+          </div>
+
+          <div class="cert-item">
+            <div class="cert-bullet"></div>
+            <div>
+              <div class="cert-title">Ingeniería en Mecatrónica (B.S.)</div>
+              <div class="cert-sub">Universidad Tecmilenio • Graduado en 2019</div>
+              <p style="font-size: 12.5px; color: var(--text-muted); margin-top: 6px;">
+                Especialidades de titulación: <strong>Calidad Total (Six Sigma / Lean)</strong>, <strong>Manufactura Esbelta</strong> y <strong>Desarrollo de Negocios Tecnológicos</strong>.
+              </p>
+            </div>
+          </div>
+
+          <div class="cert-item">
+            <div class="cert-bullet" style="background: var(--gold);"></div>
+            <div>
+              <div class="cert-title">Idiomas Profesionales</div>
+              <div class="cert-sub">Negociación técnica internacional</div>
+              <p style="font-size: 12.5px; color: var(--text-muted); margin-top: 6px;">
+                • <strong>Español:</strong> Nativo.<br>
+                • <strong>Inglés:</strong> Avanzado (C1) — Negociación técnica con proveedores y clientes en EE.UU., Europa y Asia.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Certificaciones -->
+        <div class="panel-card">
+          <div class="panel-header-title">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg>
+            CERTIFICACIONES & ESPECIALIZACIONES
+          </div>
+
+          <div class="cert-item">
+            <div class="cert-bullet"></div>
+            <div>
+              <div class="cert-title">Python for Everybody Specialization (2026)</div>
+              <div class="cert-sub">University of Michigan</div>
+            </div>
+          </div>
+
+          <div class="cert-item">
+            <div class="cert-bullet"></div>
+            <div>
+              <div class="cert-title">Generative AI Professional & AI Development (2026)</div>
+              <div class="cert-sub">Desarrollo de Soluciones & Agentes Inteligentes</div>
+            </div>
+          </div>
+
+          <div class="cert-item">
+            <div class="cert-bullet"></div>
+            <div>
+              <div class="cert-title">Core Tools Fundamentals (2024)</div>
+              <div class="cert-sub">APQP, FMEA, SPC, MSA, PPAP (Estándares IATF 16949)</div>
+            </div>
+          </div>
+
+          <div class="cert-item">
+            <div class="cert-bullet"></div>
+            <div>
+              <div class="cert-title">Scrum Master & Agile Project Management (2023)</div>
+              <div class="cert-sub">Metodologías Ágiles para Entrega Continua de Valor</div>
+            </div>
+          </div>
+
+          <div class="cert-item">
+            <div class="cert-bullet"></div>
+            <div>
+              <div class="cert-title">Non-Financial Finance (2021)</div>
+              <div class="cert-sub">Evaluación Financiera de Proyectos & ROI de Ingeniería</div>
+            </div>
+          </div>
+
+          <div class="cert-item">
+            <div class="cert-bullet"></div>
+            <div>
+              <div class="cert-title">Project Management & Initiating Projects (2018 - 2020)</div>
+              <div class="cert-sub">Planificación, Control de Riesgos & Gestión de Presupuesto</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- CANAL DE CONTACTO SEGURO (Sin teléfono directo) -->
+    <section class="contact-gateway">
+      <div class="contact-card">
+        <h2 class="contact-title">CANAL DIRECTO DE COMUNICACIÓN EJECUTIVA</h2>
+        <p class="contact-desc">
+          Para consultas técnicas especializadas, evaluación de proyectos high-ticket o propuestas de consultoría en infraestructura digital y automatización de planta, utilice los canales oficiales asegurados.
+        </p>
+
+        <div class="contact-channels-grid">
+          <a href="mailto:durquijob@gmail.com" class="channel-box">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+            <div class="channel-text-col">
+              <div class="channel-label">Correo Principal</div>
+              <div class="channel-val">durquijob@gmail.com</div>
+            </div>
+          </a>
+
+          <a href="mailto:info@dupixelcode.com" class="channel-box">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+            <div class="channel-text-col">
+              <div class="channel-label">Correo Corporativo</div>
+              <div class="channel-val">info@dupixelcode.com</div>
+            </div>
+          </a>
+
+          <a href="https://www.linkedin.com/in/josé-urquijo-beltrán-p" target="_blank" rel="noopener" class="channel-box gold">
+            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 8.76c-.89 0-1.61-.72-1.61-1.61s.72-1.61 1.61-1.61a1.61 1.61 0 0 1 1.61 1.61c0 .89-.72 1.61-1.61 1.61m1.39 9.74v-8.37H5.07v8.37h2.78z"></path></svg>
+            <div class="channel-text-col">
+              <div class="channel-label">Red Profesional</div>
+              <div class="channel-val">Perfil en LinkedIn</div>
+            </div>
+          </a>
+
+          <a href="/landing.html" class="channel-box">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+            <div class="channel-text-col">
+              <div class="channel-label">Mesa de Entrada Segura</div>
+              <div class="channel-val">Iniciar con Pixie IA / Formulario</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="legal-privacy-notice">
+          <strong>Protocolo de Confidencialidad & Ciberseguridad:</strong> Este dossier profesional opera bajo directivas estrictas de privacidad (noindex, sin cookies de rastreo comercial publicitario y cabeceras HSTS/CSP reforzadas). Queda prohibida la reproducción no autorizada de métricas y arquitecturas de propiedad intelectual pertenecientes a DU Pixel Code y entidades representadas.
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- NOTIFICACIÓN FLOTANTE (TOAST) -->
+  <div id="toastNotification">
+    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+    </svg>
+    <span id="toastMsg">Enlace seguro copiado al portapapeles.</span>
+  </div>
+
+  <!-- SCRIPT DE SEGURIDAD & INTERACTIVIDAD -->
+  <script>
+    (function() {
+      'use strict';
+
+      // Claves autorizadas de acceso (pueden ser suministradas en URL mediante ?key= o escritas en el prompt)
+      // Clave maestra corporativa: DU-LEAD-2026
+      const VALID_KEYS = [
+        'DU-LEAD-2026',
+        'DU-EXECUTIVE-2026',
+        'URQUIJO-TECH-2026',
+        'DUPC-PARTNER-2026'
+      ];
+
+      const securityGate = document.getElementById('securityGate');
+      const passkeyInput = document.getElementById('passkeyInput');
+      const btnUnlock = document.getElementById('btnUnlock');
+      const btnCopySecureLink = document.getElementById('btnCopySecureLink');
+      const btnPrintDossier = document.getElementById('btnPrintDossier');
+      const toast = document.getElementById('toastNotification');
+      const toastMsg = document.getElementById('toastMsg');
+
+      function showToast(msg) {
+        toastMsg.textContent = msg;
+        toast.classList.add('show');
+        setTimeout(() => {
+          toast.classList.remove('show');
+        }, 3200);
+      }
+
+      function unlockDossier() {
+        securityGate.classList.add('unlocked');
+        sessionStorage.setItem('du_dossier_auth', 'active');
+      }
+
+      function checkKey(candidate) {
+        if (!candidate) return false;
+        const normalized = candidate.trim().toUpperCase();
+        return VALID_KEYS.includes(normalized);
+      }
+
+      function attemptUnlock() {
+        const val = passkeyInput.value;
+        if (checkKey(val)) {
+          unlockDossier();
+          showToast('Credenciales verificadas. Acceso concedido al Dossier.');
+        } else {
+          passkeyInput.classList.add('error');
+          setTimeout(() => passkeyInput.classList.remove('error'), 600);
+          passkeyInput.value = '';
+          passkeyInput.focus();
+        }
+      }
+
+      // 1. Revisar si ya fue desbloqueado en la sesión activa
+      if (sessionStorage.getItem('du_dossier_auth') === 'active') {
+        unlockDossier();
+      }
+
+      // 2. Revisar si la URL contiene token o key (ej: ?key=DU-LEAD-2026 o #access=DU-LEAD-2026)
+      const urlParams = new URLSearchParams(window.location.search);
+      const queryKey = urlParams.get('key') || urlParams.get('token') || urlParams.get('access');
+      const hashKey = window.location.hash ? window.location.hash.replace('#', '') : null;
+
+      if (checkKey(queryKey) || checkKey(hashKey)) {
+        unlockDossier();
+        // Limpiar el token de la barra de direcciones por seguridad para no dejar rastro
+        if (window.history && window.history.replaceState) {
+          const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+          window.history.replaceState({}, document.title, cleanUrl);
+        }
+      }
+
+      // Listeners del Gate
+      if (btnUnlock) {
+        btnUnlock.addEventListener('click', attemptUnlock);
+      }
+
+      if (passkeyInput) {
+        passkeyInput.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter') {
+            attemptUnlock();
+          }
+        });
+      }
+
+      // Botón: Copiar Enlace Seguro con Token Integrado
+      if (btnCopySecureLink) {
+        btnCopySecureLink.addEventListener('click', function() {
+          const defaultKey = VALID_KEYS[0];
+          const fullSecureUrl = window.location.origin + window.location.pathname + '?key=' + defaultKey;
+          
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(fullSecureUrl).then(() => {
+              showToast('Enlace seguro con clave copiado al portapapeles');
+            }).catch(() => {
+              prompt('Copie el siguiente enlace seguro:', fullSecureUrl);
+            });
+          } else {
+            prompt('Copie el siguiente enlace seguro:', fullSecureUrl);
+          }
+        });
+      }
+
+      // Botón: Guardar / Imprimir PDF
+      if (btnPrintDossier) {
+        btnPrintDossier.addEventListener('click', function() {
+          window.print();
+        });
+      }
+
+      // Filtro Interactivo de Categorías en Timeline
+      const filterPills = document.querySelectorAll('.filter-pill');
+      const timelineCards = document.querySelectorAll('.timeline-card');
+
+      filterPills.forEach(pill => {
+        pill.addEventListener('click', function() {
+          filterPills.forEach(p => p.classList.remove('active'));
+          this.classList.add('active');
+
+          const filterVal = this.getAttribute('data-filter');
+
+          timelineCards.forEach(card => {
+            const categories = card.getAttribute('data-category') || '';
+            if (filterVal === 'all' || categories.includes(filterVal)) {
+              card.style.display = 'block';
+              card.style.opacity = '1';
+            } else {
+              card.style.display = 'none';
+              card.style.opacity = '0';
+            }
+          });
+        });
+      });
+
+    })();
+  </script>
+</body>
+</html>
